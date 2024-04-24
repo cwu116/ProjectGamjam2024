@@ -25,11 +25,13 @@ namespace Game
         private void RegisterSystems()
         {
             RegisterSystem(new MapSystem());
+            RegisterSystem(new TurnSystem());
         }
 
         private void RegisterModels()
         {
             RegisterModel(new MapModel());
+            RegisterModel(new TurnModel());
         }
 
         private void InitSystems()
