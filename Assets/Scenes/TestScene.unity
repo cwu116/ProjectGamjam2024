@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 368527876}
   - component: {fileID: 368527877}
+  - component: {fileID: 368527878}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -170,6 +171,18 @@ MonoBehaviour:
   prefabList:
   - {fileID: 2122479721059792034, guid: 9573633d2787208499324a892895b0cf, type: 3}
   - {fileID: 2122479721059792034, guid: 8b84c982840367e4ebd7c75b878e975d, type: 3}
+--- !u!114 &368527878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368527875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d49800edf6716f43b616c541aca1226, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &591039227
 GameObject:
   m_ObjectHideFlags: 0
