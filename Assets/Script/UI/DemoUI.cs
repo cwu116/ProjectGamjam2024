@@ -1,12 +1,11 @@
 ﻿using System.Collections;
-using Assets.Script.UI;
 using Game;
 using Game.Extensions;
 using Game.System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game
+namespace Game.UI
 {
     public class DemoUI : BasePanel
     {
@@ -15,10 +14,6 @@ namespace Game
         private Button _closeBtn;
         public override void InitPanel()
         {
-            _mapSystem = GameBody.GetSystem<MapSystem>();
-
-            _closeBtn = transform.FindByName<Button>("CloseBtn");
-
         }
 
         public override void Show(IUiData uiData)

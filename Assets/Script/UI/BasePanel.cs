@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Assets.Script.UI
+namespace Game.UI
 {
     public abstract class BasePanel : MonoBehaviour, IPanel
     {
