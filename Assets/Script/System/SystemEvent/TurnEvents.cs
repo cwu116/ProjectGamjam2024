@@ -2,39 +2,39 @@
 
 namespace Game.System
 {
-    struct PlayerTurnBeginTrigger : IEvent
-    { }
-    struct PlayerTurnEndTrigger : IEvent
-    { }
+    //struct PlayerTurnBeginTrigger : IEvent
+    //{ }
+    //struct PlayerTurnEndTrigger : IEvent
+    //{ }
 
-    struct EnemyTurnBeginTrigger : IEvent
-    { }
+    //struct EnemyTurnBeginTrigger : IEvent
+    //{ }
 
-    struct EnemyTurnEndTrigger : IEvent
-    { }
+    //struct EnemyTurnEndTrigger : IEvent
+    //{ }
 
-    struct AfterPlayerTurnBeginEvent:IEvent
-    {
+    //struct AfterPlayerTurnBeginEvent:IEvent
+    //{
 
-    }
+    //}
 
-    struct AfterPlayerTurnEndEvent : IEvent
-    {
+    //struct AfterPlayerTurnEndEvent : IEvent
+    //{
 
-    }
+    //}
 
-    struct AfterEnemyTurnBeginEvent:IEvent
-    {
-        public Vector2 playerPos;
-    }
+    //struct AfterEnemyTurnBeginEvent:IEvent
+    //{
+    //    public Vector2 playerPos;
+    //}
 
-    struct AfterEnemyTurnEndEvent:IEvent
-    {
+    //struct AfterEnemyTurnEndEvent:IEvent
+    //{
 
-    }
+    //}
 
-    struct EnemyActionComplete:IEvent
-    {
-       public Enemy enemy;
-    }
+    //struct EnemyActionComplete:IEvent
+    //{
+    //   public Enemy enemy;
+    //}
 }

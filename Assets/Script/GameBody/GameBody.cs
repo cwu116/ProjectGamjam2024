@@ -25,7 +25,9 @@ namespace Game
         private void RegisterSystems()
         {
             RegisterSystem(new MapSystem());
-            RegisterSystem(new TurnSystem());
+            //RegisterSystem(new TurnSystem());
+            RegisterSystem(new GameFlowSystem());
+            //RegisterSystem(new PlayerActionSystem());
         }
 
         private void RegisterModels()
