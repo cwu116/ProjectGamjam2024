@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Game.Model;
 using Game.System;
+using UnityEditor;
 
 namespace Game.System
 {
@@ -14,6 +15,14 @@ namespace Game.System
         public override void InitSystem()
         {
             _mapModel = GameBody.GetModel<MapModel>();
+            Console.WriteLine("MapSystem Init");
         }
+
+        public Mapdata LoadMap()
+        {
+            Mapdata mapdata = _mapModel.MapDatas;
+            return mapdata;
+        }
+
     }
 }

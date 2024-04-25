@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Assets.Script.System;
 using Game.Model;
 using Game.System;
 using UnityEngine;
@@ -35,7 +34,7 @@ namespace Game
 
         private void InitSystems()
         {
-            GameObject go = new GameObject("EventSystemSingle",typeof(EventSystem));
+            GameObject go = new GameObject("EventSystemSingle", typeof(EventSystem));
             go.transform.parent = transform;
 
             foreach (KeyValuePair<Type, object> item in GameBody._systems)
@@ -78,7 +77,7 @@ namespace Game
         public static T GetSystem<T>() where T : class, ISystem
         {
             Type t = typeof(T);
-            if (!_systems.ContainsKey(t))
+            if (_systems.ContainsKey(t))
             {
                 return _systems[t] as T;
             }
@@ -88,7 +87,7 @@ namespace Game
         public static T GetModel<T>() where T : class, IModel
         {
             Type t = typeof(T);
-            if (!_models.ContainsKey(t))
+            if (_models.ContainsKey(t))
             {
                 return _models[t] as T;
             }

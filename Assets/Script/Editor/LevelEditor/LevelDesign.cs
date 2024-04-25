@@ -5,6 +5,8 @@ using UnityEditor;
 using TMPro;
 using Unity.VisualScripting;
 using System.Linq;
+using Game.Util;
+using System.IO;
 
 public class LevelDesign : EditorWindow
 {
@@ -33,7 +35,7 @@ public class LevelDesign : EditorWindow
     void OnEnable()
     {
         // 查找所有预制体
-        string[] guids = AssetDatabase.FindAssets("t:GameObject", new[] { "Assets/Prefab" });
+        string[] guids = AssetDatabase.FindAssets("t:GameObject", new[] { "Assets/Resources/Prefabs/Prefab" });
         prefabPaths = new string[guids.Length];
         prefabNames = new string[guids.Length];
 
@@ -117,7 +119,7 @@ public class LevelDesign : EditorWindow
         if (GUILayout.Button("保存地图"))
         {
 
-            Mapdata map = ScriptableObject.CreateInstance<Mapdata>();
+            Mapdata map = new Mapdata();
             map.height = cells.GetLength(0);
             map.width = cells.GetLength(1);
             map.cells = new HexType[map.height * map.width];
@@ -128,9 +130,7 @@ public class LevelDesign : EditorWindow
                     map.cells[i++] = cells[x, y].Type;
                 }
             }
-            AssetDatabase.CreateAsset(map, @"Assets/ScriptableObject/map1.asset");
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
+            File.WriteAllText("Assets/Resources/MapData/MapData.json", JsonUtil.ToJson(map));
         }
     }
 

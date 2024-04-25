@@ -3,20 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEditor;
+using Game.Util;
+using System.IO;
+using Game;
+using Game.System;
+using UnityEditor.Timeline;
 
-public class GridManager : MonoBehaviour
+public class GridManager : MonoSingleton<GridManager>
 {
 
     Mapdata mapData;
+    MapSystem mapSystem;
     public List<GameObject> prefabList;
     HexCell[,] cells;
     int height;
     int width;
 
+    public HexCell[,] hexCells
+    {
+        get
+        {
+            return cells;
+        }
+        private set
+        {
+
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        mapData = AssetDatabase.LoadAssetAtPath<Mapdata>(@"Assets/ScriptableObject/map1.asset");
+        mapSystem = GameBody.GetSystem<MapSystem>();
+        mapData = mapSystem.LoadMap();
         width = mapData.width;
         height = mapData.height;
         CreateCells();

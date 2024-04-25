@@ -12,11 +12,11 @@ namespace Game.Model
 {
     public class MapModel : BaseModel
     {
-        public Dictionary<int, string> MapDatas;
+        public Mapdata MapDatas;
 
         public override void InitModel()
         {
-            MapDatas = JsonUtil.ToObject<Dictionary<int, string>>(
+            MapDatas = JsonUtil.ToObject<Mapdata>(
                 ResourcesManager.LoadText(JsonPath.MapPath, JsonFileName.GameMapName));
         }
     }

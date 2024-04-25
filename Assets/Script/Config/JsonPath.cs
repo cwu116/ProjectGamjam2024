@@ -8,6 +8,6 @@ namespace Assets.Script.Config
 {
     public class JsonPath
     {
-        public const string MapPath = "";
+        public const string MapPath = "MapData/";
     }
 }

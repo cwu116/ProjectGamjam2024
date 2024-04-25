@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Assets.Script.System.SystemEvent;
 using Assets.Script.UI;
 using Game;
 using Game.Extensions;

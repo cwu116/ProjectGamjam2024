@@ -1,6 +1,5 @@
-﻿using Game.System;
-
-namespace Assets.Script.System.SystemEvent
+﻿
+namespace Game.System
 {
  
     public struct MapInitFinishEvent: IEvent
