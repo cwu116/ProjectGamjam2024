@@ -7,11 +7,24 @@ public class Node
 {
     public int X { get; set; }
     public int Y { get; set; }
+    public float X_Real { get; set; }
+    public float Y_Real { get; set; }
     public bool IsObstacle { get; set; }
     public float G { get; set; } // 从起点到当前点的实际代价
     public float H { get; set; } // 从当前点到终点的估计代价（启发式）
     public float F { get { return G + H; } } // G和H的总和
     public Node Parent { get; set; } // 父节点，用于回溯路径
+
+    public Node(int x, int y, float x_Real, float y_Real, bool isObstacle)
+    {
+        X = x;
+        Y = y;
+        X_Real = x_Real;
+        Y_Real = y_Real;
+        IsObstacle = isObstacle;
+        G = H = 0;
+        Parent = null;
+    }
 
     public Node(int x, int y, bool isObstacle)
     {
@@ -71,8 +84,10 @@ public class AStar
         {
             for (int y = 0; y < gridCols; y++)
             {
+                HexCell hexCell = map[x, y];
+                Vector3 hexCellPosition = hexCell.transform.position;
                 //TODO::这里应当改成该网格上的物体是否是阻碍物
-                grid[x, y] = new Node(x, y, false);
+                grid[x, y] = new Node(x, y, hexCellPosition.x, hexCellPosition.y,false);
             }
         }
     }
@@ -126,14 +141,26 @@ public class AStar
     {
         List<Node> neighbors = new List<Node>();
 
-        for (int x = -1; x <= 1; x++)
-        {
-            for (int y = -1; y <= 1; y++)
-            {
-                if (x == 0 && y == 0) continue; // 跳过自身
+        int[,] hexOffsets = {
+        { 1, 0 }, { 0, 1 }, { -1, 1 },
+        { -1, 0 }, { -1, -1 }, { 0, -1 }
+        };
 
-                int checkX = node.X + x;
-                int checkY = node.Y + y;
+        int[,] hexoffsets2 =
+        {
+            {1, 0 }, {1,1},{0,1},
+            {-1,0 }, {0,-1},{1,-1}
+        };
+        if(node.Y % 2 == 0)
+        {
+            // 遍历相邻的六边形节点
+            for (int i = 0; i < 6; i++)
+            {
+                int xOffset = hexOffsets[i, 0];
+                int yOffset = hexOffsets[i, 1];
+
+                int checkX = node.X + xOffset;
+                int checkY = node.Y + yOffset;
 
                 if (checkX >= 0 && checkX < gridRows && checkY >= 0 && checkY < gridCols)
                 {
@@ -141,8 +168,27 @@ public class AStar
                 }
             }
         }
+        else
+        {
+            // 遍历相邻的六边形节点
+            for (int i = 0; i < 6; i++)
+            {
+                int xOffset = hexoffsets2[i, 0];
+                int yOffset = hexoffsets2[i, 1];
+
+                int checkX = node.X + xOffset;
+                int checkY = node.Y + yOffset;
+
+                if (checkX >= 0 && checkX < gridRows && checkY >= 0 && checkY < gridCols)
+                {
+                    neighbors.Add(grid[checkX, checkY]);
+                }
+            }
+        }
+        
 
         return neighbors;
+
     }
 
     private List<Point> RetracePath(Node startNode, Node endNode)
@@ -161,11 +207,10 @@ public class AStar
 
     private float GetDistance(Node nodeA, Node nodeB)
     {
-        int dstX = Math.Abs(nodeA.X - nodeB.X);
-        int dstY = Math.Abs(nodeA.Y - nodeB.Y);
-
-        if (dstX > dstY)
-            return 14 * dstY + 10 * (dstX - dstY);
-        return 14 * dstX + 10 * (dstY - dstX);
+        float dstX = Math.Abs(nodeA.X_Real - nodeB.X_Real);
+        float dstY = Math.Abs(nodeA.Y_Real - nodeB.Y_Real);
+        float res = 0;
+        res = dstX * dstX + dstY * dstY;
+        return res;
     }
 }

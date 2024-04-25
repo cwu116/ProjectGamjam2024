@@ -18,7 +18,7 @@ namespace Game.System
         /// <param name="origin"></param>
         /// <param name="target"></param>
         /// <returns></returns>
-        private Vector2 GetNextPosWorld(Vector2 origin, Vector2 target)
+        public Vector2 GetNextPosWorld(Vector2 origin, Vector2 target)
         {
             HexCell[,] hexCells = GridManager.Instance.hexCells;
             AStar aStar = new AStar(hexCells);
@@ -27,7 +27,7 @@ namespace Game.System
             List<Point> path = aStar.FindPath(start, end);
             if(path != null)
             {
-                Vector2 res = new Vector2(path[1].X, path[1].Y);
+                Vector2 res = new Vector2(path[0].X, path[0].Y);
                 return res;
             }
             return Vector2.zero;
@@ -56,15 +56,29 @@ namespace Game.System
 
         private bool InspectTarget(Vector2 myPos, int radius)
         {
-            HexCell[,] hexCells = GridManager.Instance.hexCells;
-            List<int> ranges = new List<int>();
-            for(int i = 1; i <= radius; i++)
-            {
-                ranges.Add(i * 6);
-            }
-            //TODO::继续查询每一圈的hexcells
+            
 
             return false;
+        }
+
+        /// <summary>
+        /// 计算两点之间的距离
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        private int CalculateDistance(Vector2 origin, Vector2 target)
+        {
+            HexCell[,] hexCells = GridManager.Instance.hexCells;
+            AStar aStar = new AStar(hexCells);
+            Point start = new Point((int)origin.x, (int)origin.y);
+            Point end = new Point((int)target.x, (int)target.y);
+            List<Point> path = aStar.FindPath(start, end);
+            if(path != null)
+            {
+                return path.Count;
+            }
+            return 0;
         }
 
         
