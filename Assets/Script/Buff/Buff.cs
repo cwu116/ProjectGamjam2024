@@ -8,11 +8,10 @@ namespace Buff
     public enum BuffType
     {
         ValueChange, State, Create
-        
     }
 
     [Serializable]
-    struct Buff
+    public struct State
     {
         public string buffName;         // buff名
         public string description;      // buff解释
@@ -21,5 +20,6 @@ namespace Buff
         public int duration;            // 持续回合数
         public string buffCMD;          // buff指令
     }
+
 }
 

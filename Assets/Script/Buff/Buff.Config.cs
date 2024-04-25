@@ -8,8 +8,6 @@ namespace Buff.Config
     /// </summary>
     public enum CmdCode
     {
-        Together = 0,
-        
         // type = valueChange
         Damage,                 // 伤害               Damage:数值
         MoveRangeChange,        // 改变移动力          MoveRangeChange:数值
@@ -28,6 +26,8 @@ namespace Buff.Config
         
         // ...
     }
+    
+    
 
 }
 

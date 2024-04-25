@@ -13,7 +13,6 @@ namespace Buff.Manager
             {
                 return;
             }
-
             // 分离效果和副作用  格式：【效果】*【副作用】
             string[] Funcs = _raw.Split(new char[] {'*'});
             // 遍历效果和副作用
@@ -26,6 +25,7 @@ namespace Buff.Manager
                 string[] Params = args[1].Split(new char[] {','});
                 switch (Enum.Parse<CmdCode>(args[0]))
                 {
+                    /*
                     case CmdCode.Together: 
                         string[] methods = func.Split(new char[] {']'});
                         methods[0] = methods[0].Replace("Together:", "");
@@ -37,10 +37,10 @@ namespace Buff.Manager
                             {
                                 return;
                             }
-
                             Execution(method.Remove(0, 1), target);
                         }
                         break;
+                        */
                     case CmdCode.Damage: 
                         Debug.LogFormat("{0}伤害{1}点", target.name, Params[0]);break;
                     case CmdCode.MoveRangeChange: 
@@ -57,7 +57,7 @@ namespace Buff.Manager
                         break;
                     case CmdCode.ClearState: break;
                     case CmdCode.CreateEntity: break;
-                    case CmdCode.CreateScene: break;
+                    case CmdCode.CreateScene: break;    
                 }
             }
         }
