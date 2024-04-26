@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Buff.Config;
 using UnityEngine;
 
@@ -6,38 +7,60 @@ namespace Buff.Manager
 {
     public static partial class BuffManager
     {
-        public static void Execution(string _raw, GameObject target)
+        public static void Execution(List<string> CMDlist, GameObject target)
         {
-            _raw = _raw.Replace(" ", "");
-            if (string.IsNullOrEmpty(_raw))
+            foreach (var cmdLine in CMDlist)
             {
-                return;
-            }
-            // 解析参数与命令名
-            string[] args = _raw.Split(new char[] {':'});
-            // args[0]    :     命令名
-            // args[1]    :     参数数组
-            string[] Params = args[1].Split(new char[] {','});
-            switch (Enum.Parse<CmdCode>(args[0]))
-            {
-                case CmdCode.Damage:
-                    Debug.LogFormat("{0}伤害{1}点", target.name, Params[0]);
-                    break;
-                case CmdCode.MoveRangeChange:
-                    Debug.LogFormat("{0}下回合移动{1}{2}点", target.name, int.Parse(Params[0]) > 0 ? "增加" : "减少", Params[0]);
-                    break;
-                case CmdCode.MaxHpChange:
-                    Debug.LogFormat("{0}血量上限{1}{2}点", target.name, int.Parse(Params[0]) > 0 ? "增加" : "减少", Params[0]);
-                    break;
-                case CmdCode.MoveTimeChange: break;
-                case CmdCode.SkillRangeChange: break;
-                case CmdCode.DefenceChange: break;
-                case CmdCode.StatePush:
-                    Debug.LogFormat("{0}获得状态{1}持续{2}回合", target.name, Params[0], Params[1]);
-                    break;
-                case CmdCode.ClearState: break;
-                case CmdCode.CreateEntity: break;
-                case CmdCode.CreateScene: break;
+                string _raw = cmdLine;
+                _raw = _raw.Replace(" ", "");
+                if (string.IsNullOrEmpty(_raw))
+                {
+                    return;
+                }
+                if (_raw.Contains("="))
+                {
+                    // 赋值
+                    string[] args = _raw.Split(new char[] {'='});
+                    BuffComponent temp = new BuffComponent(null);
+                    if (args[1].Contains("$"))
+                    {
+                        temp.ValueUnits[args[0].Remove(0)].AddValue(temp.ValueUnits[args[1].Remove(0)]);
+                    }
+                    else
+                    {
+                        temp.ValueUnits[args[0].Remove(0)].AddValue(int.Parse(args[1]));
+                    }
+                    
+                }
+                else
+                {
+                    // 解析参数与命令名
+                    string[] args = _raw.Split(new char[] {':'});
+                    // args[0]    :     命令名
+                    // args[1]    :     参数数组
+                    string[] Params = args[1].Split(new char[] {','});
+                    switch (Enum.Parse<BuffType>(args[0]))
+                    {
+                        case BuffType.ValueChange:
+                            if (Params[0] == "Damage")
+                            {
+                                // target.HP  -= args[1].Contains("$") target.buffcomp.ValueUnits[args[1].Remove(0)] ? int.Parse(args[1]  
+                            }
+                            else
+                            {
+                                BuffComponent temp = new BuffComponent(null);
+                                temp.ValueUnits[args[0]].AddValue(int.Parse(args[1]));
+                            }
+                            break;
+                        case BuffType.State:
+                            
+                            break;
+                        case BuffType.Create:
+                            break;
+                        case BuffType.Action: 
+                            break;
+                    }
+                }
             }
         }
     }

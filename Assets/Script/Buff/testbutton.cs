@@ -16,10 +16,7 @@ namespace Buff.Test
             _button = GetComponent<Button>();
             _button.onClick.AddListener(delegate
             {
-                foreach (var buff in PotionDatas[Pointer].containBuffs)
-                {
-                    BuffManager.Execution(buff, GameObject.Find("Player"));
-                }
+                BuffManager.Execution(PotionDatas[Pointer].containBuffs, GameObject.Find("Player"));
             });
         }
     }

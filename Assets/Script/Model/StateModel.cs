@@ -16,8 +16,6 @@ namespace Game.Model
         {
             string json = ResourcesManager.LoadText(JsonPath.StatePath,JsonFileName.StateName);
             States = JsonUtil.ToObject<List<State>>(json);
-            
-            
         }
     }
 }

@@ -3,24 +3,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace Buff
 {
-    public enum BuffType
-    {
-        ValueChange, State, Create
-    }
 
+    /// <summary>
+    /// 状态类
+    /// 
+    /// </summary>
     [Serializable]
     public struct State
     {
-        public string buffName;         // buff名
-        public string id;               // buff_id
-        public string description;      // buff解释
-        public int level;               // buff层数
-        public Sprite icon;             // buff图标
-        public GameObject target;       // 作用对象
-        public int duration;            // 持续回合数
-        public string buffCMD;          // buff指令
+        public string   buffName;         // buff名
+        public string   id;               // buff_id
+        public string   description;      // buff解释
+        public string   buffCMD;          // buff指令
+        public bool     isAdditive;       // 能否叠加
+        public bool     isStartExec;      // 回合开始触发
+
+        // 以id形式判断
+        public static bool operator ==(State left, State right)
+        {
+            return left.id == right.id;
+        }
+        public static bool operator !=(State left, State right)
+        {
+            return !(left == right);
+        }
+        
+        public static bool operator ==(State left, string right)
+        {
+            return left == right;
+        }
+
+        public static bool operator !=(State left, string right)
+        {
+            return !(left == right);
+        }
+    }
+
+    public class StateUnit
+    {
+        public StateUnit(ValueInt baseValue)
+        {
+            
+        }
+        
     }
 
 }
