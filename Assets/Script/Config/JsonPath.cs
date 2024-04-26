@@ -9,5 +9,6 @@ namespace Assets.Script.Config
     public class JsonPath
     {
         public const string MapPath = "MapData/";
+        public const string StatePath = "MapData/";
     }
 }

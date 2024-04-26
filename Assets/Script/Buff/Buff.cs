@@ -14,7 +14,9 @@ namespace Buff
     public struct State
     {
         public string buffName;         // buff名
+        public string id;               // buff_id
         public string description;      // buff解释
+        public int level;               // buff层数
         public Sprite icon;             // buff图标
         public GameObject target;       // 作用对象
         public int duration;            // 持续回合数

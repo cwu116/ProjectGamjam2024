@@ -8,10 +8,10 @@ public class Node
     public int X { get; set; }
     public int Y { get; set; }
     public bool IsObstacle { get; set; }
-    public float G { get; set; } // ´ÓÆğµãµ½µ±Ç°µãµÄÊµ¼Ê´ú¼Û
-    public float H { get; set; } // ´Óµ±Ç°µãµ½ÖÕµãµÄ¹À¼Æ´ú¼Û£¨Æô·¢Ê½£©
-    public float F { get { return G + H; } } // GºÍHµÄ×ÜºÍ
-    public Node Parent { get; set; } // ¸¸½Úµã£¬ÓÃÓÚ»ØËİÂ·¾¶
+    public float G { get; set; } // ä»èµ·ç‚¹åˆ°å½“å‰ç‚¹çš„å®é™…ä»£ä»·
+    public float H { get; set; } // ä»å½“å‰ç‚¹åˆ°ç»ˆç‚¹çš„ä¼°è®¡ä»£ä»·ï¼ˆå¯å‘å¼ï¼‰
+    public float F { get { return G + H; } } // Gå’ŒHçš„æ€»å’Œ
+    public Node Parent { get; set; } // çˆ¶èŠ‚ç‚¹ï¼Œç”¨äºå›æº¯è·¯å¾„
 
     public Node(int x, int y, bool isObstacle)
     {
@@ -71,7 +71,7 @@ public class AStar
         {
             for (int y = 0; y < gridCols; y++)
             {
-                //TODO::ÕâÀïÓ¦µ±¸Ä³É¸ÃÍø¸ñÉÏµÄÎïÌåÊÇ·ñÊÇ×è°­Îï
+                //TODO::è¿™é‡Œåº”å½“æ”¹æˆè¯¥ç½‘æ ¼ä¸Šçš„ç‰©ä½“æ˜¯å¦æ˜¯é˜»ç¢ç‰©
                 grid[x, y] = new Node(x, y, false);
             }
         }
@@ -119,7 +119,7 @@ public class AStar
             }
         }
 
-        return new List<Point>(); // ·µ»Ø¿ÕÂ·¾¶
+        return new List<Point>(); // è¿”å›ç©ºè·¯å¾„
     }
 
     private List<Node> GetNeighbors(Node node)
@@ -130,7 +130,7 @@ public class AStar
         {
             for (int y = -1; y <= 1; y++)
             {
-                if (x == 0 && y == 0) continue; // Ìø¹ı×ÔÉí
+                if (x == 0 && y == 0) continue; // è·³è¿‡è‡ªèº«
 
                 int checkX = node.X + x;
                 int checkY = node.Y + y;
