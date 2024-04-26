@@ -25,7 +25,7 @@ namespace Game.Model
     //            operation.Undo();
     //    }
 
-    //    public void ClearOperations(AfterPlayerTurnEndEvent obj =default(AfterPlayerTurnEndEvent))
+    //    public void ClearOperations(AfterPlayerTurnEndEvent obj = default(AfterPlayerTurnEndEvent))
     //    {
     //        _undoStack.Clear();
     //    }

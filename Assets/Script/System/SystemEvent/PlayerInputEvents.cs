@@ -1,6 +1,16 @@
 ﻿
 namespace Game.System
 {
-  public struct OnMouseRightClick:IEvent
+   struct OnMouseRightClick:IEvent
     { }
+
+    struct OnClickPotion:IEvent
+    {
+
+    }
+
+    struct UndoEvent:IEvent
+    {
+        ICanUndo undoOperation;
+    }
 }

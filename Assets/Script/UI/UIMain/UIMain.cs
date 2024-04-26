@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Game.UI;
-using DG.Tweening;
+using Game.System; 
 
 public class UIMain : BasePanel
 {
-    Image _btnCraft;
+    Button btnCraft;
 
     public override void Close()
     {
@@ -14,7 +14,8 @@ public class UIMain : BasePanel
 
     public override void InitPanel()
     {
-        _btnCraft = transform.Find("BtnCraft").GetComponent<Image>();
+        btnCraft = transform.Find("BtnCraft").GetComponent<Button>();
+        btnCraft.onClick.AddListener(() => EventSystem.Send<OpenCraftUITrigger>());//ÔÚCraftSystemÌí¼ÓUndo
     }
 
     public override void Refresh()

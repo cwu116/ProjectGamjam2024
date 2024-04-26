@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class CustomPotionDescription : MonoBehaviour
+public class CustomPotionDescriptionStyle : MonoBehaviour
 {
     public Vector3 originalPos;
     public Vector3 targetPos;
