@@ -15,6 +15,7 @@ namespace Game.System
         public override void InitSystem()
         {
             _mapModel = GameBody.GetModel<MapModel>();
+            InitHW(); //向MapSystem传递GridManager网格系统的宽高
             Console.WriteLine("MapSystem Init");
         }
 

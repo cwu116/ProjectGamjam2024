@@ -67,7 +67,7 @@ public class AStar
         {
             for (int y = 0; y < gridCols; y++)
             {
-                grid[x, y] = new Node(x, y, map[x, y] == 1);
+                grid[x, y] = new Node(x, y, false);
             }
         }
     }
@@ -88,6 +88,39 @@ public class AStar
                 Vector3 hexCellPosition = hexCell.transform.position;
                 //TODO::这里应当改成该网格上的物体是否是阻碍物
                 grid[x, y] = new Node(x, y, hexCellPosition.x, hexCellPosition.y,false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 这个A*构造函数是专门用来计算两点距离，而不考虑障碍物的
+    /// </summary>
+    /// <param name="map"></param>
+    /// <param name="isGetDistance"></param>
+    public AStar(HexCell[,] map, bool isGetDistance)
+    {
+        gridRows = map.GetLength(0);
+        gridCols = map.GetLength(1);
+        grid = new Node[gridRows, gridCols];
+        openList = new List<Node>();
+        closedList = new HashSet<Node>();
+
+        for (int x = 0; x < gridRows; x++)
+        {
+            for (int y = 0; y < gridCols; y++)
+            {
+                HexCell hexCell = map[x, y];
+                Vector3 hexCellPosition = hexCell.transform.position;
+                //TODO::这里应当改成该网格上的物体是否是阻碍物
+                if(isGetDistance == true)
+                {
+                    grid[x, y] = new Node(x, y, hexCellPosition.x, hexCellPosition.y, false);
+                }
+                else
+                {
+                    //TODO::这里后续应当改成正常计算是否是障碍物
+                    grid[x, y] = new Node(x, y, hexCellPosition.x, hexCellPosition.y, false);
+                }
             }
         }
     }
