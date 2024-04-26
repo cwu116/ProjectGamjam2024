@@ -41,19 +41,21 @@ namespace Buff.Manager
                     string[] Params = args[1].Split(new char[] {','});
                     switch (Enum.Parse<BuffType>(args[0]))
                     {
-                        case BuffType.ValueChange:
+                        case BuffType.ChangeValue:
                             if (Params[0] == "Damage")
                             {
+                                Debug.Log("DamageTrigger");
                                 // target.HP  -= args[1].Contains("$") target.buffcomp.ValueUnits[args[1].Remove(0)] ? int.Parse(args[1]  
                             }
                             else
                             {
                                 BuffComponent temp = new BuffComponent(null);
-                                temp.ValueUnits[args[0]].AddValue(int.Parse(args[1]));
+                                temp.ValueUnits[Params[0]].AddValue(int.Parse(Params[1]));
                             }
                             break;
                         case BuffType.State:
-                            
+                            BuffComponent temp1 = new BuffComponent(null);
+                            temp1.AddState(new State(), int.Parse(Params[1]));
                             break;
                         case BuffType.Create:
                             break;

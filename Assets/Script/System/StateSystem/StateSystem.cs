@@ -29,14 +29,14 @@ namespace Game.System
         // 回合开始执行
         public void StateWithStart()
         {
-            foreach (var line in stateModel.States)
+            foreach (var entity in GameObject.FindGameObjectsWithTag("Entity"))
             {
-                foreach (var id in startExec)
+                foreach (var unit in entity.GetComponent<BuffComponent>().StateUnits)
                 {
-                    if (line == id)
+                    if (unit.Key.isStartExec)
                     {
-                        // 全局执行状态指令
-                        // BuffManager.Execution(line.buffCMD, );
+                        BuffManager.Execution(unit.Key.buffCMD, entity);
+                        entity.GetComponent<BuffComponent>().StateUnits[unit.Key] -= 1;
                     }
                 }
             }
@@ -45,14 +45,14 @@ namespace Game.System
         // 回合结束执行
         public void StateWithEnd()
         {
-            foreach (var line in stateModel.States)
+            foreach (var entity in GameObject.FindGameObjectsWithTag("Entity"))
             {
-                foreach (var id in endExec)
+                foreach (var unit in entity.GetComponent<BuffComponent>().StateUnits)
                 {
-                    if (line == id)
+                    if (!unit.Key.isStartExec)
                     {
-                        // 全局执行状态指令
-                        // BuffManager.Execution(line.buffCMD, );
+                        BuffManager.Execution(unit.Key.buffCMD, entity);
+                        entity.GetComponent<BuffComponent>().StateUnits[unit.Key] -= 1;
                     }
                 }
             }

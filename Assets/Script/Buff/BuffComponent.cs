@@ -6,12 +6,12 @@ namespace Buff
     public class BuffComponent
     {
         public Dictionary<string, ValueInt> ValueUnits;         // 玩家数值类
-        public List<State> States;                              // 玩家状态类
+        public Dictionary<State, int> StateUnits;               // 玩家状态类
         
         public BuffComponent(GameObject entity)
         {
             ValueUnits = new Dictionary<string, ValueInt>();
-            States = new List<State>();
+            StateUnits = new Dictionary<State, int>();
             ValueUnits.Add("Hp", new ValueInt(3));
             ValueUnits.Add("MaxHp", new ValueInt(3));
             ValueUnits.Add("MoveRange", new ValueInt(2));
@@ -23,18 +23,18 @@ namespace Buff
             
         }
 
-        public void AddState(State state)
+        public void AddState(State state, int flow)
         {
-            States.Add(state);
+            StateUnits.Add(state, flow);
         }
 
         public void RemoveState(State state)
         {
-            States.Remove(state);
+            StateUnits.Remove(state);
         }
     }
 
-    // 
+    // 赋值整数
     public class ValueInt
     {
         private int baseValue;
@@ -67,4 +67,5 @@ namespace Buff
         }
         
     }
+    
 }

@@ -8,7 +8,7 @@ namespace Buff.Config
         /// <summary>
         /// 数值改变类 : 仅仅改变数值操作
         /// </summary>
-        ValueChange,            // 数值改变           ValueChange:变量名,数值
+        ChangeValue,            // 数值改变           ValueChange:变量名,数值
 
         /// <summary>
         /// 状态类 : 添加多样化状态

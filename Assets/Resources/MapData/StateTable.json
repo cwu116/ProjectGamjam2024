@@ -3,7 +3,7 @@
     "buffName" : "肉体改造",
     "id" : "ResumeHp",
     "description" : "随后3个回合开始时恢复1点血量",
-    "buffCMD" : "ChangeValue:Damage,-1",
+    "buffCMD" : ["ChangeValue:Damage,-1"],
     "isAdditive" : false,
     "isStartExec" : true
   }, 
@@ -11,7 +11,7 @@
     "buffName" : "活靶子",
     "id" : "LiveTarget",
     "description" : "每回合结束时恢复1点血，持续2回合",
-    "buffCMD" : "ChangeValue:Damage,-1",
+    "buffCMD" : ["ChangeValue:Damage,-1"],
     "isAdditive" : false,
     "isStartExec" : false
   }
