@@ -24,10 +24,11 @@ namespace Game
 
         private void RegisterSystems()
         {
-            RegisterSystem(new MapSystem());
+            //RegisterSystem(new MapSystem());
             //RegisterSystem(new TurnSystem());
-            RegisterSystem(new GameFlowSystem());
+            //RegisterSystem(new GameFlowSystem());
             //RegisterSystem(new PlayerActionSystem());
+            RegisterSystem(new AudioSystem());
         }
 
         private void RegisterModels()
