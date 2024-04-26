@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Script.UI
+namespace Game.UI
 {
     public interface IPanel
     {
@@ -12,11 +12,11 @@ namespace Assets.Script.UI
         /// 初始化UI ,用于获取UI元素、系统等
         /// </summary>
         public void InitPanel();
-        /// <summary>
-        /// 打开UI
-        /// </summary>
-        /// <param name="uiData"></param>
-        public void Show(IUiData uiData);
+        ///// <summary>
+        ///// 打开UI
+        ///// </summary>
+        ///// <param name="uiData"></param>
+        //public void Show(IUiData uiData);
         /// <summary>
         /// 刷新UI数值
         /// </summary>
