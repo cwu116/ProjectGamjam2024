@@ -509,7 +509,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Pointer: 0
-  PotionDatas: []
+  PotionDatas:
+  - id: 
+    name: 
+    description: 
+    containBuffs:
+    - ChangeValue:Damage:1
 --- !u!114 &683622082
 MonoBehaviour:
   m_ObjectHideFlags: 0

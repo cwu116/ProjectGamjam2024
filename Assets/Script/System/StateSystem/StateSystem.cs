@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Buff;
-using Buff.Manager;
 using Game.Model;
 using UnityEngine;
 
@@ -15,6 +14,7 @@ namespace Game.System
 
         public override void InitSystem()
         {
+            Debug.Log("Init StateSystem");
             stateModel = GameBody.GetModel<StateModel>();
             startExec = new List<string>()
             {
@@ -35,7 +35,7 @@ namespace Game.System
                 {
                     if (unit.Key.isStartExec)
                     {
-                        BuffManager.Execution(unit.Key.buffCMD, entity);
+                        Execution(unit.Key.buffCMD, entity);
                         entity.GetComponent<BuffComponent>().StateUnits[unit.Key] -= 1;
                     }
                 }
@@ -51,7 +51,7 @@ namespace Game.System
                 {
                     if (!unit.Key.isStartExec)
                     {
-                        BuffManager.Execution(unit.Key.buffCMD, entity);
+                        Execution(unit.Key.buffCMD, entity);
                         entity.GetComponent<BuffComponent>().StateUnits[unit.Key] -= 1;
                     }
                 }

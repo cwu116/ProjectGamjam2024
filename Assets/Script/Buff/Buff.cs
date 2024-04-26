@@ -40,15 +40,11 @@ namespace Buff
         {
             return !(left == right);
         }
-    }
 
-    public class StateUnit
-    {
-        public StateUnit(ValueInt baseValue)
+        public bool IsVaild()
         {
-            
+            return string.IsNullOrEmpty(id);
         }
-        
     }
 
 }

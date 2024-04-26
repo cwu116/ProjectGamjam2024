@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using Buff;
 using Buff.Config;
+using Game;
+using Game.Model;
 using UnityEngine;
 
-namespace Buff.Manager
+namespace Game.System
 {
-    public static partial class BuffManager
+    public partial class StateSystem : BaseSystem
     {
         public static void Execution(List<string> CMDlist, GameObject target)
         {
@@ -30,7 +33,6 @@ namespace Buff.Manager
                     {
                         temp.ValueUnits[args[0].Remove(0)].AddValue(int.Parse(args[1]));
                     }
-                    
                 }
                 else
                 {
@@ -55,7 +57,14 @@ namespace Buff.Manager
                             break;
                         case BuffType.State:
                             BuffComponent temp1 = new BuffComponent(null);
-                            temp1.AddState(new State(), int.Parse(Params[1]));
+                            if (args.Length == 1)
+                            {
+                                temp1.ClearState();
+                            }
+                            else
+                            {
+                                temp1.AddState(GameBody.GetModel<StateModel>().GetStateFromID(Params[0]), int.Parse(Params[1]));
+                            }
                             break;
                         case BuffType.Create:
                             break;

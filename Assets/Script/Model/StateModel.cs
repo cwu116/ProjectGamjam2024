@@ -17,6 +17,19 @@ namespace Game.Model
             string json = ResourcesManager.LoadText(JsonPath.StatePath,JsonFileName.StateName);
             States = JsonUtil.ToObject<List<State>>(json);
         }
+        
+        //通过ID获取State数据
+        public State GetStateFromID(string id)
+        {
+            foreach (var state in States)
+            {
+                if (state == id)
+                {
+                    return state;
+                }
+            }   
+            return new State();
+        }
     }
 }
 

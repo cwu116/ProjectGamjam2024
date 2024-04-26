@@ -32,6 +32,15 @@ namespace Buff
         {
             StateUnits.Remove(state);
         }
+
+        public void ClearState()
+        {
+            StateUnits.Clear();
+            foreach (var unit in ValueUnits)
+            {
+                ValueUnits[unit.Key].RemoveChange();
+            }
+        }
     }
 
     // 赋值整数
