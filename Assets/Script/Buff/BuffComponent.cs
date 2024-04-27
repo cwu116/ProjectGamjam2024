@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Buff
 {
-    public class BuffComponent
+    public class BuffComponent : MonoBehaviour
     {
         public Dictionary<string, ValueInt> ValueUnits;         // 玩家数值类
         public Dictionary<State, int> StateUnits;               // 玩家状态类
@@ -17,12 +17,7 @@ namespace Buff
             ValueUnits.Add("MoveRange", new ValueInt(2));
             ValueUnits.Add("MoveForce", new ValueInt(1));
         }
-
-        public void UseBuffGameStart()
-        {
-            
-        }
-
+        
         public void AddState(State state, int flow)
         {
             StateUnits.Add(state, flow);

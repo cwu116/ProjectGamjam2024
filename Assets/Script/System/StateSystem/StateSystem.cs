@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Game.System
 {
-    public partial class StateSystem : BaseSystem
+    public partial class StateSystem : BaseSystem, IState
     {
         
         // 全局检查玩家状态 
@@ -16,14 +16,6 @@ namespace Game.System
         {
             Debug.Log("Init StateSystem");
             stateModel = GameBody.GetModel<StateModel>();
-            startExec = new List<string>()
-            {
-                "ResumeHp"
-            };
-            endExec = new List<string>()
-            {
-                "LiveTarget"
-            };
         }
 
         // 回合开始执行
@@ -53,6 +45,15 @@ namespace Game.System
                     {
                         Execution(unit.Key.buffCMD, entity);
                         entity.GetComponent<BuffComponent>().StateUnits[unit.Key] -= 1;
+                    }
+                    // 状态在回合末尾清除
+                    if (entity.GetComponent<BuffComponent>().StateUnits[unit.Key] == 0)
+                    {
+                        if (unit.Key.death.Count != 0)
+                        {
+                            Execution(unit.Key.death, entity);
+                        }
+                        entity.GetComponent<BuffComponent>().RemoveState(unit.Key);
                     }
                 }
             }

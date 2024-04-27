@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game;
 using Game.System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ namespace Buff.Test
             _button = GetComponent<Button>();
             _button.onClick.AddListener(delegate
             {
-               StateSystem.Execution(PotionDatas[Pointer].containBuffs, GameObject.Find("Player"));
+                StateSystem.Execution(PotionDatas[Pointer].containBuffs, GameObject.Find("Player"));
             });
         }
     }

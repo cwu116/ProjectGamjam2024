@@ -29,19 +29,46 @@
   {
     "buffName" : "膨胀",
     "id" : "Expansion",
-    "description" : "下2个回合开始时血量上限增加1，并恢复1点血量，但技能范围减1",
-    "buffCMD" : ["ChangeValue:Damage,-1","",""],
+    "description" : "下2个回合开始时血量上限增加1，并恢复1点血量，但技能范围减1。",
+    "buffCMD" : ["ChangeValue:MaxHp,1","ChangeValue:Damage,-1","ChangeValue:SkillRange,-1"],
     "isAdditive" : false,
     "isStartExec" : true,
-    "death" : ["Action:Death,[]"]
+    "death" : []
   },
   {
     "buffName" : "玻璃大炮",
     "id" : "GlassCannon",
     "description" : "使目标造成的所有伤害增加1，但血量上限减1，持续至本场战斗结束。",
-    "buffCMD" : [],
+    "buffCMD" : ["ChangeValue:Attack,1","ChangeValue:MaxHp,-1"],
     "isAdditive" : false,
-    "isStartExec" : false,
-    "death" : ["Action:Death,[]"]
+    "isStartExec" : true,
+    "death" : []
+  },
+  {
+    "buffName" : "长臂猴",
+    "id" : "LongArmMonkey",
+    "description" : "使目标技能范围增加1，但血量上限减1，持续至本场战斗结束。",
+    "buffCMD" : ["ChangeValue:SkillRange,1","ChangeValue:MaxHp,-1"],
+    "isAdditive" : false,
+    "isStartExec" : true,
+    "death" : []
+  },
+  {
+    "buffName" : "护甲",
+    "id" : "Armor",
+    "description" : "每点护甲能抵消单位受到的1点伤害，层数可叠加。该状态会在单位下个回合开始时消失。",
+    "buffCMD" : ["ChangeValue:Defence,1"],
+    "isAdditive" : true,
+    "isStartExec" : true,
+    "death" : []
+  },
+  {
+    "buffName" : "燃烧",
+    "id" : "Burning",
+    "description" : "每点护甲能抵消单位受到的1点伤害，层数可叠加。该状态会在单位下个回合开始时消失。",
+    "buffCMD" : ["ChangeValue:Defence,1"],
+    "isAdditive" : true,
+    "isStartExec" : true,
+    "death" : []
   }
 ]

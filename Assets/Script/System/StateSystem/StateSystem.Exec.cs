@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Game.System
 {
-    public partial class StateSystem : BaseSystem
+    public partial class StateSystem : BaseSystem, IState
     {
         /// <summary>
         /// 全局指令集

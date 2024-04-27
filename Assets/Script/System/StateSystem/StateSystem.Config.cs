@@ -6,10 +6,8 @@ using UnityEngine;
 
 namespace Game.System
 {
-    public partial class StateSystem : BaseSystem
+    public partial class StateSystem : BaseSystem, IState
     {
-        // 回合前执行
-        private List<string> startExec;
-        private List<string> endExec;
+
     }
 }
