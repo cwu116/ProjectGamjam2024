@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Game.System;
 using UnityEngine;
 
 namespace Buff
@@ -7,6 +8,7 @@ namespace Buff
     {
         public Dictionary<string, ValueInt> ValueUnits;         // 玩家数值类
         public Dictionary<State, int> StateUnits;               // 玩家状态类
+        public bool isPlayer;
         
         public BuffComponent(GameObject entity)
         {
@@ -36,6 +38,58 @@ namespace Buff
                 ValueUnits[unit.Key].RemoveChange();
             }
         }
+
+        public void StatesStart()
+        {
+            foreach (var unit in StateUnits)
+            {
+                if (unit.Key.isStartExec)
+                {
+                    if (unit.Key.isAdditive)
+                    {
+                        for (int i = 0; i < unit.Value; i++)
+                        {
+                            StateSystem.Execution(unit.Key.buffCMD, transform.parent.gameObject);   
+                        }
+                    }
+                    else
+                    {
+                        StateSystem.Execution(unit.Key.buffCMD, transform.parent.gameObject);
+                    }
+                    StateUnits[unit.Key] -= 1;
+                    if (StateUnits[unit.Key] < 0)
+                    {
+                        RemoveState(unit.Key);
+                    }
+                }
+            }
+        }
+
+        public void StatesEnd()
+        {
+            foreach (var unit in StateUnits)
+            {
+                if (!unit.Key.isStartExec)
+                {
+                    if (unit.Key.isAdditive)
+                    {
+                        for (int i = 0; i < unit.Value; i++)
+                        {
+                            StateSystem.Execution(unit.Key.buffCMD, transform.parent.gameObject);   
+                        }
+                    }
+                    else
+                    {
+                        StateSystem.Execution(unit.Key.buffCMD, transform.parent.gameObject);
+                    }
+                    StateUnits[unit.Key] -= 1;
+                }
+                if (StateUnits[unit.Key] < 0)
+                {
+                    RemoveState(unit.Key);
+                }
+            }
+        }
     }
 
     // 赋值整数
@@ -50,9 +104,16 @@ namespace Buff
             this.baseValue = baseValue;
         }
         
-        public void AddValue(int change)
+        public void AddValue(int Value, bool isChange = false)
         {
-            changeValue = change;
+            if (!isChange)
+            {
+                changeValue += Value;
+            }
+            else
+            {
+                changeValue = Value;
+            }
         }
 
         public void RemoveChange()

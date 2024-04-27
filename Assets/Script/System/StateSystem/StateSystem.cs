@@ -8,7 +8,6 @@ namespace Game.System
 {
     public partial class StateSystem : BaseSystem, IState
     {
-        
         // 全局检查玩家状态 
         private StateModel stateModel;
 
@@ -19,7 +18,7 @@ namespace Game.System
         }
 
         // 回合开始执行
-        public void StateWithStart()
+        public void PlayerStateWithStart()
         {
             foreach (var entity in GameObject.FindGameObjectsWithTag("Entity"))
             {
@@ -33,7 +32,7 @@ namespace Game.System
                 }
             }
         }
-        
+
         // 回合结束执行
         public void StateWithEnd()
         {
@@ -46,6 +45,7 @@ namespace Game.System
                         Execution(unit.Key.buffCMD, entity);
                         entity.GetComponent<BuffComponent>().StateUnits[unit.Key] -= 1;
                     }
+
                     // 状态在回合末尾清除
                     if (entity.GetComponent<BuffComponent>().StateUnits[unit.Key] == 0)
                     {
@@ -53,9 +53,38 @@ namespace Game.System
                         {
                             Execution(unit.Key.death, entity);
                         }
+
                         entity.GetComponent<BuffComponent>().RemoveState(unit.Key);
                     }
                 }
+            }
+        }
+
+        public void PlayerStatesStart()
+        {
+            GameObject player = GameObject.Find("Player");
+            player.GetComponent<BuffComponent>().StatesStart();
+        }
+
+        public void PlayerStatesEnd()
+        {
+            GameObject player = GameObject.Find("Player");
+            player.GetComponent<BuffComponent>().StatesEnd();
+        }
+
+        public void EnemyStatesStart()
+        {
+            foreach (var enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+            {
+                enemy.GetComponent<BuffComponent>().StatesStart();
+            }
+        }
+
+        public void EnemyStatesEnd()
+        {
+            foreach (var enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+            {
+                enemy.GetComponent<BuffComponent>().StatesEnd();
             }
         }
 
@@ -67,4 +96,3 @@ namespace Game.System
         }
     }
 }
-

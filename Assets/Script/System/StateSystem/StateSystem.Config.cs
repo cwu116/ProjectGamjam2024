@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Game.System
 {
-    public partial class StateSystem : BaseSystem, IState
+    public partial class StateSystem : BaseSystem
     {
 
     }

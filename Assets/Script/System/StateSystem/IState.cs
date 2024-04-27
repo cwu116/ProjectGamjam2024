@@ -6,8 +6,10 @@ namespace Game.System
 {
     public interface IState
     {
-        public void StateWithStart() {}
-        public void StateWithEnd() {}
+        public void PlayerStatesStart() {}
+        public void PlayerStatesEnd() {}
+        public void EnemyStatesStart() {}
+        public void EnemyStatesEnd() {}
     }
 }
 

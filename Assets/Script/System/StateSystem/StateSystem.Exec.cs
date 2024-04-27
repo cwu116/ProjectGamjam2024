@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Game.System
 {
-    public partial class StateSystem : BaseSystem, IState
+    public partial class StateSystem : BaseSystem
     {
         /// <summary>
         /// 全局指令集
@@ -64,7 +64,8 @@ namespace Game.System
                             }
                             else
                             {
-                                temp1.AddState(GameBody.GetModel<StateModel>().GetStateFromID(Params[0]), int.Parse(Params[1]));
+                                temp1.AddState(GameBody.GetModel<StateModel>().GetStateFromID(Params[0]), 
+                                    int.Parse(Params[1]) == -1 ? 9999 : int.Parse(Params[1]));
                             }
                             break;
                         case BuffType.Create:
