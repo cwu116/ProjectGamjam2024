@@ -2,17 +2,46 @@
   {
     "buffName" : "肉体改造",
     "id" : "ResumeHp",
-    "description" : "随后3个回合开始时恢复1点血量",
+    "description" : "随后3个回合开始时恢复1点血量。",
     "buffCMD" : ["ChangeValue:Damage,-1"],
     "isAdditive" : false,
-    "isStartExec" : true
+    "isStartExec" : true,
+    "death" : []
   }, 
   {
     "buffName" : "活靶子",
     "id" : "LiveTarget",
-    "description" : "每回合结束时恢复1点血，持续2回合",
+    "description" : "每回合结束时恢复1点血，持续2回合。",
     "buffCMD" : ["ChangeValue:Damage,-1"],
     "isAdditive" : false,
-    "isStartExec" : false
+    "isStartExec" : false,
+    "death" : []
+  },
+  {
+    "buffName" : "血肉祝福",
+    "id" : "BloodBless",
+    "description" : "当前生命值翻倍，在第3个回合结束时该单位直接死亡。",
+    "buffCMD" : [],
+    "isAdditive" : false,
+    "isStartExec" : false,
+    "death" : ["Action:Death,[]"]
+  },
+  {
+    "buffName" : "膨胀",
+    "id" : "Expansion",
+    "description" : "下2个回合开始时血量上限增加1，并恢复1点血量，但技能范围减1",
+    "buffCMD" : ["ChangeValue:Damage,-1","",""],
+    "isAdditive" : false,
+    "isStartExec" : true,
+    "death" : ["Action:Death,[]"]
+  },
+  {
+    "buffName" : "玻璃大炮",
+    "id" : "GlassCannon",
+    "description" : "使目标造成的所有伤害增加1，但血量上限减1，持续至本场战斗结束。",
+    "buffCMD" : [],
+    "isAdditive" : false,
+    "isStartExec" : false,
+    "death" : ["Action:Death,[]"]
   }
 ]

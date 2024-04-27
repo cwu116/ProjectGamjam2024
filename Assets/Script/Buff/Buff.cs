@@ -19,6 +19,7 @@ namespace Buff
         public List<string>     buffCMD;          // buff指令
         public bool             isAdditive;       // 能否叠加
         public bool             isStartExec;      // 回合开始触发
+        public List<string>     death;            // 状态亡语
         
 
         // 以id形式判断
