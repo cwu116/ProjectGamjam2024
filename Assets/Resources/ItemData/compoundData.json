@@ -1,0 +1,194 @@
+[
+    {
+        "id": "",
+        "Name": "鞭子",
+        "Material_1": "red",
+        "Material_2": "red",
+        "MaterialSpecial": "A",
+        "Type": [ "Damage","ChangeValue" ]
+    },
+    {
+        "id": "",
+        "Name": "肉体改造",
+        "Material_1": "red",
+        "Material_2": "red",
+        "MaterialSpecial": "B",
+        "Type": [ "Damage","ChangeValue","ChangeValue" ]
+    },
+    {
+        "id": "",
+        "Name": "回光返照",
+        "Material_1": "red",
+        "Material_2": "red",
+        "MaterialSpecial": "C",
+        "Type": [ "Damage","Buff" ]
+    },
+    {
+        "id": "",
+        "Name": "幽魂",
+        "Material_1": "red",
+        "Material_2": "red",
+        "MaterialSpecial": "D",
+        "Type": ["Damage","Buff"]
+    },
+    {
+        "id": "",
+        "Name": "兴奋毒药",
+        "Material_1": "red",
+        "Material_2": "yellow",
+        "MaterialSpecial": "A",
+        "Type": [ "" ]
+    },
+    {
+        "id": "",
+        "Name": "五十步蛇",
+        "Material_1": "red",
+        "Material_2": "yellow",
+        "MaterialSpecial": "B",
+        "Type": [""]
+    },
+    {
+        "id": "",
+        "Name": "恶魔敕令",
+        "Material_1": "red",
+        "Material_2": "yellow",
+        "MaterialSpecial": "C",
+        "Type": [ "Buff","ChangeValue" ]
+    },
+    {
+        "id": "",
+        "Name": "恶魔力量",
+        "Material_1": "red",
+        "Material_2": "yellow",
+        "MaterialSpecial": "D",
+        "Type": [ "Skill","Buff" ]
+    },
+    {
+        "id": "",
+        "Name": "活靶子",
+        "Material_1": "yellow",
+        "Material_2": "yellow",
+        "MaterialSpecial": "A",
+        "Type": [ "" ]
+    },
+    {
+        "id": "",
+        "Name": "石肤",
+        "Material_1": "yellow",
+        "Material_2": "yellow",
+        "MaterialSpecial": "B",
+        "Type": [ "" ]
+    },
+    {
+        "id": "",
+        "Name": "隐入尘烟",
+        "Material_1": "yellow",
+        "Material_2": "yellow",
+        "MaterialSpecial": "C",
+        "Type": [ "Skill" ]
+    },
+    {
+        "id": "",
+        "Name": "蛹",
+        "Material_1": "yellow",
+        "Material_2": "yellow",
+        "MaterialSpecial": "D",
+        "Type": [ "" ]
+    },
+    {
+        "id": "",
+        "Name": "血肉祝福",
+        "Material_1": "red",
+        "Material_2": "blue",
+        "MaterialSpecial": "A",
+        "Type": [ "Skill" ]
+    },
+    {
+        "id": "",
+        "Name": "燃烧瓶",
+        "Material_1": "red",
+        "Material_2": "blue",
+        "MaterialSpecial": "B",
+        "Type": [ "Action" ]
+    },
+    {
+        "id": "",
+        "Name": "窒息",
+        "Material_1": "red",
+        "Material_2": "blue",
+        "MaterialSpecial": "C",
+        "Type": [ "" ]
+    },
+    {
+        "id": "",
+        "Name": "黑暗之心",
+        "Material_1": "red",
+        "Material_2": "blue",
+        "MaterialSpecial": "D",
+        "Type": [ "" ]
+    },
+    {
+        "id": "",
+        "Name": "膨胀",
+        "Material_1": "blue",
+        "Material_2": "bule",
+        "MaterialSpecial": "A",
+        "Type": [ "" ]
+    },
+    {
+        "id": "",
+        "Name": "火焰净化",
+        "Material_1": "blue",
+        "Material_2": "bule",
+        "MaterialSpecial": "B",
+        "Type": [ "" ]
+    },
+    {
+        "id": "",
+        "Name": "玻璃大炮",
+        "Material_1": "blue",
+        "Material_2": "bule",
+        "MaterialSpecial": "C",
+        "Type": [ "ChangeValue","ChangeValue" ]
+    },
+    {
+        "id": "",
+        "Name": "长臂猴",
+        "Material_1": "blue",
+        "Material_2": "bule",
+        "MaterialSpecial": "D",
+        "Type": [ "" ]
+    },
+    {
+        "id": "",
+        "Name": "实验体1号",
+        "Material_1": "yellow",
+        "Material_2": "bule",
+        "MaterialSpecial": "A",
+        "Type": ["Action"]
+    },
+    {
+        "id": "",
+        "Name": "实验体2号",
+        "Material_1": "yellow",
+        "Material_2": "bule",
+        "MaterialSpecial": "B",
+        "Type": [ "Action" ]
+    },
+    {
+        "id": "",
+        "Name": "实验体3号",
+        "Material_1": "yellow",
+        "Material_2": "bule",
+        "MaterialSpecial": "C",
+        "Type": [ "Action" ]
+    },
+    {
+        "id": "",
+        "Name": "青草药剂",
+        "Material_1": "yellow",
+        "Material_2": "bule",
+        "MaterialSpecial": "D",
+        "Type": [ "Action" ]
+    }
+]
