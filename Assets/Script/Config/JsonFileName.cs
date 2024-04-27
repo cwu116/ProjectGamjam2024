@@ -10,5 +10,6 @@ namespace Assets.Script.Config
     {
         public const string GameMapName = "MapData";
         public const string StateName = "StateTable";
+        public const string CommpoundData = "CompoundData";
     }
 }

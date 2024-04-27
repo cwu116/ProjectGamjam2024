@@ -26,12 +26,14 @@ namespace Game
         {
             RegisterSystem(new MapSystem());
             RegisterSystem(new StateSystem());
+            RegisterSystem(new InventorySystem());
         }
 
         private void RegisterModels()
         {
             RegisterModel(new MapModel());
             RegisterModel(new StateModel());
+            RegisterModel(new CompoundModel());
         }
 
         private void InitSystems()

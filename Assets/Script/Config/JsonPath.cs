@@ -10,5 +10,6 @@ namespace Assets.Script.Config
     {
         public const string MapPath = "MapData/";
         public const string StatePath = "MapData/";
+        public const string ItemPath = "ItemData/";
     }
 }
