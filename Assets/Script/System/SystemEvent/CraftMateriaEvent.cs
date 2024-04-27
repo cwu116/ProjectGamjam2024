@@ -6,6 +6,6 @@ namespace Game.System
 {
     public struct Item_sEvent : IEvent
     {
-        public Item_sModel Item_sModel;
+        public Item_s Item_sModel;
     }
 }

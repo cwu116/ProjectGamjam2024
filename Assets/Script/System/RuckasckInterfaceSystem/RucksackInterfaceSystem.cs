@@ -10,14 +10,14 @@ namespace Game.System
     //用于提供合成功能的接口
     public class InventorySystem : BaseSystem
     {
-        public List<Item_sModel> materials = new List<Item_sModel>(); // 临时存储
+        public List<Item_s> materials = new List<Item_s>(); // 临时存储
         public CompoundModel compoundModel = new CompoundModel();
         // 添加材料
-        public void AddMaterial(Item_sModel item_s)
+        public void AddMaterial(Item_s item_s)
         {
             if (materials.Count < 3)//合成最大容量
             {
-                materials.Add(new Item_sModel(item_s.Name, item_s.Id, item_s.Description, item_s.quantity));
+                materials.Add(new Item_s(item_s.Name, item_s.Id, item_s.Description, item_s.quantity));
                 Debug.Log("添加成功");
                 return;
             }
@@ -25,7 +25,7 @@ namespace Game.System
         }
 
         // 移除材料
-        public void RemoveMaterial(Item_sModel item_s)
+        public void RemoveMaterial(Item_s item_s)
         {
             if (materials != null || materials.Count >= 0)//移除材料
             {
@@ -43,16 +43,16 @@ namespace Game.System
         }
 
         // 触发刷新物品的事件
-        public Item_sModel Random_Item()
+        public Item_s Random_Item()
         {
-            List<Item_sModel> list = new List<Item_sModel>();
-            Item_sModel item_SModel_1 = materials[0];
-            Item_sModel item_SModel_2 = materials[1];
-            Item_sModel item_SModel_3 = materials[2];
+            List<Item_s> list = new List<Item_s>();
+            Item_s item_SModel_1 = materials[0];
+            Item_s item_SModel_2 = materials[1];
+            Item_s item_SModel_3 = materials[2];
             foreach (var i in compoundModel.Item_Data)//检索合成表
             {
                 if ((i.Material_1.Equals(item_SModel_1) && i.Material_2.Equals(item_SModel_2)) || (i.Material_1.Equals(item_SModel_2) && i.Material_2.Equals(item_SModel_1)))
-                    list.Add(new Item_sModel(i.id, i.Name, "", 1));//将满足要求的配方存储起来<需要补充>
+                    list.Add(new Item_s(i.id, i.Name, i.Description, 1));//将满足要求的配方存储起来
             }
             if (item_SModel_3 == null && list != null)
             {
@@ -64,7 +64,7 @@ namespace Game.System
                 if ((i.Material_1.Equals(item_SModel_1) && i.Material_2.Equals(item_SModel_2) && i.MaterialSpecial.Equals(item_SModel_3)) || (i.Material_1.Equals(item_SModel_2) && i.Material_2.Equals(item_SModel_1) && i.MaterialSpecial.Equals(item_SModel_3)))
                 {
                     Debug.Log("生成指定药物");
-                    return new Item_sModel(i.id, i.Name, "", 1);//<需要补充>
+                    return new Item_s(i.id, i.Name, i.Description, 1);
                 }
 
             }
@@ -79,8 +79,3 @@ namespace Game.System
     //————————————————————————————
    
 }
-
-
-
-
-
