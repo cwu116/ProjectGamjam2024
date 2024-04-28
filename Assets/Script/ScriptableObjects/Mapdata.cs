@@ -10,4 +10,7 @@ public class Mapdata
     public int width;
     public HexType[] cells;
 
+    public int[] enemyposx;
+    public int[] enemyposy;
+
 }

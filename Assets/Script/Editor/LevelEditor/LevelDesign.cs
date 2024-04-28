@@ -7,6 +7,8 @@ using Unity.VisualScripting;
 using System.Linq;
 using Game.Util;
 using System.IO;
+using DG.Tweening.Plugins;
+using System.Drawing.Text;
 
 public class LevelDesign : EditorWindow
 {
@@ -16,35 +18,61 @@ public class LevelDesign : EditorWindow
         EditorWindow.GetWindow(typeof(LevelDesign));
     }
 
+    // 当前选择的预制体索引
+    int selectedIndex = 0;
 
     // 用于存储找到的预制体名称
-    private string[] prefabNames;
+    private string[] mapPrefabNames;
     // 用于存储找到的预制体路径
-    private string[] prefabPaths;
-    // 当前选择的预制体索引
-    private int selectedIndex = 0;
+    private string[] mapPrefabPaths;
 
     GameObject prefab = null;
+
+    // 当前选择的预制体索引
+    int enemySelectedIndex = 0;
+
+    // 用于存储找到的预制体名称
+    private string[] enemyPrefabNames;
+    // 用于存储找到的预制体路径
+    private string[] enemyPrefabPaths;
+
+    GameObject enemyPrefab = null;
+
+
 
     string widthstr = "";
     string heightstr = "";
     int width = 0;
     int height = 0;
     HexCell[,] cells;
-
+    List<GameObject> enemeys;
     void OnEnable()
     {
         // 查找所有预制体
-        string[] guids = AssetDatabase.FindAssets("t:GameObject", new[] { "Assets/Resources/Prefabs/Prefab" });
-        prefabPaths = new string[guids.Length];
-        prefabNames = new string[guids.Length];
+        string[] guids = AssetDatabase.FindAssets("t:GameObject", new[] { "Assets/Resources/Prefabs/MapHexCell" });
+        mapPrefabPaths = new string[guids.Length];
+        mapPrefabNames = new string[guids.Length];
 
         for (int i = 0; i < guids.Length; i++)
         {
-            prefabPaths[i] = AssetDatabase.GUIDToAssetPath(guids[i]);
-            prefabNames[i] = System.IO.Path.GetFileNameWithoutExtension(prefabPaths[i]);
+            mapPrefabPaths[i] = AssetDatabase.GUIDToAssetPath(guids[i]);
+            mapPrefabNames[i] = System.IO.Path.GetFileNameWithoutExtension(mapPrefabPaths[i]);
         }
-        prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPaths[selectedIndex]);
+        prefab = AssetDatabase.LoadAssetAtPath<GameObject>(mapPrefabPaths[0]);
+
+        // 查找所有预制体
+        string[] enemyGuids = AssetDatabase.FindAssets("t:GameObject", new[] { "Assets/Resources/Prefabs/Enemy" });
+        enemyPrefabPaths = new string[enemyGuids.Length];
+        enemyPrefabNames = new string[enemyGuids.Length];
+
+        for (int i = 0; i < enemyGuids.Length; i++)
+        {
+            enemyPrefabPaths[i] = AssetDatabase.GUIDToAssetPath(enemyGuids[i]);
+            enemyPrefabNames[i] = System.IO.Path.GetFileNameWithoutExtension(enemyPrefabPaths[i]);
+        }
+        enemyPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(enemyPrefabPaths[0]);
+
+        enemeys = new List<GameObject>();
     }
 
     void OnGUI()
@@ -52,8 +80,8 @@ public class LevelDesign : EditorWindow
         GUILayout.Label("Select a Prefab", EditorStyles.boldLabel);
 
         //选择预制体
-        ChoosePrefab();
-
+        ChoosePrefab(mapPrefabPaths, mapPrefabNames, selectedIndex, out int index1, 0);
+        selectedIndex = index1;
         //选择地图宽度和高度
         SelectWidthAndHeight();
 
@@ -64,6 +92,10 @@ public class LevelDesign : EditorWindow
             if (prefab != null)
             {
                 CreateCells();
+            }
+            else
+            {
+                Debug.LogError("空");
             }
         }
         if (GUILayout.Button("删除地图"))
@@ -87,8 +119,9 @@ public class LevelDesign : EditorWindow
                 }
             }
         }
-        //选择预制体
-        ChoosePrefab();
+        // //选择预制体
+        // prefab = ChoosePrefab(mapPrefabPaths, mapPrefabNames, selectedIndex, out int index2);
+        // selectedIndex = index2;
         if (GUILayout.Button("替换地块"))
         {
             if (UnityEditor.Selection.transforms.Length == 0)
@@ -116,6 +149,46 @@ public class LevelDesign : EditorWindow
             cell.transform.SetSiblingIndex(index);
         }
 
+        //选择敌人预制体
+        ChoosePrefab(enemyPrefabPaths, enemyPrefabNames, enemySelectedIndex, out int index3, 1);
+        enemySelectedIndex = index3;
+
+        if (GUILayout.Button("创建敌人"))
+        {
+            if (UnityEditor.Selection.transforms.Length == 0)
+            {
+                Debug.LogError("请选中一个地块");
+                return;
+            }
+            GameObject enemyPrefabs = GameObject.Find("Enemys");
+            GameObject enemy = Instantiate(enemyPrefab, enemyPrefabs.transform);
+            enemy.transform.position = UnityEditor.Selection.transforms[0].position;
+            enemeys.Add(enemy);
+        }
+
+        if (GUILayout.Button("删除敌人"))
+        {
+            enemeys.Clear();
+            GameObject enemyPrefabs = GameObject.Find("Enemys");
+            if (enemyPrefabs != null)
+            {
+                // 创建一个列表来存储所有要删除的子对象
+                List<GameObject> children = new List<GameObject>();
+
+                // 首先收集所有子对象
+                foreach (Transform child in enemyPrefabs.transform)
+                {
+                    children.Add(child.gameObject);
+                }
+
+                // 然后在另一个循环中删除它们
+                foreach (GameObject child in children)
+                {
+                    DestroyImmediate(child);
+                }
+            }
+        }
+
         if (GUILayout.Button("保存地图"))
         {
 
@@ -123,6 +196,7 @@ public class LevelDesign : EditorWindow
             map.height = cells.GetLength(0);
             map.width = cells.GetLength(1);
             map.cells = new HexType[map.height * map.width];
+
             for (int y = 0, i = 0; y < map.width; y++)
             {
                 for (int x = 0; x < map.height; x++)
@@ -167,17 +241,21 @@ public class LevelDesign : EditorWindow
         cell.transform.localPosition = position;
     }
 
-    void ChoosePrefab()
+    void ChoosePrefab(string[] PrefabPaths, string[] PrefabNames, int index, out int index1, int type)
     {
         EditorGUI.BeginChangeCheck();
-        selectedIndex = EditorGUILayout.Popup("Prefab", selectedIndex, prefabNames);
+        index1 = EditorGUILayout.Popup("Prefab", index, PrefabNames);
         if (EditorGUI.EndChangeCheck())
         {
             // 当选择变化时的逻辑，例如加载并显示选中的预制体
-            Debug.Log($"Selected prefab: {prefabNames[selectedIndex]} at path: {prefabPaths[selectedIndex]}");
+            Debug.Log($"Selected prefab: {PrefabNames[index1]} at path: {PrefabPaths[index1]}");
 
             // 示例：在场景中实例化选中的预制体
-            prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPaths[selectedIndex]);
+
+            if (type == 0)
+                prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPaths[index1]);
+            else
+                enemyPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPaths[index1]);
             //PrefabUtility.InstantiatePrefab(prefab);
         }
     }
