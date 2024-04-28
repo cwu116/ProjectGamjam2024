@@ -169,6 +169,38 @@ namespace Game.System
             }
         }
 
+        public Vector2 RandomPatrol(Vector2 originPosition, Vector2 nowPosition)
+        {
+            int x = (int)originPosition.x;
+            int y = (int)originPosition.y;
+            List<int[]> originLis = GetNeighborIndices(x, y, 1);
+            originLis.Add(new int[] { x, y });
+            List<int[]> nowLis = GetNeighborIndices((int)nowPosition.x, (int)nowPosition.y, 1);
+            bool isNotFound = true;
+            int num = 0;
+            while (isNotFound)
+            {
+                int n = UnityEngine.Random.Range(0, originLis.Count - 1);
+                int a = originLis[n][0];
+                int b = originLis[n][1];
+                for(int i = 0; i < nowLis.Count; i++)
+                {
+                    if(nowLis[i][0] == a && nowLis[i][1] == b)
+                    {
+                        isNotFound = false;
+                        return new Vector2(a, b);
+                    }
+                }
+                num++;
+                if(num > 20)
+                {
+                    isNotFound = false;
+                }
+            }
+
+            return Vector2.zero;
+        }
+
 
     }
 }
