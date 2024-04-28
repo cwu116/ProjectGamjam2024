@@ -13,6 +13,27 @@ namespace Game.System
     {
         private int height;
         private int width;
+
+        // 定义六个方向的偏移量
+        private int[][] evenRowOffsets = new int[][]
+        {
+                new int[] { 1, 0 },   
+                new int[] { 0, 1 },  
+                new int[] { -1, 1 }, 
+                new int[] { -1, 0 },  
+                new int[] { -1, -1 },  
+                new int[] { 0, -1 }    
+        };
+
+        private int[][] oddRowOffsets = new int[][]
+        {
+                new int[] { 1, 0 },   
+                new int[] { 1, 1 },  
+                new int[] { 0, 1 },  
+                new int[] { -1, 0 },  
+                new int[] { 0, -1 },   
+                new int[] { 1, -1 }    
+        };
         private void InitHW()
         {
             height = GridManager.Instance.hexCells.GetLength(0);
@@ -98,7 +119,7 @@ namespace Game.System
             {
                 int a = roundIndex[i][0];
                 int b = roundIndex[i][1];
-                roundHexCells[i] = hexCells[a, b];
+                roundHexCells[i] = hexCells[b, a];
             }
             if(roundHexCells != null)
             {
@@ -118,30 +139,9 @@ namespace Game.System
         {
             List<int[]> neighborIndices = new List<int[]>();
 
-            // 定义六个方向的偏移量
-            int[][] evenRowOffsets = new int[][]
-            {
-                new int[] { 1, 0 },   // 右
-                new int[] { 0, -1 },  // 右上
-                new int[] { -1, -1 }, // 左上
-                new int[] { -1, 0 },  // 左
-                new int[] { -1, 1 },  // 左下
-                new int[] { 0, 1 }    // 右下
-            };
-
-            int[][] oddRowOffsets = new int[][]
-            {
-                new int[] { 1, 0 },   // 右
-                new int[] { 1, -1 },  // 右上
-                new int[] { 0, -1 },  // 左上
-                new int[] { -1, 0 },  // 左
-                new int[] { 0, 1 },   // 左下
-                new int[] { 1, 1 }    // 右下
-            };
-
             int[][] offsets = (y % 2 == 0) ? evenRowOffsets : oddRowOffsets;
 
-            // 递归或循环找到相邻格子的索引
+            // 递归找到相邻格子的索引
             FindNeighborIndices(x, y, n, offsets, neighborIndices);
 
             return neighborIndices;
@@ -158,15 +158,34 @@ namespace Game.System
                 int ny = y + offsets[i][1];
 
                 // 检查相邻格子的索引是否在范围内
-                if (nx >= 0 && nx < height && ny >= 0 && ny < width)
+                if (nx >= 0 && nx < height && ny >= 0 && ny < width && !ContainsIndex(neighborIndices, nx, ny))
                 {
                     int[] index = { nx, ny };
                     neighborIndices.Add(index);
-
+                    int[][] newoffsets = (ny % 2 == 0) ? evenRowOffsets : oddRowOffsets;
                     // 递归或循环找到下一个相邻格子的索引
-                    FindNeighborIndices(nx, ny, n - 1, offsets, neighborIndices);
+                    FindNeighborIndices(nx, ny, n - 1, newoffsets, neighborIndices);
                 }
             }
+        }
+
+        /// <summary>
+        /// 检查列表中是否包含指定索引
+        /// </summary>
+        /// <param name="indices"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private bool ContainsIndex(List<int[]> indices, int x, int y)
+        {
+            foreach (int[] index in indices)
+            {
+                if (index[0] == x && index[1] == y)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public Vector2 RandomPatrol(Vector2 originPosition, Vector2 nowPosition)
