@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Buff;
 using Buff.Config;
+using Buff.Tool;
 using Game;
 using Game.Model;
 using UnityEngine;
@@ -42,6 +43,7 @@ namespace Game.System
                     // args[0]    :     命令名
                     // args[1]    :     参数数组
                     string[] Params = args[1].Split(new char[] {','});
+                    BuffComponent temp = new BuffComponent(null);
                     switch (Enum.Parse<BuffType>(args[0]))
                     {
                         case BuffType.ChangeValue:
@@ -52,25 +54,37 @@ namespace Game.System
                             }
                             else
                             {
-                                BuffComponent temp = new BuffComponent(null);
                                 temp.ValueUnits[Params[0]].AddValue(int.Parse(Params[1]));
                             }
                             break;
                         case BuffType.State:
-                            BuffComponent temp1 = new BuffComponent(null);
                             if (args.Length == 1)
                             {
-                                temp1.ClearState();
+                                temp.ClearState();
                             }
                             else
                             {
-                                temp1.AddState(GameBody.GetModel<StateModel>().GetStateFromID(Params[0]), 
+                                temp.AddState(GameBody.GetModel<StateModel>().GetStateFromID(Params[0]), 
                                     int.Parse(Params[1]) == -1 ? 9999 : int.Parse(Params[1]));
                             }
                             break;
                         case BuffType.Create:
+                            // 对接：获取地块坐标 + 生成实体
                             break;
-                        case BuffType.Action: 
+                        case BuffType.Action:
+                            if (temp.FuncUnits.ContainsKey(Params[0]))
+                            {
+                                temp.FuncUnits[Params[0]].Invoke();
+                            }
+                            else if (temp.TFuncUnits.ContainsKey(Params[0]))
+                            {
+                                ParamList list = new ParamList(new List<string>(Params));
+                                temp.TFuncUnits[Params[0]].Invoke(list);
+                            }
+                            else
+                            {
+                                Debug.LogError("[Action Error] inValid Func");
+                            }
                             break;
                     }
                 }
