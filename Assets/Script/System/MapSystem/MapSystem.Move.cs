@@ -34,7 +34,7 @@ namespace Game.System
                 new int[] { 0, -1 },   
                 new int[] { 1, -1 }    
         };
-        private void InitHW()
+        public void InitHW()
         {
             height = GridManager.Instance.hexCells.GetLength(0);
             width = GridManager.Instance.hexCells.GetLength(1);
