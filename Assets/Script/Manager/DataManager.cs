@@ -24,8 +24,8 @@ public class DataManager : MonoSingleton<DataManager>
     public void Load()
     {
         //Fixme:¸üÕýÒ©¼ÁjsonÂ·¾¶
-        string json = File.ReadAllText(JsonPath.MedicalmentPath + "Medicalment.txt");
-        this.medicals = JsonUtil.ToObject<List<MedicalmentModel>>(json);
+        //string json = File.ReadAllText(JsonPath.MedicalmentPath + "Medicalment.txt");
+        //this.medicals = JsonUtil.ToObject<List<MedicalmentModel>>(json);
 
     }
 

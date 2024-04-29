@@ -11,6 +11,15 @@ public class Enemy : BaseEntity
         this.SetModel(name);
     }
 
+    private void Awake()
+    {
+        buff.RegisterFunc("AutoMove", AutoMove);
+    }
+
+    public void AutoMove()
+    {
+
+    }
     public override void UseSkill(BaseEntity target)
     {
         base.UseSkill(target);
