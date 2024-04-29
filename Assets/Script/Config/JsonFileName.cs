@@ -9,7 +9,9 @@ namespace Assets.Script.Config
     public class JsonFileName
     {
         public const string GameMapName = "MapData";
+
         public const string StateName = "StateTable";
 		public const string CommpoundData = "CompoundData";
+        public const string GameMedicalName = "Medicalment";
     }
 }

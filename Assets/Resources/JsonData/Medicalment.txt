@@ -1,0 +1,250 @@
+﻿[
+    {
+        "Name": "“鞭子”",
+        "MaterialA": "红+红",
+        "MaterialB": "",
+        "MaterialSpecial": "A",
+        "Type": "Damage,ChangeValue",
+        "BuffType": "Damage,MoveRange",
+        "Value": "[2],[1]",
+        "Description": "对目标造成2点伤害(ChangeValue:Damage,2)，该单位下个回合移动力加1"
+    },
+    {
+        "Name": "“肉体改造”",
+        "MaterialA": "红+红",
+        "MaterialB": "",
+        "MaterialSpecial": "B",
+        "Type": "Damage,ChangeValue,ChangeValue",
+        "BuffType": "Damage，MaxHp，ResumeHp",
+        "Value": "[2],[1],[3,1]",
+        "Description": "对目标造成2点伤害，该单位血量上限加1，随后3个回合开始时恢复1点血量(State:ResumeHp,3,true,[int=1])"
+    },
+    {
+        "Name": "“回光返照”",
+        "MaterialA": "红+红",
+        "MaterialB": "",
+        "MaterialSpecial": "C",
+        "Type": "Damage,Buff",
+        "BuffType": "Damage,AddMoveTimes",
+        "Value": "[2],[1]",
+        "Description": "对目标造成2点伤害，该单位下回合额外获得1个行动点"
+    },
+    {
+        "Name": "“幽魂”",
+        "MaterialA": "红+红",
+        "MaterialB": "",
+        "MaterialSpecial": "D",
+        "Type": "Damage,Buff",
+        "BuffType": "Damage,Hide",
+        "Value": "[2],[2]",
+        "Description": "对目标造成2点伤害，该单位获得隐形2"
+    },
+    {
+        "Name": "“兴奋毒药”",
+        "MaterialA": "红+黄",
+        "MaterialB": "",
+        "MaterialSpecial": "A",
+        "Type": "State,ChangeValue",
+        "BuffType": "Poison,AddMoveTimes",
+        "Value": "[3],[1]",
+        "Description": "使目标获得中毒3，该单位下回合额外获得1个行动点"
+    },
+    {
+        "Name": "“五十步蛇”",
+        "MaterialA": "红+黄",
+        "MaterialB": "",
+        "MaterialSpecial": "B",
+        "Type": "State,ChangeValue",
+        "BuffType": "Poison,AddMoveTimes",
+        "Value": "[1],[1]",
+        "Description": "使目标获得中毒1，下次移动时的移动力加1"
+    },
+    {
+        "Name": "“恶魔敕令”",
+        "MaterialA": "红+黄",
+        "MaterialB": "",
+        "MaterialSpecial": "C",
+        "Type": "Buff,ChangeValue",
+        "BuffType": "Burn,Range",
+        "Value": "[1],[1]",
+        "Description": "使目标获得燃烧1，其在本次燃烧期间技能范围增加1"
+    },
+    {
+        "Name": "“恶魔力量”",
+        "MaterialA": "红+黄",
+        "MaterialB": "",
+        "MaterialSpecial": "D",
+        "Type": "Skill,Buff",
+        "BuffType": "Burn,AddDamage",
+        "Value": "[1],[1]",
+        "Description": "使目标获得燃烧1，其在本次燃烧期间造成的所有伤害加1"
+    },
+    {
+        "Name": "“活靶子”",
+        "MaterialA": "黄+黄",
+        "MaterialB": "",
+        "MaterialSpecial": "A",
+        "Type": "ChangeValue,State",
+        "BuffType": "AddHate,ResumeHp",
+        "Value": "[5],[1],[2]",
+        "Description": "使目标仇恨值增加5，每回合结束时恢复1点血，持续2回合"
+    },
+    {
+        "Name": "“石肤”",
+        "MaterialA": "黄+黄",
+        "MaterialB": "",
+        "MaterialSpecial": "B",
+        "Type": "ChangeValue,ChangeValue",
+        "BuffType": "ReduceMoveTimes,AddDefence",
+        "Value": "[1],[1]",
+        "Description": "使目标下次移动时的移动力减1，下回合受到的任何伤害降低1点(防御力加1)"
+    },
+    {
+        "Name": "“隐入尘烟”",
+        "MaterialA": "黄+黄",
+        "MaterialB": "",
+        "MaterialSpecial": "C",
+        "Type": "Skill",
+        "BuffType": "ChangeValue,ChangeValue",
+        "Value": "[1],[1]",
+        "Description": "\"令目标周围2格范围内的所有敌方或玩家单位远离目标1格，随后这些单位获得隐形1"
+    },
+    {
+        "Name": "(建议:先在目标类定义方法Away(int a,int b) 然后指令格式:Action:Away[int=2,int=1])\"",
+        "MaterialA": ""
+    },
+    {
+        "Name": "“蛹”",
+        "MaterialA": "黄+黄",
+        "MaterialB": "",
+        "MaterialSpecial": "D",
+        "Type": "ChangeValue,ChangeValue",
+        "BuffType": "ReduceMoveTimes,ResumeHp",
+        "Value": "[1],[2]",
+        "Description": "使目标下回合行动点减1，在回合结束时恢复2点血量(ChangeValue:Damage,-2)"
+    },
+    {
+        "Name": "“血肉祝福”",
+        "MaterialA": "红+蓝",
+        "MaterialB": "",
+        "MaterialSpecial": "A",
+        "Type": "ChangeValue,State",
+        "BuffType": "DoubleHp,Die",
+        "Value": "[2],[3]",
+        "Description": "使目标当前生命值翻倍(Damage:$HP)，在第3个回合结束时该单位直接死亡"
+    },
+    {
+        "Name": "“燃烧瓶”",
+        "MaterialA": "红+蓝",
+        "MaterialB": "",
+        "MaterialSpecial": "B",
+        "Type": "State,Action",
+        "BuffType": "Burn,ChangeEnv",
+        "Value": "[1]",
+        "Description": "使目标获得燃烧1，其在燃烧状态期间移动经过的路径会在下个回合生成火焰环境"
+    },
+    {
+        "Name": "“窒息”",
+        "MaterialA": "红+蓝",
+        "MaterialB": "",
+        "MaterialSpecial": "C",
+        "Type": "State,Action",
+        "BuffType": "Poison,ChangeEnv",
+        "Value": "[2]",
+        "Description": "使目标获得中毒2，其在中毒状态期间移动经过的路径会在下个回合生成黑雾环境"
+    },
+    {
+        "Name": "“黑暗之心”",
+        "MaterialA": "红+蓝",
+        "MaterialB": "",
+        "MaterialSpecial": "D",
+        "Type": "State,ChangeValue,ChangeValue",
+        "BuffType": "Poison,AddMaxHp,ResumeMaxHp",
+        "Value": "[4],[2]",
+        "Description": "\"使目标获得中毒4，血量上限加2。若目标在中毒状态结束后仍存活，血量恢复至上限($HP = $HpMax)"
+    },
+    {
+        "Name": "(ps:可视作状态析构后的执行函数)\"",
+        "MaterialA": ""
+    },
+    {
+        "Name": "“膨胀”",
+        "MaterialA": "蓝+蓝",
+        "MaterialB": "",
+        "MaterialSpecial": "A",
+        "Type": "State,State,State",
+        "BuffType": "AddMaxHp,ResumeHp,ReduceSkillRange",
+        "Value": "[2,1],[1],[1]",
+        "Description": "使目标下2个回合开始时血量上限增加1，并恢复1点血量，但技能范围减1"
+    },
+    {
+        "Name": "“火焰净化”",
+        "MaterialA": "蓝+蓝",
+        "MaterialB": "",
+        "MaterialSpecial": "B",
+        "Type": "Staste",
+        "BuffType": "ClearBuff,Burn",
+        "Value": "[1]",
+        "Description": "清除目标上的所有状态，随后令其获得燃烧1"
+    },
+    {
+        "Name": "“玻璃大炮”",
+        "MaterialA": "蓝+蓝",
+        "MaterialB": "",
+        "MaterialSpecial": "C",
+        "Type": "ChangeValue,ChangeValue",
+        "BuffType": "Attack,MaxHp",
+        "Value": "[1],[-1]",
+        "Description": "使目标造成的所有伤害增加1，但血量上限减1，持续至本场战斗结束"
+    },
+    {
+        "Name": "“长臂猴”",
+        "MaterialA": "蓝+蓝",
+        "MaterialB": "",
+        "MaterialSpecial": "D",
+        "Type": "State,State",
+        "BuffType": "AddSkillRange,ReduceMaxHp",
+        "Value": "[1],[1]",
+        "Description": "使目标技能范围增加1，但血量上限减1，持续至本场战斗结束"
+    },
+    {
+        "Name": "“实验体1号”",
+        "MaterialA": "黄+蓝",
+        "MaterialB": "",
+        "MaterialSpecial": "A",
+        "Type": "Action",
+        "BuffType": "CreateEntity",
+        "Value": "[1],[1],[2]",
+        "Description": "在1格空的地块上创造1只喇叭蛙，2回合后该喇叭蛙会变成冲锋怪"
+    },
+    {
+        "Name": "“实验体2号”",
+        "MaterialA": "黄+蓝",
+        "MaterialB": "",
+        "MaterialSpecial": "B",
+        "Type": "Action",
+        "BuffType": "CreateEntity",
+        "Value": "[1],[1],[2]",
+        "Description": "在1格空的地块上创造1只黑雾蛙，2回合后该黑雾蛙会变成远程怪"
+    },
+    {
+        "Name": "“实验体3号”",
+        "MaterialA": "黄+蓝",
+        "MaterialB": "",
+        "MaterialSpecial": "C",
+        "Type": "Action",
+        "BuffType": "CreateEntity",
+        "Value": "[1],[1],[2]",
+        "Description": "在1格空的地块上创造1只爆炸蛙，2回合后该爆炸蛙会变成炮塔怪"
+    },
+    {
+        "Name": "“青草药剂”",
+        "MaterialA": "黄+蓝",
+        "MaterialB": "",
+        "MaterialSpecial": "D",
+        "Type": "Action",
+        "BuffType": "CreateEntity",
+        "Value": "[1],[2],[2]",
+        "Description": "使1格地块变成草地环境，持续2回合，2回合后该地块变为火焰环境"
+    }
+]

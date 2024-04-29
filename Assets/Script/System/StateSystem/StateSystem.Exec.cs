@@ -29,20 +29,21 @@ namespace Game.System
                 {
                     return;
                 }
+
                 if (_raw.Contains("="))
                 {
                     // 赋值
-                    string[] args = _raw.Split(new char[] {'='});
+                    List<string> args = new List<string>(_raw.Split(new char[] {'='}));
                     BuffComponent temp = GameObject.Find("Player").GetComponent<BuffComponent>();
                     temp.ValueUnits[args[0].Remove(0)].AddValue(ParseParam(args[1], temp));
                 }
                 else
                 {
                     // 解析参数与命令名
-                    string[] args = _raw.Split(new char[] {':'});
+                    List<string> args = new List<string>(_raw.Split(new char[] {':'}));
                     // args[0]    :     命令名
                     // args[1]    :     参数数组
-                    string[] Params = args[1].Split(new char[] {','});
+                    List<string> Params = new List<string>(args[1].Split(new char[] {','}));
                     BuffComponent temp = GameObject.Find("Player").GetComponent<BuffComponent>();
                     switch (Enum.Parse<BuffType>(args[0]))
                     {
@@ -57,17 +58,19 @@ namespace Game.System
                             {
                                 temp.ValueUnits[Params[0]].AddValue(int.Parse(Params[1]));
                             }
+
                             break;
                         case BuffType.State:
-                            if (args.Length == 1)
+                            if (args.Count == 1)
                             {
                                 temp.ClearState();
                             }
                             else
                             {
-                                temp.AddState(GameBody.GetModel<StateModel>().GetStateFromID(Params[0]), 
+                                temp.AddState(GameBody.GetModel<StateModel>().GetStateFromID(Params[0]),
                                     int.Parse(Params[1]) == -1 ? 9999 : int.Parse(Params[1]));
                             }
+
                             break;
                         case BuffType.Create:
                             // 对接：获取地块坐标 + 生成实体
@@ -79,14 +82,43 @@ namespace Game.System
                             }
                             else if (temp.TFuncUnits.ContainsKey(Params[0]))
                             {
-                                List<string> paramList = new List<string>(Params);
-                                paramList.RemoveAt(0);
-                                ParamList list = new ParamList(paramList);
+                                List<string> InnerParams = new List<string>();
+                                // params[] = "ResumeHp","3","true","[int=1","string="a"]"
+                                for (int i = Params.Count; i > 0; i--)
+                                {
+                                    InnerParams.Add(Params[i].Replace("[", "").Replace("]", ""));
+                                    if (Params[i].Contains("["))
+                                    {
+                                        break;
+                                    }
+                                }
+
+                                InnerParams.RemoveAt(0);
+                                ParamList list = new ParamList(InnerParams);
                                 temp.TFuncUnits[Params[0]].Invoke(list);
                             }
                             else
                             {
                                 Debug.LogError("[Action Error] inValid Func");
+                            }
+                            break;
+                        default:
+                            if (args[0] == "Delay")
+                            {
+                                args.RemoveAt(0);
+                                string CMDs = string.Join(':', args);
+                                Params = new List<string>(CMDs.Split(new[] {','}));
+                                int durations = int.Parse(Params[^1]);
+                                Params.RemoveAt(Params.Count);
+
+                                List<string> NewCMDList = new List<string>(
+                                    string.Join(',', Params)
+                                    .Replace("[", "")
+                                    .Replace("]", "")
+                                    .Split(new char[] {','}));
+                                
+                                // 传入回合延时函数
+                                // XXX.DelayFlow(string[] cmdList, int count, GameObject target);
                             }
                             break;
                     }
