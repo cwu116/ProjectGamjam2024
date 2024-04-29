@@ -1,11 +1,13 @@
-using Game.Model;
 using System.Collections;
 using System.Collections.Generic;
+using Buff;
+using Game.Model;
 using UnityEngine;
+
 namespace Game.System
 {
-    public struct Item_sEvent : IEvent
+    public partial class StateSystem : BaseSystem
     {
-        public Item_s Item_sModel;
+
     }
 }

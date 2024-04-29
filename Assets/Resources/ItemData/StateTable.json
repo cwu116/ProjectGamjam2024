@@ -1,0 +1,146 @@
+[
+  {
+    "buffName" : "肉体改造",
+    "id" : "ResumeHp",
+    "description" : "随后3个回合开始时恢复1点血量。",
+    "buffCMD" : ["ChangeValue:Damage,-1"],
+    "isAdditive" : false,
+    "isStartExec" : true,
+    "death" : []
+  }, 
+  {
+    "buffName" : "活靶子",
+    "id" : "LiveTarget",
+    "description" : "每回合结束时恢复1点血，持续2回合。",
+    "buffCMD" : ["ChangeValue:Damage,-1"],
+    "isAdditive" : false,
+    "isStartExec" : false,
+    "death" : []
+  },
+  {
+    "buffName" : "血肉祝福",
+    "id" : "BloodBless",
+    "description" : "当前生命值翻倍，在第3个回合结束时该单位直接死亡。",
+    "buffCMD" : [],
+    "isAdditive" : false,
+    "isStartExec" : false,
+    "death" : ["Action:Death,[]"]
+  },
+  {
+    "buffName" : "膨胀",
+    "id" : "Expansion",
+    "description" : "下2个回合开始时血量上限增加1，并恢复1点血量，但技能范围减1。",
+    "buffCMD" : ["ChangeValue:MaxHp,1","ChangeValue:Damage,-1","ChangeValue:SkillRange,-1"],
+    "isAdditive" : false,
+    "isStartExec" : true,
+    "death" : []
+  },
+  {
+    "buffName" : "玻璃大炮",
+    "id" : "GlassCannon",
+    "description" : "使目标造成的所有伤害增加1，但血量上限减1，持续至本场战斗结束。",
+    "buffCMD" : ["ChangeValue:Attack,1","ChangeValue:MaxHp,-1"],
+    "isAdditive" : false,
+    "isStartExec" : true,
+    "death" : []
+  },
+  {
+    "buffName" : "长臂猴",
+    "id" : "LongArmMonkey",
+    "description" : "使目标技能范围增加1，但血量上限减1，持续至本场战斗结束。",
+    "buffCMD" : ["ChangeValue:SkillRange,1","ChangeValue:MaxHp,-1"],
+    "isAdditive" : false,
+    "isStartExec" : true,
+    "death" : []
+  },
+  {
+    "buffName" : "护甲",
+    "id" : "Armor",
+    "description" : "每点护甲能抵消单位受到的1点伤害，层数可叠加。该状态会在单位下个回合开始时消失。",
+    "buffCMD" : ["ChangeValue:Defence,1"],
+    "isAdditive" : true,
+    "isStartExec" : true,
+    "death" : []
+  },
+  {
+    "buffName" : "燃烧",
+    "id" : "Burning",
+    "description" : "每回合开始时，单位每有1层燃烧就受到1点伤害，层数可叠加。该状态在2回合结束时消失。",
+    "buffCMD" : ["ChangeValue:Damage,1"],
+    "isAdditive" : true,
+    "isStartExec" : true,
+    "death" : []
+  },
+  {
+    "buffName" : "中毒",
+    "id" : "Poison",
+    "description" : "每回合结束时，单位受到1点伤害。若该状态有N层，则在N回合结束时消失。",
+    "buffCMD" : ["ChangeValue:Damage,1"],
+    "isAdditive" : true,
+    "isStartExec" : false,
+    "death" : []
+  },
+  {
+    "buffName" : "隐形",
+    "id" : "Invisible",
+    "description" : "立刻使单位变的不可见且不可被指定，移动时不会触发惊动。若该状态有N层，除非提前使用技能，否则在N回合结束时消失。",
+    "buffCMD" : ["Action:Invisible,[]"],
+    "isAdditive" : true,
+    "isStartExec" : false,
+    "death" : []
+  },
+  {
+    "buffName" : "仇恨",
+    "id" : "Hatred",
+    "description" : "该状态只会存在于敌方单位，若其有仇恨则会将玩家、或拥有误导的单位作为行动目标。",
+    "buffCMD" : ["Action:Hatred,[]"],
+    "isAdditive" : true,
+    "isStartExec" : false,
+    "death" : []
+  },
+  {
+    "buffName" : "误导",
+    "id" : "MisLead",
+    "description" : "所有拥有仇恨的单位会将拥有误导的单位作为行动目标。若该状态有N层，则在N+1个回合开始时消失。",
+    "buffCMD" : ["Action:Hatred,[]"],
+    "isAdditive" : true,
+    "isStartExec" : false,
+    "death" : []
+  },
+  {
+    "buffName" : "易伤",
+    "id" : "Vulnerability",
+    "description" : "每回合开始时，单位若有易伤，则该回合每次受到的伤害增加1。若该状态有N层，则在N回合结束时消失。",
+    "buffCMD" : ["ChangeValue:Defence,-1"],
+    "isAdditive" : true,
+    "isStartExec" : true,
+    "death" : []
+  },
+  {
+    "buffName" : "沉默",
+    "id" : "Silent",
+    "description" : "每回合开始时，单位若有沉默，则无法使用技能。若该状态有N层，则在N回合结束时消失。",
+    "buffCMD" : ["ChangeValue:bIsSilent,1"],
+    "isAdditive" : false,
+    "isStartExec" : true,
+    "death" : ["ChangeValue:bIsSilent,0"]
+  },
+  {
+    "buffName" : "吸血",
+    "id" : "Vampire",
+    "description" : "每回合开始时，单位若有吸血，则血量上限减1，造成的任何伤害都能为自身增加等量血量。若该状态有N层，则在N回合结束时消失。",
+    "buffCMD" : ["ChangeValue:MaxHp,-1"],
+    "isAdditive" : true,
+    "isStartExec" : true,
+    "death" : []
+  },
+  {
+    "buffName" : "睡眠",
+    "id" : "Sleep",
+    "description" : "每回合开始时单位若有睡眠，则行动点变为0。该状态有3层，每层睡眠会在单位回合结束时回复2点血量。除非单位周围1格内出现任何其他单位，否则该状态在第3回合结算后消失。若该单位提前醒来，则直接失去剩余睡眠层数。",
+    "buffCMD" : ["ChangeValue:MaxHp,-1"],
+    "isAdditive" : true,
+    "isStartExec" : true,
+    "death" : []
+  }
+]

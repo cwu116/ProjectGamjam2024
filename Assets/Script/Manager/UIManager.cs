@@ -16,7 +16,7 @@ namespace Managers
         const string UIPath = "Prefab/UI/";
         static Dictionary<Type, UIElement> UIResources = new Dictionary<Type, UIElement>();
 
-        //////////////////////////路径后面加的名字与prefab的名称保持一致/////////////////////
+        //////////////////////////·??????????????prefab????????????/////////////////////
         static UIManager()
         {
             UIResources[typeof(DemoUI)] = new UIElement { ResourcePath = UIPath + "DemoUI" };
@@ -27,17 +27,17 @@ namespace Managers
             Type type = typeof(T);
             if (!UIResources.ContainsKey(type))
             {
-                Debug.LogError("Show:" + type + "没有在UIManager中注册");
+                Debug.LogError("Show:" + type + "?????UIManager?????");
                 return default;
             }
             UIElement element = UIResources[type];
 
-            if (element.instance == null)//第一次加载
+            if (element.instance == null)//????μ???
             {
                 GameObject prefab = Resources.Load(element.ResourcePath) as GameObject;
                 if (prefab == null)
                 {
-                    Debug.LogError(element.ResourcePath + " 没有找到对应预制体");
+                    Debug.LogError(element.ResourcePath + " ??????????????");
                     return default;
                 }
                 element.instance = GameObject.Instantiate(prefab);
@@ -57,7 +57,7 @@ namespace Managers
         {
             if (!UIResources.ContainsKey(typeof(T)))
             {
-                Debug.Log("Close:" + typeof(T) + " 没有在UIManager注册");
+                Debug.Log("Close:" + typeof(T) + " ?????UIManager???");
                 return;
             }
             UIResources[typeof(T)].instance.SetActive(false);
@@ -67,12 +67,12 @@ namespace Managers
         {
             if (!UIResources.ContainsKey(typeof(T)))
             {
-                Debug.LogError("Close:" + typeof(T) + " 没有在UIManager注册");
+                Debug.LogError("Close:" + typeof(T) + " ?????UIManager???");
                 return default;
             }
             if (UIResources[typeof(T)].instance == null)
             {
-                Debug.LogError("Close:" + typeof(T) + " 没有初始化");
+                Debug.LogError("Close:" + typeof(T) + " ??г????");
                 return default;
             }
             return UIResources[typeof(T)].instance.GetComponent<T>();
