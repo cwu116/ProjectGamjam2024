@@ -45,7 +45,7 @@ public class LevelDesign : EditorWindow
     int width = 0;
     int height = 0;
     HexCell[,] cells;
-    List<GameObject> enemeys;
+    List<Enemy> enemeys;
     void OnEnable()
     {
         // 查找所有预制体
@@ -72,7 +72,7 @@ public class LevelDesign : EditorWindow
         }
         enemyPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(enemyPrefabPaths[0]);
 
-        enemeys = new List<GameObject>();
+        enemeys = new List<Enemy>();
     }
 
     void OnGUI()
@@ -129,6 +129,11 @@ public class LevelDesign : EditorWindow
                 Debug.LogError("请选中一个地块");
                 return;
             }
+            if (UnityEditor.Selection.transforms[0].parent.name != "GridManager")
+            {
+                Debug.LogError("请选中一个地块");
+                return;
+            }
             HexCell deleteObj = UnityEditor.Selection.transforms[0].GetComponent<HexCell>();
             string name = deleteObj.name;
             Vector3 pos = deleteObj.transform.position;
@@ -160,9 +165,18 @@ public class LevelDesign : EditorWindow
                 Debug.LogError("请选中一个地块");
                 return;
             }
+            //判断如果选中物体的父物体是不是gridmanager
+            if (UnityEditor.Selection.transforms[0].parent.name != "GridManager")
+            {
+                Debug.LogError("请选中一个地块");
+                return;
+            }
             GameObject enemyPrefabs = GameObject.Find("Enemys");
-            GameObject enemy = Instantiate(enemyPrefab, enemyPrefabs.transform);
+            Enemy enemy = Instantiate(enemyPrefab, enemyPrefabs.transform).GetComponent<Enemy>();
             enemy.transform.position = UnityEditor.Selection.transforms[0].position;
+            enemy.gameObject.name = enemyPrefab.name;
+            enemy.CurrentHeightIndex = UnityEditor.Selection.transforms[0].GetComponent<HexCell>().HeightIndex;
+            enemy.CurrentWidthIndex = UnityEditor.Selection.transforms[0].GetComponent<HexCell>().WidthIndex;
             enemeys.Add(enemy);
         }
 
@@ -196,6 +210,16 @@ public class LevelDesign : EditorWindow
             map.height = cells.GetLength(0);
             map.width = cells.GetLength(1);
             map.cells = new HexType[map.height * map.width];
+            map.enemyNames = new string[enemeys.Count];
+            map.enemyposx = new int[enemeys.Count];
+            map.enemyposy = new int[enemeys.Count];
+
+            for (int i = 0; i < enemeys.Count; i++)
+            {
+                map.enemyNames[i] = enemeys[i].name;
+                map.enemyposx[i] = enemeys[i].CurrentHeightIndex;
+                map.enemyposy[i] = enemeys[i].CurrentWidthIndex;
+            }
 
             for (int y = 0, i = 0; y < map.width; y++)
             {

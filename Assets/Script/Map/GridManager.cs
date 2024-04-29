@@ -17,6 +17,8 @@ public class GridManager : MonoSingleton<GridManager>
     GameObject[] prefabMapList;
     GameObject[] prefabEnmeyList;
     HexCell[,] cells;
+
+    List<Enemy> enemys;
     int height;
     int width;
 
@@ -25,6 +27,18 @@ public class GridManager : MonoSingleton<GridManager>
         get
         {
             return cells;
+        }
+        private set
+        {
+
+        }
+    }
+
+    public List<Enemy> Enemys
+    {
+        get
+        {
+            return enemys;
         }
         private set
         {
@@ -42,6 +56,7 @@ public class GridManager : MonoSingleton<GridManager>
         prefabMapList = mapSystem.GetHexCells();
         prefabEnmeyList = mapSystem.GetEnemies();
         CreateCells();
+        CreateEnmey();
     }
 
     // Update is called once per frame
@@ -89,4 +104,31 @@ public class GridManager : MonoSingleton<GridManager>
         cell.transform.SetParent(gridmanager.transform, false);
         cell.transform.localPosition = position;
     }
+
+    void CreateEnmey()
+    {
+        enemys = new List<Enemy>();
+        for (int i = 0; i < mapData.enemyNames.Length; i++)
+        {
+            string name = mapData.enemyNames[i];
+            int x = mapData.enemyposx[i];
+            int y = mapData.enemyposy[i];
+            for (int j = 0; j < prefabEnmeyList.Length; j++)
+            {
+                if (prefabEnmeyList[j].name == name)
+                {
+                    Enemy enemy = Instantiate(prefabEnmeyList[j]).GetComponent<Enemy>();
+                    enemy.CurHexCell = cells[x, y];
+                    enemy.CurrentHeightIndex = x;
+                    enemy.CurrentWidthIndex = y;
+                    enemy.transform.position = cells[x, y].transform.position;
+                    enemys.Add(enemy);
+                    GameObject EnemyParent = GameObject.Find("Enemys");
+                    enemy.transform.SetParent(EnemyParent.transform, false);
+                    break;
+                }
+            }
+        }
+    }
 }
+

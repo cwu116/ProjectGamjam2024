@@ -19,6 +19,9 @@ public class BaseEntity : MonoBehaviour
     private HexCell _curHexCell;
     private Vector3 _direction;
 
+    private int currentHeightIndex;
+    private int currentWidthIndex;
+
     public BaseEntity()
     {
         _curHp = model.hp;
@@ -99,6 +102,17 @@ public class BaseEntity : MonoBehaviour
         set { _direction = value; }
     }
 
+    public int CurrentHeightIndex
+    {
+        get { return currentHeightIndex; }
+        set { currentHeightIndex = value; }
+    }
+
+    public int CurrentWidthIndex
+    {
+        get { return currentWidthIndex; }
+        set { currentWidthIndex = value; }
+    }
     public bool SetModel(string name)
     {
         foreach (AttackUnitModel aum in DataManager.Instance.attackUnits)
