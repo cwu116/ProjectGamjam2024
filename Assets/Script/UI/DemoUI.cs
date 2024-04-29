@@ -1,12 +1,10 @@
 ﻿using System.Collections;
-using Assets.Script.UI;
-using Game;
 using Game.Extensions;
 using Game.System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game
+namespace Game.UI
 {
     public class DemoUI : BasePanel
     {
@@ -21,13 +19,13 @@ namespace Game
 
         }
 
-        public override void Show(IUiData uiData)
-        {
-            EventSystem.Send(new MapInitFinishEvent()
-            {
-                Level=1
-            });
-        }
+        //public override void Show(IUiData uiData)
+        //{
+        //    EventSystem.Send(new MapInitFinishEvent()
+        //    {
+        //        Level = 1
+        //    });
+        //}
 
         public override void Refresh()
         {

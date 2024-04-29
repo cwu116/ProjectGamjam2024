@@ -25,11 +25,13 @@ namespace Game
         private void RegisterSystems()
         {
             RegisterSystem(new MapSystem());
+            RegisterSystem(new InventorySystem());//合成数据处理接口
         }
 
         private void RegisterModels()
         {
             RegisterModel(new MapModel());
+            RegisterModel(new CompoundModel());//合成配方Json(CompoundData)
         }
 
         private void InitSystems()
