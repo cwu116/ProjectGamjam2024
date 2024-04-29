@@ -51,7 +51,7 @@ namespace Game.System
             Item_s item_SModel_3 = materials[2];
             foreach (var i in compoundModel.Item_Data)//检索合成表
             {
-                if ((i.Material_1.Equals(item_SModel_1) && i.Material_2.Equals(item_SModel_2)) || (i.Material_1.Equals(item_SModel_2) && i.Material_2.Equals(item_SModel_1)))
+                if ((i.Material_1.Equals(item_SModel_1.Id) && i.Material_2.Equals(item_SModel_2.Id)) || (i.Material_1.Equals(item_SModel_2.Id) && i.Material_2.Equals(item_SModel_1.Id)))
                     list.Add(new Item_s(i.id, i.Name, i.Description, 1));//将满足要求的配方存储起来
             }
             if (item_SModel_3 == null && list != null)
@@ -61,7 +61,7 @@ namespace Game.System
             }
             foreach (var i in compoundModel.Item_Data)//在拥有特殊材料的情况下将满足条件的直接返回
             {
-                if ((i.Material_1.Equals(item_SModel_1) && i.Material_2.Equals(item_SModel_2) && i.MaterialSpecial.Equals(item_SModel_3)) || (i.Material_1.Equals(item_SModel_2) && i.Material_2.Equals(item_SModel_1) && i.MaterialSpecial.Equals(item_SModel_3)))
+                if ((i.Material_1.Equals(item_SModel_1.Id) && i.Material_2.Equals(item_SModel_2.Id) && i.MaterialSpecial.Equals(item_SModel_3.Id)) || (i.Material_1.Equals(item_SModel_2.Id) && i.Material_2.Equals(item_SModel_1.Id) && i.MaterialSpecial.Equals(item_SModel_3.Id)))
                 {
                     Debug.Log("生成指定药物");
                     return new Item_s(i.id, i.Name, i.Description, 1);
@@ -73,9 +73,9 @@ namespace Game.System
         }
         public override void InitSystem()
         {
-            
+
             // throw new global::System.NotImplementedException();
         }
     }
-   
+
 }
