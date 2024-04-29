@@ -56,7 +56,7 @@ namespace Game.Model
         public override void InitModel()
         {
              Item_Data= JsonUtil.ToObject<List<Item_Data>>(
-               ResourcesManager.LoadText(JsonPath.ItemPath, JsonFileName.CommpoundData));
+               ResourcesManager.LoadText(JsonPath.ItemPath, JsonFileName.CompoundDataName));
         }
     }
    
