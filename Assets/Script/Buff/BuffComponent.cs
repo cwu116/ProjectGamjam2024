@@ -13,7 +13,7 @@ namespace Buff
         public void RegisterFunc(string funcName, BuffComponent.TCustom func){}
         
     }
-    public class BuffComponent : MonoBehaviour, IBuffComponent
+    public class BuffComponent : MonoBehaviour
     {
         public delegate void Custom();
         public delegate void TCustom(params Param[] param);
@@ -24,21 +24,15 @@ namespace Buff
         public Dictionary<string, TCustom> TFuncUnits;          // 有参玩家方法类
         public bool isPlayer;
 
-        public BuffComponent(GameObject entity)
+        private void Awake()
         {
             ValueUnits = new Dictionary<string, ValueInt>();
             StateUnits = new Dictionary<State, int>();
-            
-            // 示例：要写在角色里！
-            // 属性绑定
-            RegisterParam("Hp", new ValueInt(3/*里面实际上是加角色的Hp变量*/));
-            RegisterParam("MaxHp", new ValueInt(3));
-            RegisterParam("MoveRange", new ValueInt(2));
-            RegisterParam("MoveForce", new ValueInt(1));
+        }
 
-            // 事件绑定
-            RegisterFunc("Test", TestFunc/*里面实际上是加角色的方法*/);
-            
+        public ValueInt Get(string paramName)
+        {
+            return ValueUnits[paramName];
         }
 
         private void TestFunc()

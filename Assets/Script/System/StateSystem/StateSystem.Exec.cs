@@ -33,7 +33,7 @@ namespace Game.System
                 {
                     // 赋值
                     string[] args = _raw.Split(new char[] {'='});
-                    BuffComponent temp = new BuffComponent(null);
+                    BuffComponent temp = GameObject.Find("Player").GetComponent<BuffComponent>();
                     temp.ValueUnits[args[0].Remove(0)].AddValue(ParseParam(args[1], temp));
                 }
                 else
@@ -43,14 +43,15 @@ namespace Game.System
                     // args[0]    :     命令名
                     // args[1]    :     参数数组
                     string[] Params = args[1].Split(new char[] {','});
-                    BuffComponent temp = new BuffComponent(null);
+                    BuffComponent temp = GameObject.Find("Player").GetComponent<BuffComponent>();
                     switch (Enum.Parse<BuffType>(args[0]))
                     {
                         case BuffType.ChangeValue:
                             if (Params[0] == "Damage")
                             {
                                 Debug.Log("DamageTrigger");
-                                // target.HP  -= args[1].Contains("$") target.buffcomp.ValueUnits[args[1].Remove(0)] ? int.Parse(args[1]  
+                                temp.ValueUnits["HP"] = new ValueInt(temp.Get("HP") - int.Parse(Params[1]));
+                                Debug.Log(temp.ValueUnits["HP"].ToString());
                             }
                             else
                             {
@@ -78,7 +79,9 @@ namespace Game.System
                             }
                             else if (temp.TFuncUnits.ContainsKey(Params[0]))
                             {
-                                ParamList list = new ParamList(new List<string>(Params));
+                                List<string> paramList = new List<string>(Params);
+                                paramList.RemoveAt(0);
+                                ParamList list = new ParamList(paramList);
                                 temp.TFuncUnits[Params[0]].Invoke(list);
                             }
                             else

@@ -73,7 +73,7 @@ namespace Game.System
         }
         public override void InitSystem()
         {
-            throw new global::System.NotImplementedException();
+            // throw new global::System.NotImplementedException();
         }
     }
     //！！！！！！！！！！！！！！！！！！！！！！！！！！！！

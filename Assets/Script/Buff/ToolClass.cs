@@ -61,9 +61,9 @@ namespace Buff.Tool
             }
         }
 
-        void Add(object obj)
+        void Add(Param obj)
         {
-            
+            paramList.Add(obj);
         }
         
         public static implicit operator Param[](ParamList param)
@@ -72,6 +72,7 @@ namespace Buff.Tool
         }
     }
 
+    [Serializable]
     public class ValueInt
     {
         private int baseValue;
