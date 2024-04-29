@@ -1,5 +1,6 @@
 using Game.Model;
 using Game.System;
+using JetBrains.Annotations;
 using RedBjorn.Utils;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -17,6 +18,17 @@ namespace Game.System
         {
             if (materials.Count < 3)//合成最大容量
             {
+                if (materials.Count > 1 && materials.Count < 3 && (item_s.Id.Equals("A") || item_s.Id.Equals("B") || item_s.Id.Equals("C") || item_s.Id.Equals("D")))
+                {
+                    materials.Add(new Item_s(item_s.Name, item_s.Id, item_s.Description, item_s.quantity));
+                    Debug.Log("特殊材料");
+                    return;
+                }
+                else if (materials.Count > 1 && materials.Count < 3)
+                {
+                    Debug.LogWarning("最后材料只能是特殊材料");
+                    return;
+                }
                 materials.Add(new Item_s(item_s.Name, item_s.Id, item_s.Description, item_s.quantity));
                 Debug.Log("添加成功");
                 return;
@@ -43,37 +55,61 @@ namespace Game.System
         }
 
         // 触发刷新物品的事件
-        public Item_s Random_Item()
+        Item_s Random_Item()
         {
             List<Item_s> list = new List<Item_s>();
-            Item_s item_SModel_1 = materials[0];
-            Item_s item_SModel_2 = materials[1];
-            Item_s item_SModel_3 = materials[2];
-            foreach (var i in compoundModel.Item_Data)//检索合成表
+            Item_s item_SModel_1 = null;
+            Item_s item_SModel_2 = null;
+            Item_s item_SModel_3 = null;
+            int sum = 0;
+            foreach (var i in materials)
             {
-                if ((i.Material_1.Equals(item_SModel_1.Id) && i.Material_2.Equals(item_SModel_2.Id)) || (i.Material_1.Equals(item_SModel_2.Id) && i.Material_2.Equals(item_SModel_1.Id)))
-                    list.Add(new Item_s(i.id, i.Name, i.Description, 1));//将满足要求的配方存储起来
-            }
-            if (item_SModel_3 == null && list != null)
-            {
-                Debug.Log("随机药物");
-                return list[Random.Range(0, list.Count)];//没有特殊配方则随机返回一个药水
-            }
-            foreach (var i in compoundModel.Item_Data)//在拥有特殊材料的情况下将满足条件的直接返回
-            {
-                if ((i.Material_1.Equals(item_SModel_1.Id) && i.Material_2.Equals(item_SModel_2.Id) && i.MaterialSpecial.Equals(item_SModel_3.Id)) || (i.Material_1.Equals(item_SModel_2.Id) && i.Material_2.Equals(item_SModel_1.Id) && i.MaterialSpecial.Equals(item_SModel_3.Id)))
+                if (sum == 0)
                 {
-                    Debug.Log("生成指定药物");
-                    return new Item_s(i.id, i.Name, i.Description, 1);
+                    item_SModel_1 = i;
+                    sum++;
+                    continue;
                 }
+                if (sum == 1)
+                {
+                    item_SModel_2 = i;
+                    sum++;
+                    continue;
+                }
+                if (sum == 2)
+                {
+                    item_SModel_2 = i;
+                    sum++;
+                    continue;
+                }
+            }
+            if (item_SModel_1 != null && item_SModel_2 != null)
+            {
+                foreach (var i in compoundModel.Item_Data)//检索合成表
+                {
+                    if ((i.Material_1.Equals(item_SModel_1.Id) && i.Material_2.Equals(item_SModel_2.Id)) || (i.Material_1.Equals(item_SModel_2.Id) && i.Material_2.Equals(item_SModel_1.Id)))
+                        list.Add(new Item_s(i.id, i.Name, i.Description, 1));//将满足要求的配方存储起来
+                }
+                if (item_SModel_3 == null && list != null)
+                {
+                    Debug.Log("随机药物");
+                    return list[Random.Range(0, list.Count)];//没有特殊配方则随机返回一个药水
+                }
+                foreach (var i in compoundModel.Item_Data)//在拥有特殊材料的情况下将满足条件的直接返回
+                {
+                    if ((i.Material_1.Equals(item_SModel_1.Id) && i.Material_2.Equals(item_SModel_2.Id) && i.MaterialSpecial.Equals(item_SModel_3.Id)) || (i.Material_1.Equals(item_SModel_2.Id) && i.Material_2.Equals(item_SModel_1.Id) && i.MaterialSpecial.Equals(item_SModel_3.Id)))
+                    {
+                        Debug.Log("生成指定药物");
+                        return new Item_s(i.id, i.Name, i.Description, 1);
+                    }
 
+                }
             }
             Debug.Log("无满足条件的药物");
             return null;//以上都不满足则返回null
         }
         public override void InitSystem()
         {
-
             // throw new global::System.NotImplementedException();
         }
     }

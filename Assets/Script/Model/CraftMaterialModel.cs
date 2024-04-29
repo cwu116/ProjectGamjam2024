@@ -53,6 +53,12 @@ namespace Game.Model
     public class CompoundModel : BaseModel
     {
         public List<Item_Data> Item_Data;
+        public CompoundModel()
+        {
+            Item_Data = JsonUtil.ToObject<List<Item_Data>>(
+               ResourcesManager.LoadText(JsonPath.ItemPath, JsonFileName.CompoundDataName));
+            Debug.Log("初始化成功");
+        }
         public override void InitModel()
         {
              Item_Data= JsonUtil.ToObject<List<Item_Data>>(
