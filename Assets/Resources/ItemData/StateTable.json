@@ -21,7 +21,7 @@
     "buffName" : "血肉祝福",
     "id" : "BloodBless",
     "description" : "当前生命值翻倍，在第3个回合结束时该单位直接死亡。",
-    "buffCMD" : [],
+    "buffCMD" : [ "$Hp = $Hp" ],
     "isAdditive" : false,
     "isStartExec" : false,
     "death" : ["Action:Death"]
@@ -84,16 +84,16 @@
     "buffName" : "隐形",
     "id" : "Invisible",
     "description" : "立刻使单位变的不可见且不可被指定，移动时不会触发惊动。若该状态有N层，除非提前使用技能，否则在N回合结束时消失。",
-    "buffCMD" : ["Action:bInvisible,"],
+    "buffCMD" : ["ChangeValue:bInvisible,1"],
     "isAdditive" : true,
     "isStartExec" : false,
-    "death" : []
+    "death" : ["ChangeValue:bInvisible,0"]
   },
   {
     "buffName" : "仇恨",
     "id" : "Hatred",
     "description" : "该状态只会存在于敌方单位，若其有仇恨则会将玩家、或拥有误导的单位作为行动目标。",
-    "buffCMD" : ["Action:Hatred,[]"],
+    "buffCMD" : ["Action:Hatred"],
     "isAdditive" : true,
     "isStartExec" : false,
     "death" : []
@@ -102,10 +102,10 @@
     "buffName" : "误导",
     "id" : "MisLead",
     "description" : "所有拥有仇恨的单位会将拥有误导的单位作为行动目标。若该状态有N层，则在N+1个回合开始时消失。",
-    "buffCMD" : ["Action:Hatred,[]"],
+    "buffCMD" : ["ChangeValue:bMisLead,1"],
     "isAdditive" : true,
     "isStartExec" : false,
-    "death" : []
+    "death" : ["ChangeValue:bMisLead,0"]
   },
   {
     "buffName" : "易伤",
