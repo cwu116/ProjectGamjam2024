@@ -24,6 +24,8 @@ public class BaseEntity : MonoBehaviour
     private ValueInt _rangeRight;       //范围结束
     private MaterialType _dropMaterial; //掉落材料
     private HexCell _curHexCell;        //当前所在地图格子
+    private int _curHeightIndex;        //当前高度索引
+    private int _curWidthIndex;         //当前宽度索引
     private Vector3 _direction;         //方向
     public  ValueInt bInvisible;        //隐形
     public ValueInt bMislead;          //误导
@@ -46,6 +48,8 @@ public class BaseEntity : MonoBehaviour
         bInvisible = new ValueInt (0);
         bMislead = new ValueInt (0);
         bIsSilent = new ValueInt (0);
+        _curWidthIndex = 0;
+        _curHeightIndex = 0;
     }
 
     private void Awake()
@@ -65,6 +69,17 @@ public class BaseEntity : MonoBehaviour
         set { _maxHp = value; }
     }
 
+    public int CurrentHeightIndex
+    {
+        get { return _curHeightIndex; }
+        set { _curHeightIndex = value; }
+    }
+
+    public int CurrentWidthIndex
+    {
+        get { return _curWidthIndex; }
+        set { _curWidthIndex = value; }
+    }
     public int RestMoveTimes
     {
         get { return _restMoveTimes; }
