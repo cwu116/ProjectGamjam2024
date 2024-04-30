@@ -9,49 +9,41 @@ using UnityEngine;
 
 public class BaseEntity : MonoBehaviour
 {
-    private AttackUnit_Data _model;     //战斗单位表，用于初始化
-    [SerializeField]
-    private int _curHp;                 //当前生命值
-    private ValueInt _maxHp;            //生命值上限
-    [SerializeField]
-    private int _restMoveTimes;         //剩余行动点
-    private ValueInt _maxMoveTimes;      //行动点上限
-    private ValueInt _attck;            //攻击力
-    private ValueInt _defence;          //防御力
-    private EntityType _myType;         //实体类型
-    private AttackType _attackType;     //攻击类型
-    private ValueInt _stepLenghth;      //移动力
-    private ValueInt _rangeLeft;        //范围开始
-    private ValueInt _rangeRight;       //范围结束
+    private AttackUnit_Data _model; //战斗单位表，用于初始化
+    [SerializeField] private int _curHp; //当前生命值
+
+    private ValueInt _maxHp; 
+    [SerializeField] private int _restMoveTimes; //剩余行动点
+    private ValueInt _defence; //防御力
+    private EntityType _myType; //实体类型
+    private AttackType _attackType; //攻击类型
     private MaterialType _dropMaterial; //掉落材料
-    private HexCell _curHexCell;        //当前所在地图格子
-    private Vector3 _direction;         //方向
-    public  ValueInt bInvisible;        //隐形
-    public ValueInt bMislead;          //误导
-    public ValueInt bIsSilent;         //沉默
-    public BuffComponent buff;          //自身buff
+    private HexCell _curHexCell; //当前所在地图格子
+    private Vector3 _direction; //方向
+    protected BuffComponent buff; //自身buff
+
+    private int currentHeightIndex;
+    private int currentWidthIndex;
 
     public BaseEntity()
     {
         _curHp = _model.hp;
         _maxHp = new ValueInt(_model.hp);
-        _attck =new ValueInt ( _model.Attack);
         _restMoveTimes = _model.moveTimes;
-        _maxMoveTimes = new ValueInt(_model.moveTimes);
         _myType = _model.entityType;
         _attackType = _model.attackType;
-        _stepLenghth =new ValueInt ( _model.stepLength);
-        _rangeLeft =new ValueInt ( _model.RangeLeft);
-        _rangeRight =new ValueInt ( _model.RangeRight);
         _dropMaterial = _model.dropMaterial;
-        bInvisible = new ValueInt (0);
-        bMislead = new ValueInt (0);
-        bIsSilent = new ValueInt (0);
     }
 
     private void Awake()
     {
         buff.RegisterFunc(ActionKey.Die, Die);
+    }
+
+    // 组件-只读
+    public BuffComponent BuffComp
+    {
+        get { return buff; }
     }
 
     public int CurHP
@@ -60,10 +52,224 @@ public class BaseEntity : MonoBehaviour
         set { _curHp = value; }
     }
 
-    public ValueInt MaxHp
+    public ValueInt MaxHp // 生命值上限
     {
-        get { return _maxHp; }
-        set { _maxHp = value; }
+        get
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.MaxHp))
+            {
+                return comp.ValueUnits[ValueKey.MaxHp];
+            }
+
+            return new ValueInt(_model.hp);
+        }
+        set
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.MaxHp))
+            {
+                comp.ValueUnits[ValueKey.MaxHp] = value;
+            }
+        }
+    }
+
+    public ValueInt MaxMoveTimes // 行动点上限
+    {
+        get
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.MaxMoveTimes))
+            {
+                return comp.ValueUnits[ValueKey.MaxMoveTimes];
+            }
+
+            return new ValueInt(_model.moveTimes);
+        }
+        set
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.MaxMoveTimes))
+            {
+                comp.ValueUnits[ValueKey.MaxMoveTimes] = value;
+            }
+        }
+    }
+    
+    public ValueInt Attack // 攻击力
+    {
+        get
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.Attack))
+            {
+                return comp.ValueUnits[ValueKey.Attack];
+            }
+
+            return new ValueInt(_model.Attack);
+        }
+        set
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.Attack))
+            {
+                comp.ValueUnits[ValueKey.Attack] = value;
+            }
+        }
+    }
+
+    public ValueInt Defence // 防御力
+    {
+        get
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.Defence))
+            {
+                return comp.ValueUnits[ValueKey.Defence];
+            }
+
+            return new ValueInt(0);
+        }
+        set
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.Defence))
+            {
+                comp.ValueUnits[ValueKey.Defence] = value;
+            }
+        }
+    }
+
+    public ValueInt StepLength // 移动力
+    {
+        get
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.StepLenghth))
+            {
+                return comp.ValueUnits[ValueKey.StepLenghth];
+            }
+
+            return new ValueInt(_model.stepLength);
+        }
+        set
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.StepLenghth))
+            {
+                comp.ValueUnits[ValueKey.StepLenghth] = value;
+            }
+        }
+    }
+
+    public ValueInt RangeLeft // 最小技能范围
+    {
+        get
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.MinSkillRange))
+            {
+                return comp.ValueUnits[ValueKey.MinSkillRange];
+            }
+
+            return new ValueInt(_model.RangeLeft);
+        }
+        set
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.MinSkillRange))
+            {
+                comp.ValueUnits[ValueKey.MinSkillRange] = value;
+            }
+        }
+    }
+
+    public ValueInt RangeRight // 最大技能范围
+    {
+        get
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.SkillRange))
+            {
+                return comp.ValueUnits[ValueKey.SkillRange];
+            }
+
+            return new ValueInt(_model.RangeRight);
+        }
+        set
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.SkillRange))
+            {
+                comp.ValueUnits[ValueKey.SkillRange] = value;
+            }
+        }
+    }
+    
+    public ValueInt bInvisible // bool隐身
+    {
+        get
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.bInvisible))
+            {
+                return comp.ValueUnits[ValueKey.bInvisible];
+            }
+
+            return new ValueInt(0);
+        }
+        set
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.bInvisible))
+            {
+                comp.ValueUnits[ValueKey.bInvisible] = value;
+            }
+        }
+    }
+    
+    public ValueInt bMisLead // bool误导
+    {
+        get
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.bMislead))
+            {
+                return comp.ValueUnits[ValueKey.bMislead];
+            }
+
+            return new ValueInt(0);
+        }
+        set
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.bMislead))
+            {
+                comp.ValueUnits[ValueKey.bMislead] = value;
+            }
+        }
+    }
+    
+    public ValueInt bIsSilent // bool沉默
+    {
+        get
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.bIsSilent))
+            {
+                return comp.ValueUnits[ValueKey.bIsSilent];
+            }
+
+            return new ValueInt(0);
+        }
+        set
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.bIsSilent))
+            {
+                comp.ValueUnits[ValueKey.bIsSilent] = value;
+            }
+        }
     }
 
     public int RestMoveTimes
@@ -72,25 +278,19 @@ public class BaseEntity : MonoBehaviour
         set { _restMoveTimes = value; }
     }
 
-    public ValueInt MaxMoveTimes
+    public int CurrentHeightIndex
     {
-        get { return _maxMoveTimes; }
-        set { _maxMoveTimes = value; }
+        get { return currentHeightIndex; }
+        set { currentHeightIndex = value; }
     }
 
-    public int Attack
+    public int CurrentWidthIndex
     {
-        get { return _attck; }
-
-        set { }
+        get { return currentWidthIndex; }
+        set { currentWidthIndex = value; }
     }
 
-    public ValueInt Defence
-    {
-        get { return _defence; }
 
-        set { _defence = value; }
-    }
     public EntityType MyType
     {
         get { return _myType; }
@@ -103,23 +303,6 @@ public class BaseEntity : MonoBehaviour
         set { }
     }
 
-    public ValueInt StepLength
-    {
-        get { return _stepLenghth; }
-        set { _stepLenghth = value; }
-    }
-
-    public ValueInt RangeLeft
-    {
-        get { return _rangeLeft; }
-        set { _rangeLeft = value; }
-    }
-
-    public ValueInt RangeRight
-    {
-        get { return _rangeRight; }
-        set { _rangeRight = value; }
-    }
 
     public MaterialType DropMaterial
     {
@@ -146,8 +329,7 @@ public class BaseEntity : MonoBehaviour
 
     public bool SetModel(string name)
     {
-
-       AttackUnit_Data ad= GameBody.GetModel<AttackUnitModel>().GetDataByName(name);
+        AttackUnit_Data ad = GameBody.GetModel<AttackUnitModel>().GetDataByName(name);
         if (ad != null)
         {
             this._model = ad;
@@ -189,6 +371,5 @@ public class BaseEntity : MonoBehaviour
 
     public virtual void Die()
     {
-        
     }
 }
