@@ -301,6 +301,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13d3ddcdbb9ae4b42935def1635d430b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _instructions:
+  - Delay:["ChangeValue:MaxMoveTimes,-1,true"],1
 --- !u!1 &8474312975906232717
 GameObject:
   m_ObjectHideFlags: 0

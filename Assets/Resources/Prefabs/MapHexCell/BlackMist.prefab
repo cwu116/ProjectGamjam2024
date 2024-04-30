@@ -251,6 +251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fbeb56b46760db4a9c113cbb84982b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _instructions:
+  - ChangeValue:SkillRange,-1,true
 --- !u!1 &6076116902503286668
 GameObject:
   m_ObjectHideFlags: 0

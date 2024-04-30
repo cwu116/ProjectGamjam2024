@@ -77,6 +77,7 @@ public class HexCell : MonoBehaviour
         }
     }
 
+    [SerializeField]
     private string[] _instructions = null;
     public string[] Instructions
     {
