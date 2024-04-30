@@ -12,5 +12,8 @@ namespace Assets.Script.Config
         public const string Medicalment = "Medicalment";
         public const string CommpoundData = "CompoundData";
         public const string StateName = "StateTable";
+        public const string AttackUnit = "AttackUnit";
+        public const string EnviromentUnit = "EnviromentUnit";
+        public const string EnviromentEffect = "EnviromentEffect";
     }
 }

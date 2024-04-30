@@ -34,6 +34,9 @@ namespace Game
             RegisterModel(new MapModel());
             RegisterModel(new StateModel());
             RegisterModel(new CompoundModel());
+            RegisterModel(new AttackUnitModel());
+            RegisterModel(new EnviromentUnitModel());
+            RegisterModel(new EnviromentEffctModel());
         }
 
         private void InitSystems()

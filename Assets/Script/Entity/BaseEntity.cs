@@ -1,5 +1,6 @@
 using Buff;
 using Buff.Tool;
+using Game;
 using Game.Model;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 public class BaseEntity : MonoBehaviour
 {
-    private AttackUnitModel _model;     //战斗单位表，用于初始化
+    private AttackUnit_Data _model;     //战斗单位表，用于初始化
     [SerializeField]
     private int _curHp;                 //当前生命值
     private ValueInt _maxHp;            //生命值上限
@@ -24,6 +25,9 @@ public class BaseEntity : MonoBehaviour
     private MaterialType _dropMaterial; //掉落材料
     private HexCell _curHexCell;        //当前所在地图格子
     private Vector3 _direction;         //方向
+    public  ValueInt bInvisible;        //隐形
+    public ValueInt bMislead;          //误导
+    public ValueInt bIsSilent;         //沉默
     public BuffComponent buff;          //自身buff
 
     public BaseEntity()
@@ -39,6 +43,9 @@ public class BaseEntity : MonoBehaviour
         _rangeLeft =new ValueInt ( _model.RangeLeft);
         _rangeRight =new ValueInt ( _model.RangeRight);
         _dropMaterial = _model.dropMaterial;
+        bInvisible = new ValueInt (0);
+        bMislead = new ValueInt (0);
+        bIsSilent = new ValueInt (0);
     }
 
     private void Awake()
@@ -62,6 +69,12 @@ public class BaseEntity : MonoBehaviour
     {
         get { return _restMoveTimes; }
         set { _restMoveTimes = value; }
+    }
+
+    public ValueInt MaxMoveTimes
+    {
+        get { return _maxMoveTimes; }
+        set { _maxMoveTimes = value; }
     }
 
     public int Attack
@@ -125,15 +138,19 @@ public class BaseEntity : MonoBehaviour
         set { _direction = value; }
     }
 
+    public HexCell GetCurrentHexCell()
+    {
+        return this.CurHexCell;
+    }
+
     public bool SetModel(string name)
     {
-        foreach (AttackUnitModel aum in DataManager.Instance.attackUnits)
+
+       AttackUnit_Data ad= GameBody.GetModel<AttackUnitModel>().GetDataByName(name);
+        if (ad != null)
         {
-            if (aum.name == name)
-            {
-                this._model = aum;
-                return true;
-            }
+            this._model = ad;
+            return true;
         }
 
         return false;
@@ -154,11 +171,19 @@ public class BaseEntity : MonoBehaviour
 
     public void GetHurt(int damage)
     {
-        this.CurHP -= damage;
-        if (this.CurHP <= 0)
+        int realDamage = damage - this.Defence;
+        if (realDamage > 0)
         {
-            Die();
+            this.CurHP -= realDamage;
+            if (this.CurHP <= 0)
+            {
+                Die();
+            }
+
+            return;
         }
+
+        Debug.Log("没有造成伤害");
     }
 
     public virtual void Die()
