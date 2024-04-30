@@ -5,6 +5,7 @@ using Buff.Config;
 using Buff.Tool;
 using Game;
 using Game.Model;
+using MainLogic.Manager;
 using UnityEngine;
 
 namespace Game.System
@@ -50,15 +51,16 @@ namespace Game.System
                         case BuffType.ChangeValue:
                             if (Params[0] == "Damage")
                             {
-                                Debug.Log("DamageTrigger");
-                                temp.ValueUnits["HP"] = new ValueInt(temp.Get("HP") - int.Parse(Params[1]));
+                                int realDamage = int.Parse(Params[1]) - temp.ValueUnits["Damage"] >= 0
+                                    ? (int.Parse(Params[1]) - temp.ValueUnits["Damage"])
+                                    : 0;
+                                temp.ValueUnits["HP"] = new ValueInt(temp.Get("HP") - realDamage);
                                 Debug.Log(temp.ValueUnits["HP"].ToString());
                             }
                             else
                             {
                                 temp.ValueUnits[Params[0]].AddValue(int.Parse(Params[1]));
                             }
-
                             break;
                         case BuffType.State:
                             if (args.Count == 1)
@@ -70,10 +72,34 @@ namespace Game.System
                                 temp.AddState(GameBody.GetModel<StateModel>().GetStateFromID(Params[0]),
                                     int.Parse(Params[1]) == -1 ? 9999 : int.Parse(Params[1]));
                             }
-
                             break;
                         case BuffType.Create:
-                            // 对接：获取地块坐标 + 生成实体
+
+                            if (Params[2].Contains("["))
+                            {
+                                List<string> xy_str =
+                                    new List<string>(Params[2].Replace("[", "").Replace("]", "").Split(new[] {','}));
+                                Vector2 xy = new Vector2(int.Parse(xy_str[0]), int.Parse(xy_str[1]));
+                                GameObject.Instantiate(
+                                    ResourcesManager.LoadPrefab("Assets/Resources/Prefabs/Enemy/",
+                                        Params[1] + ".prefab"),
+                                    GridManager.Instance.hexCells[(int) xy.x, (int) xy.y].transform.position,
+                                    Quaternion.identity);
+                            }
+                            else
+                            {
+                                HexCell targetCell = target.GetComponent<BaseEntity>().CurHexCell;
+                                List<HexCell> cellList = new List<HexCell>(GameBody.GetSystem<MapSystem>()
+                                    .GetRoundHexCell(targetCell.Pos, int.Parse(Params[2])));
+                                foreach (var cell in cellList)
+                                {
+                                    GameObject.Instantiate(
+                                        ResourcesManager.LoadPrefab("Assets/Resources/Prefabs/Enemy/",
+                                            Params[1] + ".prefab"),
+                                        cell.transform.position,
+                                        Quaternion.identity);
+                                }
+                            }
                             break;
                         case BuffType.Action:
                             if (temp.FuncUnits.ContainsKey(Params[0]))
@@ -82,24 +108,25 @@ namespace Game.System
                             }
                             else if (temp.TFuncUnits.ContainsKey(Params[0]))
                             {
-                                List<string> InnerParams = new List<string>();
+                                List<string> innerParams = new List<string>();
                                 // params[] = "ResumeHp","3","true","[int=1","string="a"]"
                                 for (int i = Params.Count; i > 0; i--)
                                 {
-                                    InnerParams.Add(Params[i].Replace("[", "").Replace("]", ""));
+                                    innerParams.Add(Params[i].Replace("[", "").Replace("]", ""));
                                     if (Params[i].Contains("["))
                                     {
                                         break;
                                     }
                                 }
-                                InnerParams.RemoveAt(0);
-                                ParamList list = new ParamList(InnerParams);
+                                innerParams.RemoveAt(0);
+                                ParamList list = new ParamList(innerParams);
                                 temp.TFuncUnits[Params[0]].Invoke(list);
                             }
                             else
                             {
                                 Debug.LogError("[Action Error] inValid Func");
                             }
+
                             break;
                         default:
                             if (args[0] == "Delay")
@@ -114,10 +141,11 @@ namespace Game.System
                                 final = final.Remove(final.Length - 1);
 
                                 List<string> NewCMDList = new List<string>(final.Split(new char[] {'*'}));
-                                
+
                                 // 传入回合延时函数
                                 // XXX.DelayFlow(string[] cmdList, int count, GameObject target);
                             }
+
                             break;
                     }
                 }

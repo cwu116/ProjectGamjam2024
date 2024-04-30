@@ -7,11 +7,24 @@ public class Node
 {
     public int X { get; set; }
     public int Y { get; set; }
+    public float X_Real { get; set; }
+    public float Y_Real { get; set; }
     public bool IsObstacle { get; set; }
-    public float G { get; set; } // ä»èµ·ç‚¹åˆ°å½“å‰ç‚¹çš„å®é™…ä»£ä»·
-    public float H { get; set; } // ä»å½“å‰ç‚¹åˆ°ç»ˆç‚¹çš„ä¼°è®¡ä»£ä»·ï¼ˆå¯å‘å¼ï¼‰
-    public float F { get { return G + H; } } // Gå’ŒHçš„æ€»å’Œ
-    public Node Parent { get; set; } // çˆ¶èŠ‚ç‚¹ï¼Œç”¨äºå›æº¯è·¯å¾„
+    public float G { get; set; } // ´ÓÆğµãµ½µ±Ç°µãµÄÊµ¼Ê´ú¼Û
+    public float H { get; set; } // ´Óµ±Ç°µãµ½ÖÕµãµÄ¹À¼Æ´ú¼Û£¨Æô·¢Ê½£©
+    public float F { get { return G + H; } } // GºÍHµÄ×ÜºÍ
+    public Node Parent { get; set; } // ¸¸½Úµã£¬ÓÃÓÚ»ØËİÂ·¾¶
+
+    public Node(int x, int y, float x_Real, float y_Real, bool isObstacle)
+    {
+        X = x;
+        Y = y;
+        X_Real = x_Real;
+        Y_Real = y_Real;
+        IsObstacle = isObstacle;
+        G = H = 0;
+        Parent = null;
+    }
 
     public Node(int x, int y, bool isObstacle)
     {
@@ -54,7 +67,7 @@ public class AStar
         {
             for (int y = 0; y < gridCols; y++)
             {
-                grid[x, y] = new Node(x, y, map[x, y] == 1);
+                grid[x, y] = new Node(x, y, false);
             }
         }
     }
@@ -71,8 +84,43 @@ public class AStar
         {
             for (int y = 0; y < gridCols; y++)
             {
-                //TODO::è¿™é‡Œåº”å½“æ”¹æˆè¯¥ç½‘æ ¼ä¸Šçš„ç‰©ä½“æ˜¯å¦æ˜¯é˜»ç¢ç‰©
-                grid[x, y] = new Node(x, y, false);
+                HexCell hexCell = map[x, y];
+                Vector3 hexCellPosition = hexCell.transform.position;
+                //TODO::ÕâÀïÓ¦µ±¸Ä³É¸ÃÍø¸ñÉÏµÄÎïÌåÊÇ·ñÊÇ×è°­Îï
+                grid[x, y] = new Node(x, y, hexCellPosition.x, hexCellPosition.y,false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Õâ¸öA*¹¹Ôìº¯ÊıÊÇ×¨ÃÅÓÃÀ´¼ÆËãÁ½µã¾àÀë£¬¶ø²»¿¼ÂÇÕÏ°­ÎïµÄ
+    /// </summary>
+    /// <param name="map"></param>
+    /// <param name="isGetDistance"></param>
+    public AStar(HexCell[,] map, bool isGetDistance)
+    {
+        gridRows = map.GetLength(0);
+        gridCols = map.GetLength(1);
+        grid = new Node[gridRows, gridCols];
+        openList = new List<Node>();
+        closedList = new HashSet<Node>();
+
+        for (int x = 0; x < gridRows; x++)
+        {
+            for (int y = 0; y < gridCols; y++)
+            {
+                HexCell hexCell = map[x, y];
+                Vector3 hexCellPosition = hexCell.transform.position;
+                //TODO::ÕâÀïÓ¦µ±¸Ä³É¸ÃÍø¸ñÉÏµÄÎïÌåÊÇ·ñÊÇ×è°­Îï
+                if(isGetDistance == true)
+                {
+                    grid[x, y] = new Node(x, y, hexCellPosition.x, hexCellPosition.y, false);
+                }
+                else
+                {
+                    //TODO::ÕâÀïºóĞøÓ¦µ±¸Ä³ÉÕı³£¼ÆËãÊÇ·ñÊÇÕÏ°­Îï
+                    grid[x, y] = new Node(x, y, hexCellPosition.x, hexCellPosition.y, false);
+                }
             }
         }
     }
@@ -119,21 +167,33 @@ public class AStar
             }
         }
 
-        return new List<Point>(); // è¿”å›ç©ºè·¯å¾„
+        return new List<Point>(); // ·µ»Ø¿ÕÂ·¾¶
     }
 
     private List<Node> GetNeighbors(Node node)
     {
         List<Node> neighbors = new List<Node>();
 
-        for (int x = -1; x <= 1; x++)
-        {
-            for (int y = -1; y <= 1; y++)
-            {
-                if (x == 0 && y == 0) continue; // è·³è¿‡è‡ªèº«
+        int[,] hexOffsets = {
+        { 1, 0 }, { 0, 1 }, { -1, 1 },
+        { -1, 0 }, { -1, -1 }, { 0, -1 }
+        };
 
-                int checkX = node.X + x;
-                int checkY = node.Y + y;
+        int[,] hexoffsets2 =
+        {
+            {1, 0 }, {1,1},{0,1},
+            {-1,0 }, {0,-1},{1,-1}
+        };
+        if(node.Y % 2 == 0)
+        {
+            // ±éÀúÏàÁÚµÄÁù±ßĞÎ½Úµã
+            for (int i = 0; i < 6; i++)
+            {
+                int xOffset = hexOffsets[i, 0];
+                int yOffset = hexOffsets[i, 1];
+
+                int checkX = node.X + xOffset;
+                int checkY = node.Y + yOffset;
 
                 if (checkX >= 0 && checkX < gridRows && checkY >= 0 && checkY < gridCols)
                 {
@@ -141,8 +201,27 @@ public class AStar
                 }
             }
         }
+        else
+        {
+            // ±éÀúÏàÁÚµÄÁù±ßĞÎ½Úµã
+            for (int i = 0; i < 6; i++)
+            {
+                int xOffset = hexoffsets2[i, 0];
+                int yOffset = hexoffsets2[i, 1];
+
+                int checkX = node.X + xOffset;
+                int checkY = node.Y + yOffset;
+
+                if (checkX >= 0 && checkX < gridRows && checkY >= 0 && checkY < gridCols)
+                {
+                    neighbors.Add(grid[checkX, checkY]);
+                }
+            }
+        }
+        
 
         return neighbors;
+
     }
 
     private List<Point> RetracePath(Node startNode, Node endNode)
@@ -161,11 +240,10 @@ public class AStar
 
     private float GetDistance(Node nodeA, Node nodeB)
     {
-        int dstX = Math.Abs(nodeA.X - nodeB.X);
-        int dstY = Math.Abs(nodeA.Y - nodeB.Y);
-
-        if (dstX > dstY)
-            return 14 * dstY + 10 * (dstX - dstY);
-        return 14 * dstX + 10 * (dstY - dstX);
+        float dstX = Math.Abs(nodeA.X_Real - nodeB.X_Real);
+        float dstY = Math.Abs(nodeA.Y_Real - nodeB.Y_Real);
+        float res = 0;
+        res = dstX * dstX + dstY * dstY;
+        return res;
     }
 }

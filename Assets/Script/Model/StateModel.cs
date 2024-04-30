@@ -20,7 +20,7 @@ namespace Game.Model
             Debug.Log(States[0].buffName);
         }
         
-        //閫氳繃ID鑾峰彇State鏁版嵁
+        //通过ID获取State数据
         public State GetStateFromID(string id)
         {
             foreach (var state in States)
