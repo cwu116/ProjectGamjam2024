@@ -36,6 +36,12 @@ namespace Buff.Tool
         {
             return int.Parse(param);
         }
+
+        // 转类布尔
+        public static implicit operator bool(Param param)
+        {
+            return param != 0;
+        }
     }
 
     public class ParamList

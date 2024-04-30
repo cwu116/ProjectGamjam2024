@@ -51,7 +51,7 @@
         "Material_2": "yellow",
         "MaterialSpecial": "B",
         "Description": "使目标获得护甲2，中毒1，并在下个回合开始时再次获得该药剂效果",//特殊处理
-        "Type": [ "State:Armor,2,true", "Delay:[ChangeValue:StepLenghth,1],1" ]
+        "Type": [ "State:Armor,2,true", "State:Poison,1,true", "Delay:[State:Armor,2,true*State:Poison,1,true],1" ]
     },
     {
         "id": "Demonic_Edict",

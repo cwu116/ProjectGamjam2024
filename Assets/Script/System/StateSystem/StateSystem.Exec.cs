@@ -92,7 +92,6 @@ namespace Game.System
                                         break;
                                     }
                                 }
-
                                 InnerParams.RemoveAt(0);
                                 ParamList list = new ParamList(InnerParams);
                                 temp.TFuncUnits[Params[0]].Invoke(list);
@@ -111,11 +110,10 @@ namespace Game.System
                                 int durations = int.Parse(Params[^1]);
                                 Params.RemoveAt(Params.Count);
 
-                                List<string> NewCMDList = new List<string>(
-                                    string.Join(',', Params)
-                                    .Replace("[", "")
-                                    .Replace("]", "")
-                                    .Split(new char[] {','}));
+                                string final = string.Join(',', Params).Remove(0);
+                                final = final.Remove(final.Length - 1);
+
+                                List<string> NewCMDList = new List<string>(final.Split(new char[] {'*'}));
                                 
                                 // 传入回合延时函数
                                 // XXX.DelayFlow(string[] cmdList, int count, GameObject target);

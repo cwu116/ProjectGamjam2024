@@ -30,7 +30,7 @@
     "buffName" : "膨胀",
     "id" : "Expansion",
     "description" : "下2个回合开始时血量上限增加1，并恢复1点血量，但技能范围减1。",
-    "buffCMD" : ["ChangeValue:MaxHp,1","ChangeValue:Damage,-1","ChangeValue:SkillRange,-1"],
+    "buffCMD" : ["ChangeValue:MaxHp,1,false","ChangeValue:Damage,-1","ChangeValue:SkillRange,-1,false"],
     "isAdditive" : false,
     "isStartExec" : true,
     "death" : []
@@ -39,7 +39,7 @@
     "buffName" : "玻璃大炮",
     "id" : "GlassCannon",
     "description" : "使目标造成的所有伤害增加1，但血量上限减1，持续至本场战斗结束。",
-    "buffCMD" : ["ChangeValue:Attack,1","ChangeValue:MaxHp,-1"],
+    "buffCMD" : ["ChangeValue:Attack,1,false","ChangeValue:MaxHp,-1,false"],
     "isAdditive" : false,
     "isStartExec" : true,
     "death" : []
@@ -48,7 +48,7 @@
     "buffName" : "长臂猴",
     "id" : "LongArmMonkey",
     "description" : "使目标技能范围增加1，但血量上限减1，持续至本场战斗结束。",
-    "buffCMD" : ["ChangeValue:SkillRange,1","ChangeValue:MaxHp,-1"],
+    "buffCMD" : ["ChangeValue:SkillRange,1,false","ChangeValue:MaxHp,-1,false"],
     "isAdditive" : false,
     "isStartExec" : true,
     "death" : []
