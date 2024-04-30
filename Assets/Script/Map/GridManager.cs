@@ -95,7 +95,7 @@ public class GridManager : MonoSingleton<GridManager>
         HexCell cell = cells[x, y];
         cell.WidthIndex = y;
         cell.HeightIndex = x;
-        cell.Pos = new Vector2(x, y);
+
         cell.name = y.ToString() + " " + x.ToString();
         Canvas canvas = cell.GetComponentInChildren<Canvas>();
         TMP_Text text = canvas.transform.GetChild(0).GetComponent<TMP_Text>();

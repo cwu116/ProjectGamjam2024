@@ -77,19 +77,6 @@ public class HexCell : MonoBehaviour
         }
     }
 
-    private string[] _instructions = null;
-    public string[] Instructions
-    {
-        get
-        {
-            return _instructions;
-        }
-        set
-        {
-            _instructions = value;
-        }
-    }
-
     public HexCell()
     {
         _type = HexType.Empty;
@@ -100,14 +87,6 @@ public enum HexType
 {
     Empty,
     Element,
-    Thorns, //¾£¼¬
-    Moon, //ÔÂÂ¶
-    Grass, //²İµØ
-    Fire, //»ğÑæ
-    BlackMist, //ºÚÎí
-    Spar, //¾§Ê¯
-    Spore, //æß×Ó
-    Transport, //´«ËÍÈ¦
 }
 
 
