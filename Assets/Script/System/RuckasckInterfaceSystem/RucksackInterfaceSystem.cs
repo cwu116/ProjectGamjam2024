@@ -11,17 +11,18 @@ namespace Game.System
     //用于提供合成功能的接口
     public class InventorySystem : BaseSystem
     {
-        public List<Item_s> materials = new List<Item_s>(); // 临时存储
-        public CompoundModel compoundModel = new CompoundModel();
+        List<Item_s> materials = new List<Item_s>(); // 临时存储
+        CompoundModel compoundModel = new CompoundModel();
         // 添加材料
         public void AddMaterial(Item_s item_s)
         {
             if (materials.Count < 3)//合成最大容量
             {
+                
                 if (materials.Count > 1 && materials.Count < 3 && (item_s.Id.Equals("A") || item_s.Id.Equals("B") || item_s.Id.Equals("C") || item_s.Id.Equals("D")))
                 {
                     materials.Add(new Item_s(item_s.Name, item_s.Id, item_s.Description, item_s.quantity));
-                    Debug.Log("特殊材料");
+                    Debug.Log("[特殊材料] 添加成功");
                     return;
                 }
                 else if (materials.Count > 1 && materials.Count < 3)
@@ -29,9 +30,19 @@ namespace Game.System
                     Debug.LogWarning("最后材料只能是特殊材料");
                     return;
                 }
-                materials.Add(new Item_s(item_s.Name, item_s.Id, item_s.Description, item_s.quantity));
-                Debug.Log("添加成功");
-                return;
+                
+                if (!(item_s.Id.Equals("A") || item_s.Id.Equals("B") || item_s.Id.Equals("C") || item_s.Id.Equals("D")))
+                {
+                    materials.Add(new Item_s(item_s.Name, item_s.Id, item_s.Description, item_s.quantity));
+                    Debug.Log("[普通材料] 添加成功");
+                    return;
+                }
+                else
+                {
+                    Debug.LogWarning("前两种材料只能是普通材料");
+                    return;
+                }
+
             }
             Debug.LogWarning("只能向List中添加3个物品");
         }
@@ -110,7 +121,6 @@ namespace Game.System
         }
         public override void InitSystem()
         {
-            // throw new global::System.NotImplementedException();
         }
     }
 
