@@ -1,56 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using Buff.Config;
 using Buff.Tool;
 using Game.System;
 using UnityEngine;
 
 namespace Buff
 {
-    interface IBuffComponent
-    {
-        public void RegisterParam(string paramName, ValueInt value){}
-        public void RegisterFunc(string funcName, BuffComponent.Custom func){}
-        public void RegisterFunc(string funcName, BuffComponent.TCustom func){}
-        
-    }
     public class BuffComponent : MonoBehaviour
     {
         public delegate void Custom();
         public delegate void TCustom(params Param[] param);
 
-        public Dictionary<string, ValueInt> ValueUnits;         // 玩家数值类
+        public Dictionary<ValueKey, ValueInt> ValueUnits;       // 玩家数值类
         public Dictionary<State, int> StateUnits;               // 玩家状态类
-        public Dictionary<string, Custom> FuncUnits;            // 玩家方法类
-        public Dictionary<string, TCustom> TFuncUnits;          // 有参玩家方法类
-        public bool isPlayer;
+        public Dictionary<ActionKey, Custom> FuncUnits;         // 玩家方法类
+        public Dictionary<TActionKey, TCustom> TFuncUnits;      // 有参玩家方法类
 
         private void Awake()
         {
-            ValueUnits = new Dictionary<string, ValueInt>();
+            ValueUnits = new Dictionary<ValueKey, ValueInt>();
             StateUnits = new Dictionary<State, int>();
         }
 
         public ValueInt Get(string paramName)
         {
-            return ValueUnits[paramName];
+            return ValueUnits[Enum.Parse<ValueKey>(paramName)];
         }
 
-        private void TestFunc()
-        {
-            Debug.LogWarning("Func called");
-        }
-
-        public void RegisterParam(string paramName, ValueInt value)
+        public void RegisterParam(ValueKey paramName, ValueInt value)
         {
             ValueUnits.Add(paramName, value);
         }
 
-        public void RegisterFunc(string funcName, Custom func)
+        public void RegisterFunc(ActionKey funcName, Custom func)
         {
             FuncUnits.Add(funcName, func);
         }
 
-        public void RegisterFunc(string funcName, TCustom func)
+        public void RegisterFunc(TActionKey funcName, TCustom func)
         {
             TFuncUnits.Add(funcName, func);
         }

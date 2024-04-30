@@ -17,78 +17,7 @@ public class PlayTemplate : MonoBehaviour
 
     private int Hp;
     // ValueInt 声明举例 ： 在set里注册组件变量完就行，不需要在其他地方再注册了
-    public ValueInt MaxHp
-    {
-        get
-        {
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey("MaxHp"))
-            {
-                return comp.ValueUnits["MaxHp"];
-            }
-            return new ValueInt(0);
-        }
-        set 
-        {             
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey("MaxHp"))
-            {
-                comp.ValueUnits["MaxHp"] = value;
-            }
-            else
-            {
-                comp.RegisterParam("MaxHp", value);
-            }
-        }
-    }
-    public ValueInt MoveRange
-    {
-        get
-        {
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey("MoveRange"))
-            {
-                return comp.ValueUnits["MoveRange"];
-            }
-            return new ValueInt(0);
-        }
-        set 
-        {             
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey("MoveRange"))
-            {
-                comp.ValueUnits["MoveRange"] = value;
-            }
-            else
-            {
-                comp.RegisterParam("MoveRange", value);
-            }
-        }
-    }
-    public ValueInt MoveForce
-    {
-        get
-        {
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey("MoveForce"))
-            {
-                return comp.ValueUnits["MoveForce"];
-            }
-            return new ValueInt(0);
-        }
-        set 
-        {             
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey("MoveForce"))
-            {
-                comp.ValueUnits["MoveForce"] = value;
-            }
-            else
-            {
-                comp.RegisterParam("MoveForce", value);
-            }
-        }
-    }
+
     
     private void Awake()
     {
@@ -96,9 +25,6 @@ public class PlayTemplate : MonoBehaviour
 
         // 初始化变量
         Hp = new ValueInt(3);
-        MaxHp = new ValueInt(3);
-        MoveRange = new ValueInt(2);
-        MoveForce = new ValueInt(1);
 
     }
 

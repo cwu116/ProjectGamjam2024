@@ -36,7 +36,7 @@ namespace Game.System
                     // 赋值
                     List<string> args = new List<string>(_raw.Split(new char[] {'='}));
                     BuffComponent temp = GameObject.Find("Player").GetComponent<BuffComponent>();
-                    temp.ValueUnits[args[0].Remove(0)].AddValue(ParseParam(args[1], temp));
+                    temp.ValueUnits[Enum.Parse<ValueKey>(args[0].Remove(0))].AddValue(ParseParam(args[1], temp));
                 }
                 else
                 {
@@ -46,21 +46,31 @@ namespace Game.System
                     // args[1]    :     参数数组
                     List<string> Params = new List<string>(args[1].Split(new char[] {','}));
                     BuffComponent temp = GameObject.Find("Player").GetComponent<BuffComponent>();
+                    BaseEntity entity = GameObject.Find("Player").GetComponent<BaseEntity>();
                     switch (Enum.Parse<BuffType>(args[0]))
                     {
                         case BuffType.ChangeValue:
                             if (Params[0] == "Damage")
                             {
-                                int realDamage = int.Parse(Params[1]) - temp.ValueUnits["Damage"] >= 0
-                                    ? (int.Parse(Params[1]) - temp.ValueUnits["Damage"])
+                                int realDamage = int.Parse(Params[1]) - temp.ValueUnits[ValueKey.Defence] >= 0
+                                    ? (int.Parse(Params[1]) - temp.ValueUnits[ValueKey.Defence])
                                     : 0;
-                                temp.ValueUnits["HP"] = new ValueInt(temp.Get("HP") - realDamage);
-                                Debug.Log(temp.ValueUnits["HP"].ToString());
+                                entity.CurHP = new ValueInt(entity.CurHP - realDamage);
+                                Debug.Log(entity.CurHP.ToString());
                             }
                             else
                             {
-                                temp.ValueUnits[Params[0]].AddValue(int.Parse(Params[1]));
+                                if (bool.Parse(Params[2]))
+                                {
+                                    temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])].AddValue(int.Parse(Params[1]));
+                                }
+                                else
+                                {
+                                    temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])]
+                                        .AddValue(int.Parse(Params[1]), true);
+                                }
                             }
+
                             break;
                         case BuffType.State:
                             if (args.Count == 1)
@@ -72,6 +82,7 @@ namespace Game.System
                                 temp.AddState(GameBody.GetModel<StateModel>().GetStateFromID(Params[0]),
                                     int.Parse(Params[1]) == -1 ? 9999 : int.Parse(Params[1]));
                             }
+
                             break;
                         case BuffType.Create:
 
@@ -100,13 +111,14 @@ namespace Game.System
                                         Quaternion.identity);
                                 }
                             }
+
                             break;
                         case BuffType.Action:
-                            if (temp.FuncUnits.ContainsKey(Params[0]))
+                            if (temp.FuncUnits.ContainsKey(Enum.Parse<ActionKey>(Params[0])))
                             {
-                                temp.FuncUnits[Params[0]].Invoke();
+                                temp.FuncUnits[Enum.Parse<ActionKey>(Params[0])].Invoke();
                             }
-                            else if (temp.TFuncUnits.ContainsKey(Params[0]))
+                            else if (temp.TFuncUnits.ContainsKey(Enum.Parse<TActionKey>(Params[0])))
                             {
                                 List<string> innerParams = new List<string>();
                                 // params[] = "ResumeHp","3","true","[int=1","string="a"]"
@@ -118,9 +130,10 @@ namespace Game.System
                                         break;
                                     }
                                 }
+
                                 innerParams.RemoveAt(0);
                                 ParamList list = new ParamList(innerParams);
-                                temp.TFuncUnits[Params[0]].Invoke(list);
+                                temp.TFuncUnits[Enum.Parse<TActionKey>(Params[0])].Invoke(list);
                             }
                             else
                             {
@@ -128,23 +141,20 @@ namespace Game.System
                             }
 
                             break;
-                        default:
-                            if (args[0] == "Delay")
-                            {
-                                args.RemoveAt(0);
-                                string CMDs = string.Join(':', args);
-                                Params = new List<string>(CMDs.Split(new[] {','}));
-                                int durations = int.Parse(Params[^1]);
-                                Params.RemoveAt(Params.Count);
+                        case BuffType.Delay:
+                            args.RemoveAt(0);
+                            string CMDs = string.Join(':', args);
+                            Params = new List<string>(CMDs.Split(new[] {','}));
+                            int durations = int.Parse(Params[^1]);
+                            Params.RemoveAt(Params.Count);
 
-                                string final = string.Join(',', Params).Remove(0);
-                                final = final.Remove(final.Length - 1);
+                            string final = string.Join(',', Params).Remove(0);
+                            final = final.Remove(final.Length - 1);
 
-                                List<string> NewCMDList = new List<string>(final.Split(new char[] {'*'}));
+                            List<string> NewCMDList = new List<string>(final.Split(new char[] {'*'}));
 
-                                // 传入回合延时函数
-                                // XXX.DelayFlow(string[] cmdList, int count, GameObject target);
-                            }
+                            // 传入回合延时函数
+                            // XXX.DelayFlow(string[] cmdList, int count, GameObject target);
 
                             break;
                     }
@@ -163,7 +173,7 @@ namespace Game.System
         {
             if (arg.Contains("$"))
             {
-                return target.ValueUnits[arg.Remove(0)];
+                return target.ValueUnits[Enum.Parse<ValueKey>(arg.Remove(0))];
             }
             else
             {

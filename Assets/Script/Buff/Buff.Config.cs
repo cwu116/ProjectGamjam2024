@@ -31,8 +31,36 @@ namespace Buff.Config
         /// <param name="参数">字符串列表, 传参</param>
         /// </summary>
         Action,                 // 执行动作           Action:操作函数,参数
+        
+        /// <summary>
+        /// 工具类
+        /// </summary>
+        Delay                   // 延迟
+    }
+
+    public enum ValueKey
+    {
+        MaxHp,                  // 最大生命
+        MaxMoveTimes,           // 最大行动点
+        StepLenghth,            // 移动力
+        SkillRange,             // 技能范围（rangeRight）
+        Attack,                 // 攻击力
+        Defence,                // 行动力
+        MinSkillRange,          // 最小技能范围
+        bInvisible,             // 隐形
+        bMislead,               // 误导
+        bIsSilent               // 沉默
     }
     
+    public enum ActionKey
+    {
+        Die,                    // 立即死亡
+        AutoMove,               // 自动移动
+    }
 
+    public enum TActionKey
+    {
+        Away,                   // 目标远离
+    }
 }
 

@@ -1,38 +1,57 @@
+using Buff;
+using Buff.Tool;
+using Game;
 using Game.Model;
 using System.Collections;
 using System.Collections.Generic;
+using Buff.Config;
 using UnityEngine;
 
 public class BaseEntity : MonoBehaviour
 {
-    private AttackUnitModel model;
-    private int _curHp;
-    private int _maxHp;
-    public int restMoveTimes;
-    private int _attck;
-    private EntityType _myType;
-    private AttackType _attackType;
-    private int _stepLenghth;
-    private int _rangeLeft;
-    private int _rangeRight;
-    private MaterialType _dropMaterial;
-    private HexCell _curHexCell;
-    private Vector3 _direction;
-
-    private int currentHeightIndex;
-    private int currentWidthIndex;
+    private AttackUnit_Data _model;     //战斗单位表，用于初始化
+    [SerializeField]
+    private int _curHp;                 //当前生命值
+    private ValueInt _maxHp;            //生命值上限
+    [SerializeField]
+    private int _restMoveTimes;         //剩余行动点
+    private ValueInt _maxMoveTimes;      //行动点上限
+    private ValueInt _attck;            //攻击力
+    private ValueInt _defence;          //防御力
+    private EntityType _myType;         //实体类型
+    private AttackType _attackType;     //攻击类型
+    private ValueInt _stepLenghth;      //移动力
+    private ValueInt _rangeLeft;        //范围开始
+    private ValueInt _rangeRight;       //范围结束
+    private MaterialType _dropMaterial; //掉落材料
+    private HexCell _curHexCell;        //当前所在地图格子
+    private Vector3 _direction;         //方向
+    public  ValueInt bInvisible;        //隐形
+    public ValueInt bMislead;          //误导
+    public ValueInt bIsSilent;         //沉默
+    public BuffComponent buff;          //自身buff
 
     public BaseEntity()
     {
-        _curHp = model.hp;
-        _maxHp = model.hp;
-        _attck = model.Attack;
-        _myType = model.entityType;
-        _attackType = model.attackType;
-        _stepLenghth = model.stepLength;
-        _rangeLeft = model.RangeLeft;
-        _rangeRight = model.RangeRight;
-        _dropMaterial = model.dropMaterial;
+        _curHp = _model.hp;
+        _maxHp = new ValueInt(_model.hp);
+        _attck =new ValueInt ( _model.Attack);
+        _restMoveTimes = _model.moveTimes;
+        _maxMoveTimes = new ValueInt(_model.moveTimes);
+        _myType = _model.entityType;
+        _attackType = _model.attackType;
+        _stepLenghth =new ValueInt ( _model.stepLength);
+        _rangeLeft =new ValueInt ( _model.RangeLeft);
+        _rangeRight =new ValueInt ( _model.RangeRight);
+        _dropMaterial = _model.dropMaterial;
+        bInvisible = new ValueInt (0);
+        bMislead = new ValueInt (0);
+        bIsSilent = new ValueInt (0);
+    }
+
+    private void Awake()
+    {
+        buff.RegisterFunc(ActionKey.Die, Die);
     }
 
     public int CurHP
@@ -41,10 +60,22 @@ public class BaseEntity : MonoBehaviour
         set { _curHp = value; }
     }
 
-    public int MaxHp
+    public ValueInt MaxHp
     {
         get { return _maxHp; }
         set { _maxHp = value; }
+    }
+
+    public int RestMoveTimes
+    {
+        get { return _restMoveTimes; }
+        set { _restMoveTimes = value; }
+    }
+
+    public ValueInt MaxMoveTimes
+    {
+        get { return _maxMoveTimes; }
+        set { _maxMoveTimes = value; }
     }
 
     public int Attack
@@ -54,6 +85,12 @@ public class BaseEntity : MonoBehaviour
         set { }
     }
 
+    public ValueInt Defence
+    {
+        get { return _defence; }
+
+        set { _defence = value; }
+    }
     public EntityType MyType
     {
         get { return _myType; }
@@ -66,19 +103,19 @@ public class BaseEntity : MonoBehaviour
         set { }
     }
 
-    public int StepLength
+    public ValueInt StepLength
     {
         get { return _stepLenghth; }
         set { _stepLenghth = value; }
     }
 
-    public int RangeLeft
+    public ValueInt RangeLeft
     {
         get { return _rangeLeft; }
         set { _rangeLeft = value; }
     }
 
-    public int RangeRight
+    public ValueInt RangeRight
     {
         get { return _rangeRight; }
         set { _rangeRight = value; }
@@ -102,26 +139,19 @@ public class BaseEntity : MonoBehaviour
         set { _direction = value; }
     }
 
-    public int CurrentHeightIndex
+    public HexCell GetCurrentHexCell()
     {
-        get { return currentHeightIndex; }
-        set { currentHeightIndex = value; }
+        return this.CurHexCell;
     }
 
-    public int CurrentWidthIndex
-    {
-        get { return currentWidthIndex; }
-        set { currentWidthIndex = value; }
-    }
     public bool SetModel(string name)
     {
-        foreach (AttackUnitModel aum in DataManager.Instance.attackUnits)
+
+       AttackUnit_Data ad= GameBody.GetModel<AttackUnitModel>().GetDataByName(name);
+        if (ad != null)
         {
-            if (aum.name == name)
-            {
-                this.model = aum;
-                return true;
-            }
+            this._model = ad;
+            return true;
         }
 
         return false;
@@ -129,29 +159,36 @@ public class BaseEntity : MonoBehaviour
 
     public bool CanMove()
     {
-        if (this.restMoveTimes <= 0)
+        if (this.RestMoveTimes <= 0)
             return false;
 
         return true;
     }
 
-
     public virtual void UseSkill(BaseEntity target)
     {
-        this.restMoveTimes--;
+        this.RestMoveTimes--;
     }
 
-    public void GetHurt(int damege)
+    public void GetHurt(int damage)
     {
-        this.CurHP -= damege;
-        if (this.CurHP <= 0)
+        int realDamage = damage - this.Defence;
+        if (realDamage > 0)
         {
-            Die();
+            this.CurHP -= realDamage;
+            if (this.CurHP <= 0)
+            {
+                Die();
+            }
+
+            return;
         }
+
+        Debug.Log("没有造成伤害");
     }
 
     public virtual void Die()
     {
-
+        
     }
 }

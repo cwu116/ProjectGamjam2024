@@ -1,18 +1,24 @@
+using Game.Model;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : BaseEntity
 {
-    // Start is called before the first frame update
-    void Start()
+    public Player(string name = "Player")
     {
-        
+        this.SetModel(name);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public override void UseSkill(BaseEntity target)
     {
-        
+        base.UseSkill(target);
+
+    }
+
+    public void ReleaseMedicalment(BaseEntity target)
+    {
+        this.RestMoveTimes--;
     }
 }
