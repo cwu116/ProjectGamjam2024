@@ -8,18 +8,18 @@ namespace Game.System
 {
     public class MoveSystem : BaseSystem
     {
-        public void Move(GameObject gameObject, Vector3 target)//¿ØÖÆ¶ÔÏó
+        public void Move(GameObject gameObject, Vector3 target)//æ§åˆ¶å¯¹è±¡
         {
-            int Move;//ÒÆ¶¯Á¦
-            int[,] a;//¹ÖÎïµ±Ç°×ø±ê
-            int[,] n;//Ä¿±ê×ø±ê
-            int[][,] c;//Î»ÒÆÂ·¾¶(Î»ÒÆÂ·¾¶)
-            if (gameObject.tag.Equals("Player"))//Íæ¼ÒÒÆ¶¯Âß¼­
+            int Move;//ç§»åŠ¨åŠ›
+            int[,] a;//æ€ªç‰©å½“å‰åæ ‡
+            int[,] n;//ç›®æ ‡åæ ‡
+            int[][,] c;//ä½ç§»è·¯å¾„(ä½ç§»è·¯å¾„)
+            if (gameObject.tag.Equals("Player"))//ç©å®¶ç§»åŠ¨é€»è¾‘
             {
 
                 return;
             }
-            else if (gameObject.tag.Equals("Enemy"))//¹ÖÎïÒÆ¶¯AI
+            else if (gameObject.tag.Equals("Enemy"))//æ€ªç‰©ç§»åŠ¨AI
             {
                 return;
             }
@@ -28,7 +28,7 @@ namespace Game.System
         {
             MapSystem mapSystem = new MapSystem();
         }
-        public void Run_Move(Vector2 Xy, int Move)//»ñÈ¡×î¶ÌÂ·¾¶×ø±ê±í
+        public void Run_Move(Vector2 Xy, int Move)//è·å–æœ€çŸ­è·¯å¾„åæ ‡è¡¨
         {
 
         }
