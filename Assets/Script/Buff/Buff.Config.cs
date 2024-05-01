@@ -40,27 +40,33 @@ namespace Buff.Config
 
     public enum ValueKey
     {
+        Hp,                     // 生命
         MaxHp,                  // 最大生命
         MaxMoveTimes,           // 最大行动点
+        MoveTimes,              // 行动点
         StepLenghth,            // 移动力
         SkillRange,             // 技能范围（rangeRight）
         Attack,                 // 攻击力
-        Defence,                // 行动力
+        Defence,                // 防御力
         MinSkillRange,          // 最小技能范围
         bInvisible,             // 隐形
         bMislead,               // 误导
-        bIsSilent               // 沉默
+        bIsSilent,              // 沉默
+        bFlamePure,             // 火焰净化
     }
     
     public enum ActionKey
     {
         Die,                    // 立即死亡
         AutoMove,               // 自动移动
+        Hatred,                 // 添加仇恨
     }
 
     public enum TActionKey
     {
         Away,                   // 目标远离
+        SpawnPath,              // 以路径生成地块
+        Sleep,                  // 启动/暂停睡眠状态
     }
 }
 

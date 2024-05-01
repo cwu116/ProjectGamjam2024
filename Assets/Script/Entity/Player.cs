@@ -1,13 +1,21 @@
+using System;
 using Game.Model;
 using System.Collections;
 using System.Collections.Generic;
+using Buff;
 using UnityEngine;
 
 public class Player : BaseEntity
 {
-    public Player(string name = "Player")
+
+    private void Awake()
     {
-        this.SetModel(name);
+        SetModel("Player");
+    }
+
+    private void Start()
+    {
+        buff = GetComponent<BuffComponent>();
     }
 
 
@@ -19,6 +27,6 @@ public class Player : BaseEntity
 
     public void ReleaseMedicalment(BaseEntity target)
     {
-        this.RestMoveTimes--;
+        MoveTimes.AddValue(-1);
     }
 }

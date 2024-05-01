@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Buff;
@@ -18,43 +19,44 @@ namespace Game.System
         }
 
         // 回合开始执行
+        [Obsolete]
         public void PlayerStateWithStart()
         {
             foreach (var entity in GameObject.FindGameObjectsWithTag("Entity"))
             {
                 foreach (var unit in entity.GetComponent<BuffComponent>().StateUnits)
                 {
-                    if (unit.Key.isStartExec)
+                    if (unit.Info.isStartExec)
                     {
-                        Execution(unit.Key.buffCMD, entity);
-                        entity.GetComponent<BuffComponent>().StateUnits[unit.Key] -= 1;
+                        Execution(unit.Info.buffCMD, entity);
+                        
                     }
                 }
             }
         }
 
+        [Obsolete]
         // 回合结束执行
         public void StateWithEnd()
         {
             foreach (var entity in GameObject.FindGameObjectsWithTag("Entity"))
             {
-                foreach (var unit in entity.GetComponent<BuffComponent>().StateUnits)
+                foreach (var unit in entity.GetComponent<BaseEntity>().BuffComp.StateUnits)
                 {
-                    if (!unit.Key.isStartExec)
+                    if (!unit.Info.isStartExec)
                     {
-                        Execution(unit.Key.buffCMD, entity);
-                        entity.GetComponent<BuffComponent>().StateUnits[unit.Key] -= 1;
-                    }
-
-                    // 状态在回合末尾清除
-                    if (entity.GetComponent<BuffComponent>().StateUnits[unit.Key] == 0)
-                    {
-                        if (unit.Key.death.Count != 0)
+                        if (unit.Duration < 0)
                         {
-                            Execution(unit.Key.death, entity);
+                            entity.GetComponent<BaseEntity>().BuffComp.RemoveState(unit);
                         }
-
-                        entity.GetComponent<BuffComponent>().RemoveState(unit.Key);
+                        else
+                        {
+                            Execution(unit.Info.buffCMD, entity);
+                            if (unit.Decrement())
+                            {
+                                entity.GetComponent<BuffComponent>().RemoveState(unit);
+                            }
+                        }
                     }
                 }
             }

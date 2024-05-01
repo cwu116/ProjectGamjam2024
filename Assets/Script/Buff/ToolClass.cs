@@ -94,7 +94,7 @@ namespace Buff.Tool
         {
             if (!isChange)
             {
-                changeValue += Value;
+                changeValue += Value >= 0 ? changeValue += Value : 0;
             }
             else
             {

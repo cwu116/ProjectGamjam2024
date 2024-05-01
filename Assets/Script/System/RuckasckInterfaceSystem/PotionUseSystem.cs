@@ -13,6 +13,7 @@ namespace Game.System
     {
         public void Use(Item_Data item_Data, GameObject EffectObject)//药水,生效对象
         {
+
             StateSystem.Execution(item_Data.Type, EffectObject);
             Debug.Log("生效");
         }

@@ -4,38 +4,79 @@ using RedBjorn.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace Game.System
 {
     public class MoveSystem : BaseSystem
     {
-        public void Move(GameObject gameObject, Vector3 target)//æ§åˆ¶å¯¹è±¡
-        {
-            int Move;//ç§»åŠ¨åŠ›
-            int[,] a;//æ€ªç‰©å½“å‰åæ ‡
-            int[,] n;//ç›®æ ‡åæ ‡
-            int[][,] c;//ä½ç§»è·¯å¾„(ä½ç§»è·¯å¾„)
-            if (gameObject.tag.Equals("Player"))//ç©å®¶ç§»åŠ¨é€»è¾‘
-            {
+        private MapSystem mapSystem = new MapSystem();
 
-                return;
-            }
-            else if (gameObject.tag.Equals("Enemy"))//æ€ªç‰©ç§»åŠ¨AI
+        // ¸ù¾İµ¥Î»µÄµ±Ç°Î»ÖÃ¡¢Ä¿µÄµØÎ»ÖÃºÍÒÆ¶¯Á¦£¨¿ÉÒÔÒÆ¶¯µÄ´ÎÊı£©ÒÆ¶¯µ¥Î»
+        public void Move(Vector2 position, Vector2 targetPosition, int stepLength, GameObject unit)
+        {
+            Rigidbody2D rb = unit.GetComponent<Rigidbody2D>();
+            if (unit.CompareTag("Player"))
             {
-                return;
+                float distance = Vector2.Distance(position, targetPosition);
+                if (distance <= stepLength)
+                {
+                    // Ê¹ÓÃ Rigidbody ½øĞĞÎïÀíÒÆ¶¯
+                    rb.MovePosition(targetPosition);
+                }
+            }
+            else if (unit.CompareTag("Monster"))
+            {
+                Run_AI(position, stepLength, unit);
             }
         }
-        void Run_AI(GameObject gameObject)
-        {
-            MapSystem mapSystem = new MapSystem();
-        }
-        public void Run_Move(Vector2 Xy, int Move)//è·å–æœ€çŸ­è·¯å¾„åæ ‡è¡¨
-        {
 
+        // ´¦Àí¹ÖÎïµÄAIÒÆ¶¯¾ö²ß
+        void Run_AI(Vector2 position, int stepLength, GameObject unit)
+        {
+            var hexCells = mapSystem.GetRoundHexCell(position, stepLength);
+            Vector2? targetPos = null;
+            foreach (var cell in hexCells)
+            {
+                if (cell)
+                {
+                    targetPos = cell.Pos;
+                    break;
+                }
+            }
+            if (targetPos.HasValue)
+            {
+                Run_Move(position, targetPos.Value, stepLength, unit);
+            }
+            else
+            {
+                RandomMove(position, stepLength, unit);
+            }
         }
+
+        // Ö´ĞĞËæ»úÒÆ¶¯
+        void RandomMove(Vector2 position, int stepLength, GameObject unit)
+        {
+            Vector2 randomDirection = Random.insideUnitCircle.normalized * stepLength;
+            Vector2 newPosition = position + randomDirection;
+            Rigidbody2D rb = unit.GetComponent<Rigidbody2D>();
+            rb.MovePosition(newPosition);
+        }
+
+        // µİ¹é»ñÈ¡´Óµ±Ç°Î»ÖÃµ½Ä¿±êÎ»ÖÃµÄ×î¶ÌÂ·¾¶
+        void Run_Move(Vector2 currentPosition, Vector2 targetPosition, int stepLength, GameObject unit)
+        {
+            List<Vector2> path =null;
+            if (path != null && path.Count > 0)
+            {
+                Rigidbody2D rb = unit.GetComponent<Rigidbody2D>();
+                // ÒÆ¶¯µ½Â·¾¶µÄÏÂÒ»¸öµã
+                rb.MovePosition(path[0]);
+            }
+        }
+
         public override void InitSystem()
         {
-
+            // ÏµÍ³³õÊ¼»¯Âß¼­
         }
     }
 }
-

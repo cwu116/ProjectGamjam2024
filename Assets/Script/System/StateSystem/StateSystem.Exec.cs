@@ -33,10 +33,15 @@ namespace Game.System
 
                 if (_raw.Contains("="))
                 {
-                    // 赋值
                     List<string> args = new List<string>(_raw.Split(new char[] {'='}));
                     BuffComponent temp = GameObject.Find("Player").GetComponent<BuffComponent>();
                     temp.ValueUnits[Enum.Parse<ValueKey>(args[0].Remove(0))].AddValue(ParseParam(args[1], temp));
+                }
+                else if (_raw.Contains("+"))
+                {
+                    List<string> args = new List<string>(_raw.Split(new char[] {'='}));
+                    BuffComponent temp = GameObject.Find("Player").GetComponent<BuffComponent>();
+                    temp.ValueUnits[Enum.Parse<ValueKey>(args[0].Remove(0))].AddValue(ParseParam(args[1], temp), true);
                 }
                 else
                 {
@@ -45,29 +50,33 @@ namespace Game.System
                     // args[0]    :     命令名
                     // args[1]    :     参数数组
                     List<string> Params = new List<string>(args[1].Split(new char[] {','}));
-                    BuffComponent temp = GameObject.Find("Player").GetComponent<BuffComponent>();
                     BaseEntity entity = GameObject.Find("Player").GetComponent<BaseEntity>();
+                    BuffComponent temp = entity.BuffComp;
                     switch (Enum.Parse<BuffType>(args[0]))
                     {
                         case BuffType.ChangeValue:
                             if (Params[0] == "Damage")
                             {
-                                int realDamage = int.Parse(Params[1]) - temp.ValueUnits[ValueKey.Defence] >= 0
-                                    ? (int.Parse(Params[1]) - temp.ValueUnits[ValueKey.Defence])
-                                    : 0;
-                                entity.CurHP = new ValueInt(entity.CurHP - realDamage);
-                                Debug.Log(entity.CurHP.ToString());
+                                entity.GetHurt(int.Parse(Params[1]));
+                                Debug.Log(entity.Hp.ToString());
                             }
                             else
                             {
-                                if (bool.Parse(Params[2]))
+                                if (Params[1].Contains('-'))
                                 {
-                                    temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])].AddValue(int.Parse(Params[1]));
+                                    temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])].AddValue(temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])] * -1);
                                 }
                                 else
                                 {
-                                    temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])]
-                                        .AddValue(int.Parse(Params[1]), true);
+                                    if (bool.Parse(Params[2]))
+                                    {
+                                        temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])].AddValue(int.Parse(Params[1]));
+                                    }
+                                    else
+                                    {
+                                        temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])]
+                                            .AddValue(int.Parse(Params[1]), true);
+                                    }
                                 }
                             }
 
@@ -80,21 +89,43 @@ namespace Game.System
                             else
                             {
                                 temp.AddState(GameBody.GetModel<StateModel>().GetStateFromID(Params[0]),
-                                    int.Parse(Params[1]) == -1 ? 9999 : int.Parse(Params[1]));
+                                    int.Parse(Params[1]) == -1 ? 9999 : int.Parse(Params[1]),
+                                    target);
+                                if (bool.Parse(Params[2]))
+                                {
+                                    // 当场生效
+                                    Execution(GameBody.GetModel<StateModel>().GetStateFromID(Params[0]).buffCMD,target);
+                                }
                             }
 
                             break;
                         case BuffType.Create:
-
+                            string Path = "";
+                            if (bool.Parse(Params[0]))
+                            {
+                                Path = "Assets/Resources/Prefabs/MapHexCell/";
+                            }
+                            else
+                            {
+                                Path = "Assets/Resources/Prefabs/Enemy/";
+                            }
                             if (Params[2].Contains("["))
                             {
                                 List<string> xy_str =
                                     new List<string>(Params[2].Replace("[", "").Replace("]", "").Split(new[] {','}));
                                 Vector2 xy = new Vector2(int.Parse(xy_str[0]), int.Parse(xy_str[1]));
                                 GameObject.Instantiate(
-                                    ResourcesManager.LoadPrefab("Assets/Resources/Prefabs/Enemy/",
+                                    ResourcesManager.LoadPrefab(Path,
                                         Params[1] + ".prefab"),
                                     GridManager.Instance.hexCells[(int) xy.x, (int) xy.y].transform.position,
+                                    Quaternion.identity);
+                            }
+                            else if (Params[2].Contains("this"))
+                            {
+                                GameObject.Instantiate(
+                                    ResourcesManager.LoadPrefab(Path,
+                                        Params[1] + ".prefab"),
+                                    target.transform.position,
                                     Quaternion.identity);
                             }
                             else
@@ -105,7 +136,7 @@ namespace Game.System
                                 foreach (var cell in cellList)
                                 {
                                     GameObject.Instantiate(
-                                        ResourcesManager.LoadPrefab("Assets/Resources/Prefabs/Enemy/",
+                                        ResourcesManager.LoadPrefab(Path,
                                             Params[1] + ".prefab"),
                                         cell.transform.position,
                                         Quaternion.identity);

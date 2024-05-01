@@ -13,14 +13,16 @@ namespace Buff
         public delegate void TCustom(params Param[] param);
 
         public Dictionary<ValueKey, ValueInt> ValueUnits;       // 玩家数值类
-        public Dictionary<State, int> StateUnits;               // 玩家状态类
+        public List<StateUnit> StateUnits;                      // 玩家状态类
         public Dictionary<ActionKey, Custom> FuncUnits;         // 玩家方法类
         public Dictionary<TActionKey, TCustom> TFuncUnits;      // 有参玩家方法类
 
         private void Awake()
         {
             ValueUnits = new Dictionary<ValueKey, ValueInt>();
-            StateUnits = new Dictionary<State, int>();
+            StateUnits = new List<StateUnit>();
+            FuncUnits = new Dictionary<ActionKey, Custom>();
+            TFuncUnits = new Dictionary<TActionKey, TCustom>();
         }
 
         public ValueInt Get(string paramName)
@@ -43,12 +45,12 @@ namespace Buff
             TFuncUnits.Add(funcName, func);
         }
         
-        public void AddState(State state, int flow)
+        public void AddState(State state, int flow, GameObject target)
         {
-            StateUnits.Add(state, flow);
+            StateUnits.Add(new StateUnit(state, flow, target));
         }
 
-        public void RemoveState(State state)
+        public void RemoveState(StateUnit state)
         {
             StateUnits.Remove(state);
         }
@@ -66,23 +68,23 @@ namespace Buff
         {
             foreach (var unit in StateUnits)
             {
-                if (unit.Key.isStartExec)
+                if (unit.Info.isStartExec)
                 {
-                    if (unit.Key.isAdditive)
+                    if (unit.Info.isAdditive)
                     {
-                        for (int i = 0; i < unit.Value; i++)
+                        for (int i = 0; i < unit.Duration; i++)
                         {
-                            StateSystem.Execution(unit.Key.buffCMD, transform.parent.gameObject);   
+                            StateSystem.Execution(unit.Info.buffCMD, transform.parent.gameObject);   
                         }
                     }
                     else
                     {
-                        StateSystem.Execution(unit.Key.buffCMD, transform.parent.gameObject);
+                        StateSystem.Execution(unit.Info.buffCMD, transform.parent.gameObject);
                     }
-                    StateUnits[unit.Key] -= 1;
-                    if (StateUnits[unit.Key] < 0)
+
+                    if (unit.Decrement())
                     {
-                        RemoveState(unit.Key);
+                        RemoveState(unit);
                     }
                 }
             }
@@ -92,30 +94,38 @@ namespace Buff
         {
             foreach (var unit in StateUnits)
             {
-                if (!unit.Key.isStartExec)
+                if (!unit.Info.isStartExec)
                 {
-                    if (unit.Key.isAdditive)
+                    if (unit.Info.isAdditive)
                     {
-                        for (int i = 0; i < unit.Value; i++)
+                        for (int i = 0; i < unit.Duration; i++)
                         {
-                            StateSystem.Execution(unit.Key.buffCMD, transform.parent.gameObject);   
+                            StateSystem.Execution(unit.Info.buffCMD, transform.parent.gameObject);   
                         }
                     }
                     else
                     {
-                        StateSystem.Execution(unit.Key.buffCMD, transform.parent.gameObject);
+                        StateSystem.Execution(unit.Info.buffCMD, transform.parent.gameObject);
                     }
-                    StateUnits[unit.Key] -= 1;
                 }
-                if (StateUnits[unit.Key] < 0)
+                if (unit.Decrement())
                 {
-                    RemoveState(unit.Key);
+                    RemoveState(unit);
                 }
             }
         }
+
+        public StateUnit GetUnitFromID(string id)
+        {
+            foreach (var unit in StateUnits)
+            {
+                if (unit.Info.id == id)
+                {
+                    return unit;
+                }
+            }
+            return null;
+        }
     }
-
-    // 赋值整数
-
 
 }

@@ -20,32 +20,45 @@ namespace Buff
         public bool             isAdditive;       // 能否叠加
         public bool             isStartExec;      // 回合开始触发
         public List<string>     death;            // 状态亡语
-        
-
-        // 以id形式判断
-        public static bool operator ==(State left, State right)
-        {
-            return left.id == right.id;
-        }
-        public static bool operator !=(State left, State right)
-        {
-            return !(left == right);
-        }
-        
-        public static bool operator ==(State left, string right)
-        {
-            return left == right;
-        }
-
-        public static bool operator !=(State left, string right)
-        {
-            return !(left == right);
-        }
 
         public bool IsVaild()
         {
             return string.IsNullOrEmpty(id);
         }
+    }
+
+    public class StateUnit
+    {
+        private State info;
+        public int Duration;
+        public GameObject Target;
+
+        public StateUnit(State theInfo, int theDuration, GameObject target)
+        {
+            info = theInfo;
+            Duration = theDuration;
+            Target = target;
+        }
+
+        ~StateUnit()
+        {
+            StateSystem.Execution(info.death, Target);
+        }
+
+        public State Info
+        {
+            get => info;
+        }
+
+        /// <summary>
+        /// 持续回合递减
+        /// </summary>
+        /// <returns>bool 是否已小于零</returns>
+        public bool Decrement()
+        {
+            Duration--;
+            return Duration < 0;
+        } 
     }
 
 }

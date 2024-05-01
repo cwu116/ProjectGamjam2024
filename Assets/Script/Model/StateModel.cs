@@ -25,7 +25,7 @@ namespace Game.Model
         {
             foreach (var state in States)
             {
-                if (state == id)
+                if (state.id == id)
                 {
                     return state;
                 }
