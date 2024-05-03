@@ -19,6 +19,7 @@ public class Frog : Enemy
     private void Awake()
     {
         buff = GetComponent<BuffComponent>();
+        IsPlayer = false;
     }
 
     void Start()

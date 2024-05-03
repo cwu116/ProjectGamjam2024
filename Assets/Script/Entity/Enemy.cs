@@ -13,6 +13,7 @@ public class Enemy : BaseEntity
     private void Awake()
     {
         buff = GetComponent<BuffComponent>();
+        IsPlayer = false;
     }
 
     private void Start()

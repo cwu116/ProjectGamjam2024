@@ -11,6 +11,7 @@ public class Player : BaseEntity
     private void Awake()
     {
         SetModel("Player");
+        IsPlayer = true;
     }
 
     private void Start()
