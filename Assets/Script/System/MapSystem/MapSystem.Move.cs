@@ -62,6 +62,31 @@ namespace Game.System
         }
 
         /// <summary>
+        /// 得到完整格子路径
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public List<HexCell> GetPath(Vector2 origin, Vector2 target)
+        {
+            HexCell[,] hexCells = GridManager.Instance.hexCells;
+            AStar aStar = new AStar(hexCells);
+            Point start = new Point((int)origin.x, (int)origin.y);
+            Point end = new Point((int)target.x, (int)target.y);
+            List<Point> path = aStar.FindPath(start, end);
+            List<HexCell> pathHexCell = new List<HexCell>();
+            if (path != null)
+            {
+                for(int i = 0; i < path.Count; i++)
+                {
+                    pathHexCell.Add(hexCells[path[i].X, path[i].Y]);
+                }
+                return pathHexCell;
+            }
+            return null;
+        }
+
+        /// <summary>
         /// 获取当玩家进入进阶范围时，移动到的下一格目标地图位置
         /// </summary>
         /// <param name="origin"></param>
