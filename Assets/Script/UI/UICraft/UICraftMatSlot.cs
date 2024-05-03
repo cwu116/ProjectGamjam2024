@@ -6,20 +6,19 @@ using Managers;
 
 namespace Game.UI
 {
-    public class CraftSlot : MonoBehaviour, IPointerClickHandler
+    public class UICraftMatSlot : MonoBehaviour, IPointerClickHandler
     {
-        //public Item_s item;
+        public Item item;
         TextMeshProUGUI countText;
+        TextMeshProUGUI matName;
         Image icon;
         Transform flask;
-        GameObject prefab;
         private void Start()
         {
-            icon =transform.Find("slot").GetComponent<Image>();
+            icon =transform.Find("Icon").GetComponent<Image>();
             countText = transform.Find("Count").GetComponent<TextMeshProUGUI>();
-            Debug.Log(countText);
-            flask = UIManager.Get<UICraft>().transform.Find("Flask");
-            prefab = Resources.Load<GameObject>("UICraftElement");
+            matName = transform.Find("Name").GetComponent<TextMeshProUGUI>();
+            //flask = UIManager.Get<UICraft>().transform.Find("Flask");
 
             countText.text = "10";
         }
@@ -31,8 +30,7 @@ namespace Game.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            GameObject obj = Instantiate(prefab, flask);
-            obj.GetComponent<UICraftElement>().Init();
+            //sendEvent(Item)
         }
     }
 }

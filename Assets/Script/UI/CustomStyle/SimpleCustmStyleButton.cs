@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using Managers;
 
 public class SimpleCustmStyleButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
@@ -14,6 +15,7 @@ public class SimpleCustmStyleButton : MonoBehaviour, IPointerEnterHandler, IPoin
     public void OnPointerDown(PointerEventData eventData)
     {
         transform.DOScale(originalScale*0.8f, 0.2f);
+        AudioManager.PlaySound(AudioPath.Click);
     }
     public void OnPointerUp(PointerEventData eventData)
     {
@@ -23,6 +25,7 @@ public class SimpleCustmStyleButton : MonoBehaviour, IPointerEnterHandler, IPoin
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.DOScale(originalScale*1.2f, 0.2f);
+
     }
 
     public void OnPointerExit(PointerEventData eventData)

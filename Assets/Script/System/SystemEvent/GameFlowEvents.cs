@@ -9,4 +9,8 @@ namespace Game.System
         public int currentMap;
         public int nextMap;
     }
+
+    struct GameStartTrigger:IEvent
+    { }
+
 }

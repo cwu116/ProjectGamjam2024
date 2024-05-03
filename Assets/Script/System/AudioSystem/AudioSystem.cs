@@ -13,7 +13,7 @@ namespace Game.System
         public override void InitSystem()
         {
             soundSource = Camera.main.transform.Find("SoundSource").GetComponent<AudioSource>();
-            soundSource = Camera.main.transform.Find("MusicSource").GetComponent<AudioSource>();
+            musicSource = Camera.main.transform.Find("MusicSource").GetComponent<AudioSource>();
             RegisterEvents();
         }
 

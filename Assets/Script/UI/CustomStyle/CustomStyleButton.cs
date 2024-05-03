@@ -1,6 +1,7 @@
 using UnityEngine.EventSystems;
 using DG.Tweening;
 using UnityEngine;
+using Managers;
 
 public class CustomStyleButton : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerDownHandler,IPointerUpHandler
 {
@@ -16,6 +17,7 @@ public class CustomStyleButton : MonoBehaviour,IPointerEnterHandler,IPointerExit
     public void OnPointerDown(PointerEventData eventData)
     {
         transform.DOScale(originalScale * 0.8f, 0.2f);
+        AudioManager.PlaySound(AudioPath.Click);
     }
     public void OnPointerUp(PointerEventData eventData)
     {
@@ -30,7 +32,9 @@ public class CustomStyleButton : MonoBehaviour,IPointerEnterHandler,IPointerExit
         q.Append(transform.DORotate(originalRotation + new Vector3(0, 0, 30), 0.1f));
         q.Append(transform.DORotate(originalRotation + new Vector3(0, 0, -30), 0.1f));
         q.Append(transform.DORotate(originalRotation + new Vector3(0, 0, 30), 0.1f));
+        q.Append(transform.DORotate(originalRotation + new Vector3(0, 0, -30), 0.1f));
         q.Append(transform.DORotate(originalRotation, 0.1f).SetEase(Ease.OutQuart));
+
     }
 
     public void OnPointerExit(PointerEventData eventData)

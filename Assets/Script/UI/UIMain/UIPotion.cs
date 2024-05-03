@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace Game.UI
 {
-    public class UIPotion : MonoBehaviour, IPointerClickHandler
+    public class UIPotion : MonoBehaviour, IPointerClickHandler,IPointerEnterHandler,IPointerExitHandler
     {
         Image icon;
         private void Start()
@@ -21,6 +21,16 @@ namespace Game.UI
         {
             // π”√“©º¡
 
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            throw new global::System.NotImplementedException();
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            throw new global::System.NotImplementedException();
         }
     }
 }

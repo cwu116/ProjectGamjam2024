@@ -18,7 +18,7 @@ namespace Game
             RegisterModels();
             RegisterSystems();
 
-            InitModels();
+            //InitModels();
             InitSystems();
         }
 
