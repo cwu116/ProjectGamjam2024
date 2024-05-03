@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using Game;
 using Game.Extensions;
 using Game.System;
@@ -16,13 +16,13 @@ namespace Game.UI
         {
         }
 
-        public override void Show(IUiData uiData)
-        {
-            EventSystem.Send(new MapInitFinishEvent()
-            {
-                Level=1
-            });
-        }
+        //public override void Show(IUiData uiData)
+        //{
+        //    EventSystem.Send(new MapInitFinishEvent()
+        //    {
+        //        Level = 1
+        //    });
+        //}
 
         public override void Refresh()
         {

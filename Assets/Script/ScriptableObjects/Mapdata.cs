@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(menuName = "ScriptableObject/CreateMapdata")]
-public class Mapdata : ScriptableObject
+
+public class Mapdata
 {
-    public int height = 0;
-    public int width = 0;
-    public HexType[] cells ;
+    public int height;
+    public int width;
+    public HexType[] cells;
+    public string[] enemyNames;
+    public int[] enemyposx;
+    public int[] enemyposy;
+
 }
