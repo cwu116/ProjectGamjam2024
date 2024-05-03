@@ -19,6 +19,8 @@ public partial class BaseEntity : MonoBehaviour
     
     protected BuffComponent buff; //自身buff
 
+    private bool bIsObstacle; // 是障碍物
+
     private int currentHeightIndex;
     private int currentWidthIndex;
 
@@ -89,6 +91,12 @@ public partial class BaseEntity : MonoBehaviour
     public HexCell GetCurrentHexCell()
     {
         return this.CurHexCell;
+    }
+
+    public bool IsObstacle
+    {
+        get => bIsObstacle;
+        set { bIsObstacle = value; }
     }
 
 }
