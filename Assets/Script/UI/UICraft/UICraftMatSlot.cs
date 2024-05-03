@@ -8,10 +8,10 @@ namespace Game.UI
 {
     public class UICraftMatSlot : MonoBehaviour, IPointerClickHandler
     {
-        public Item item;
+        public Item_s item;
         TextMeshProUGUI countText;
         TextMeshProUGUI matName;
-        Image icon;
+        public Image icon;
         Transform flask;
         private void Start()
         {
@@ -23,7 +23,7 @@ namespace Game.UI
             countText.text = "10";
         }
 
-        public void Refresh(/*Item item*/)
+        public void Refresh(Item_s item)
         {
 
         }

@@ -6,7 +6,7 @@ using Game.System;
 
 public class UIRecipeElement : MonoBehaviour, IPointerClickHandler
 {
-    public Item item;
+    public Item_s item;
     public void OnPointerClick(PointerEventData eventData)
     {
         Game.System.EventSystem.Send(new UIRecipeElementClickEvent() { element = this });

@@ -11,6 +11,11 @@ namespace Game.System
 
     struct UndoEvent:IEvent
     {
-        ICanUndo undoOperation;
+        public ICanUndo undoOperation;
+    }
+
+    struct UsePotionEvent:IEvent
+    {
+        public Item_Data potion;
     }
 }

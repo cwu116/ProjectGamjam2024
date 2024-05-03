@@ -2,8 +2,20 @@
 {
     struct CraftTriggerEvent:IEvent
     {
-        //材料
-        //材料
-        //特殊材料
+    }
+
+    struct CraftRemoveMaterialEvent:IEvent
+    {
+        public Item_s item;
+    }
+
+    struct CraftAddMaterialEvent:IEvent
+    {
+        public Item_s item;
+    }
+
+    struct CraftResultEvent:IEvent
+    {
+        public Item_Data result;
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class UICraftIcon : MonoBehaviour, IPointerClickHandler
 {
     public bool isSpecial;
-    public Item item;
+    public Item_s item;
     public Image icon;
 
     private void Awake()

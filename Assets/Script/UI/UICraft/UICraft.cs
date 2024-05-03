@@ -7,10 +7,6 @@ using Game.System;
 using TMPro;
 using System;
 
-public class Item
-{
-    public Sprite sprite;
-}
 namespace Game.UI
 {
     public class UICraft : BasePanel,ICanUndo
@@ -97,7 +93,10 @@ namespace Game.UI
             btnCraft.onClick.AddListener(() => EventSystem.Send<CraftTriggerEvent>());
             EventSystem.Register<UICraftIconClickEvent>(v => OnUICraftIconClicked(v.craftIcon));
             EventSystem.Register<UICraftMaterialClickEvent>(v => OnUICraftMaterialClicked(v.item));
+            EventSystem.Register<RefreshBackpackUIEvent>(v => OnRefreshBackpackUI(v));
+            EventSystem.Register<CraftResultEvent>(v => OnCraftResult(v));
         }
+
 
         private void OnUICraftIconClicked(UICraftIcon c)
         {
@@ -106,19 +105,17 @@ namespace Game.UI
             {
                 specialMat.gameObject.SetActive(true);
                 normalMat.gameObject.SetActive(false);
-                RefreshSpecialMat();
             }
             else
             {
                 specialMat.gameObject.SetActive(false);
                 normalMat.gameObject.SetActive(true);
-                RefreshNormalMat();
             }
-
+            EventSystem.Send<RefreshBackpackUIRequest>();
         }
 
         Dictionary<UICraftIcon, GameObject> UICraftElements=new();
-        private void OnUICraftMaterialClicked(Item item)
+        private void OnUICraftMaterialClicked(Item_s item)
         {
             if (currentCraftIcon != null)
             {
@@ -130,19 +127,18 @@ namespace Game.UI
                         Destroy(UICraftElements[currentCraftIcon]);
                         UICraftElements.Remove(currentCraftIcon);
                     }
+                    EventSystem.Send(new CraftRemoveMaterialEvent() { item=item});
                 }
                 currentCraftIcon.item = item;
                 currentCraftIcon.icon.sprite = item.sprite;
+                EventSystem.Send(new CraftAddMaterialEvent() { item = item });
                 //装上材料  减少物品
                 GameObject go= GameObject.Instantiate(craftPrefab, flask);
                 go.transform.position = spawnPoint.position;
                 go.GetComponent<Image>().sprite = item.sprite;
                 UICraftElements[currentCraftIcon] = go;
             }
-            RefreshNormalMat();
-            RefreshSpecialMat();
-            RefreshCraftIconState();
-
+            EventSystem.Send<RefreshBackpackUIRequest>();
         }
 
         public override void Refresh()
@@ -150,17 +146,33 @@ namespace Game.UI
             currentCraftIcon = null;
             UICraftElements = null;
             RefreshCraftIconState();
+            EventSystem.Send<RefreshBackpackUIRequest>();
         }
 
-        void RefreshNormalMat()
+        private void OnRefreshBackpackUI(RefreshBackpackUIEvent v)
         {
-
+            for (int i = 0; i < normalMaterialSlots.Count; i++)
+            {
+                var slot = normalMaterialSlots[i];
+                slot.icon.gameObject.SetActive(i < v.normalItems.Count );
+                if(i<v.normalItems.Count)
+                    slot.Refresh(v.normalItems[i]);
+            }
+            for (int i = 0; i < specialMaterialSlots.Count; i++)
+            {
+                var slot = specialMaterialSlots[i];
+                slot.icon.gameObject.SetActive(i < v.specialItems.Count);
+                if (i < v.specialItems.Count)
+                    slot.Refresh(v.specialItems[i]);
+            }
         }
 
-        void RefreshSpecialMat()
+        private void OnCraftResult(CraftResultEvent v)
         {
-
+            //合成药水表现
+            EventSystem.Send<RefreshBackpackUIRequest>();
         }
+
 
         void RefreshCraftIconState()
         {
@@ -197,16 +209,16 @@ namespace Game.UI
             {
                 if(iconSlot.item!=null)
                 {
+                    EventSystem.Send(new CraftRemoveMaterialEvent() { item = iconSlot.item });
                     iconSlot.item = null;
                     iconSlot.icon.sprite = null;
-                    //回收道具
                 }
             }
             if(specialIcon.item!=null)
             {
+                EventSystem.Send(new CraftRemoveMaterialEvent() { item = specialIcon.item });
                 specialIcon.item = null;
                 specialIcon.icon.sprite = null;
-                //回收道具
             }
 
             foreach(var element in UICraftElements)
@@ -216,10 +228,6 @@ namespace Game.UI
             UICraftElements.Clear();
         }
 
-        public override void Show(IUiData uiData)
-        {
-
-        }
 
         public void Undo()
         {

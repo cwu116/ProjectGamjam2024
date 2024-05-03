@@ -21,7 +21,7 @@ namespace Game.System
 
     struct UICraftMaterialClickEvent:IEvent
     {
-        public Item item;
+        public Item_s item;
     }
 
     struct UIPotionEnterEvent:IEvent
@@ -34,5 +34,16 @@ namespace Game.System
         public UIRecipeElement element;
     }
 
+    struct RefreshBackpackUIEvent : IEvent
+    {
+        public List<Item_s> normalItems;
+        public List<Item_s> specialItems;
+        public List<Item_Data> potions;
+    }
+
+    struct RefreshBackpackUIRequest:IEvent
+    {
+
+    }
 
 }
