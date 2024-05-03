@@ -43,7 +43,17 @@ namespace Game.System
                     //TODO::设置游戏为通关
                 }
 
-                player.GetComponent<Player>().MoveTimes.AddValue(-1);
+                if (string.IsNullOrEmpty(player.GetComponent<Player>().SpawningPath))
+                {
+                    string[] spawnInfo = player.GetComponent<Player>().SpawningPath.Split(new []{'*'});
+                    StateSystem.Execution(new List<string>()
+                    {
+                        string.Format("Delay:[Create:{0},this],1", spawnInfo[0]),
+                        string.Format("Delay:[Create:{0},this],{1}", cell.Type.ToString(), 1+spawnInfo[1])
+                    }, cell.gameObject);
+                    player.GetComponent<Player>().MoveTimes.AddValue(-1);
+                    player.GetComponent<Player>().SpawningPath = null;
+                }
             }
 
             // 设定玩家最后位于的格子
@@ -107,8 +117,17 @@ namespace Game.System
                 {
                     StateSystem.Execution(new List<string>(cell.Instructions), enemy);
                 }
-
-                enemy.GetComponent<Enemy>().MoveTimes.AddValue(-1);
+                if (string.IsNullOrEmpty(enemy.GetComponent<Enemy>().SpawningPath))
+                {
+                    string[] spawnInfo = enemy.GetComponent<Enemy>().SpawningPath.Split(new []{'*'});
+                    StateSystem.Execution(new List<string>()
+                    {
+                        string.Format("Delay:[Create:{0},this],1", spawnInfo[0]),
+                        string.Format("Delay:[Create:{0},this],{1}", cell.Type.ToString(), 1+spawnInfo[1])
+                    }, cell.gameObject);
+                    enemy.GetComponent<Enemy>().MoveTimes.AddValue(-1);
+                    enemy.GetComponent<Enemy>().SpawningPath = null;
+                }
             }
 
             // 设定敌人最后位于的格子

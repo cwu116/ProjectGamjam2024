@@ -10,6 +10,7 @@ namespace Game.System
         public void PlayerStatesEnd() {}
         public void EnemyStatesStart() {}
         public void EnemyStatesEnd() {}
+        public void CheckForDelay(){}
     }
 }
 

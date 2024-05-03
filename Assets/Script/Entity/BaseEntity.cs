@@ -26,6 +26,8 @@ public partial class BaseEntity : MonoBehaviour
     private int currentHeightIndex;
     private int currentWidthIndex;
 
+    private string spawningPath; //生成地块属性
+
     private void Awake()
     {
         _myType = _model.entityType;
@@ -111,6 +113,12 @@ public partial class BaseEntity : MonoBehaviour
     {
         get => bisPlayer;
         set => bisPlayer = value;
+    }
+
+    public string SpawningPath
+    {
+        get => spawningPath;
+        set => spawningPath = value;
     }
 
 }

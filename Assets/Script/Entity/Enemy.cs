@@ -21,6 +21,12 @@ public class Enemy : BaseEntity
         SetModel(name);
         buff.RegisterFunc(ActionKey.AutoMove, AutoMove);
         buff.RegisterFunc(ActionKey.Hatred, Hatred);
+        
+        buff.RegisterFunc(ActionKey.Die, Die);
+        buff.RegisterFunc(TActionKey.Away, Away);
+        buff.RegisterFunc(TActionKey.SpawnPath, SpawnPath);
+        buff.RegisterFunc(TActionKey.Sleep, Sleep);
+        
     }
 
     public void AutoMove() { }

@@ -11,53 +11,23 @@ namespace Game.System
     {
         // 全局检查玩家状态 
         private StateModel stateModel;
+        private List<DelayUnit> delayStuff;
 
         public override void InitSystem()
         {
             Debug.Log("Init StateSystem");
             stateModel = GameBody.GetModel<StateModel>();
+            delayStuff = new List<DelayUnit>();
         }
 
-        // 回合开始执行
-        [Obsolete]
-        public void PlayerStateWithStart()
+        // 延时检查装置 ：加在回合初
+        public void CheckForDelay()
         {
-            foreach (var entity in GameObject.FindGameObjectsWithTag("Entity"))
+            foreach (var stuff in delayStuff)
             {
-                foreach (var unit in entity.GetComponent<BuffComponent>().StateUnits)
+                if (stuff.Decrement())
                 {
-                    if (unit.Info.isStartExec)
-                    {
-                        Execution(unit.Info.buffCMD, entity);
-                        
-                    }
-                }
-            }
-        }
-
-        [Obsolete]
-        // 回合结束执行
-        public void StateWithEnd()
-        {
-            foreach (var entity in GameObject.FindGameObjectsWithTag("Entity"))
-            {
-                foreach (var unit in entity.GetComponent<BaseEntity>().BuffComp.StateUnits)
-                {
-                    if (!unit.Info.isStartExec)
-                    {
-                        if (unit.Duration < 0)
-                        {
-                            entity.GetComponent<BaseEntity>().BuffComp.RemoveState(unit);
-                        }
-                        else
-                        {
-                            Execution(unit.Info.buffCMD, entity);
-                            if (unit.Decrement())
-                            {
-                                entity.GetComponent<BuffComponent>().RemoveState(unit);
-                            }
-                        }
-                    }
+                    delayStuff.Remove(stuff);
                 }
             }
         }

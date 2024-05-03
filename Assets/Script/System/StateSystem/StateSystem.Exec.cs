@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Buff;
 using Buff.Config;
 using Buff.Tool;
@@ -145,26 +146,26 @@ namespace Game.System
 
                             break;
                         case BuffType.Action:
-                            if (temp.FuncUnits.ContainsKey(Enum.Parse<ActionKey>(Params[0])))
+                            if (Enum.TryParse(Params[0], out ActionKey outer))
                             {
-                                temp.FuncUnits[Enum.Parse<ActionKey>(Params[0])].Invoke();
+                                temp.FuncUnits[outer].Invoke();
                             }
-                            else if (temp.TFuncUnits.ContainsKey(Enum.Parse<TActionKey>(Params[0])))
+                            else if (Enum.TryParse(Params[0], out TActionKey touter))
                             {
                                 List<string> innerParams = new List<string>();
                                 // params[] = "ResumeHp","3","true","[int=1","string="a"]"
                                 for (int i = Params.Count; i > 0; i--)
                                 {
-                                    innerParams.Add(Params[i].Replace("[", "").Replace("]", ""));
-                                    if (Params[i].Contains("["))
+                                    innerParams.Add(Params[i-1].Replace("[", "").Replace("]", "").Replace("this",target.name));
+                                    if (Params[i-1].Contains("["))
                                     {
                                         break;
                                     }
                                 }
-
-                                innerParams.RemoveAt(0);
+                                innerParams.Reverse();
+                                Debug.Log(string.Join(' ', innerParams));
                                 ParamList list = new ParamList(innerParams);
-                                temp.TFuncUnits[Enum.Parse<TActionKey>(Params[0])].Invoke(list);
+                                temp.TFuncUnits[touter].Invoke(list);
                             }
                             else
                             {
@@ -177,16 +178,14 @@ namespace Game.System
                             string CMDs = string.Join(':', args);
                             Params = new List<string>(CMDs.Split(new[] {','}));
                             int durations = int.Parse(Params[^1]);
-                            Params.RemoveAt(Params.Count);
+                            Params.RemoveAt(Params.Count-1);
 
-                            string final = string.Join(',', Params).Remove(0);
-                            final = final.Remove(final.Length - 1);
+                            string final = string.Join(',', Params);
 
+                            final = final.Replace("[","").Replace("]","");
                             List<string> NewCMDList = new List<string>(final.Split(new char[] {'*'}));
-
                             // 传入回合延时函数
-                            // XXX.DelayFlow(string[] cmdList, int count, GameObject target);
-
+                            GameBody.GetSystem<StateSystem>().delayStuff.Add(new DelayUnit(NewCMDList, durations, target));
                             break;
                     }
                 }

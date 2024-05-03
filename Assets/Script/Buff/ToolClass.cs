@@ -61,6 +61,7 @@ namespace Buff.Tool
         }
         public ParamList(List<string> outer)
         {
+            paramList = new List<Param>();
             foreach (var item in outer)
             {
                 paramList.Add(new Param(item));
