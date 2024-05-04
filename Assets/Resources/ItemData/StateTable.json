@@ -30,7 +30,7 @@
     "buffName" : "燃烧瓶",
     "id" : "Molotov_cocktail",
     "description" : "使目标获得燃烧1，其移动经过的路径会在下个回合生成火焰环境，持续3个回合",
-    "buffCMD" : [ "State:Burning,1,true", "Action:SpawnPath,[0,3]" ],
+    "buffCMD" : [ "State:Burning,1,true", "Action:SpawnPath,[Fire,3]" ],
     "isAdditive" : false,
     "isStartExec" : true,
     "death" : []

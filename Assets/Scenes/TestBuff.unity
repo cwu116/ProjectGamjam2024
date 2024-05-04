@@ -686,7 +686,7 @@ MonoBehaviour:
     name: 
     description: 
     containBuffs:
-    - ChangeValue:Damage,-1
+    - Action:SpawnPath,[1,2]
 --- !u!114 &683622082
 MonoBehaviour:
   m_ObjectHideFlags: 0

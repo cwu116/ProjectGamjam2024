@@ -31,16 +31,16 @@ namespace Buff.Tool
         {
             return param.ToString();
         }
-        
-        public static implicit operator int(Param param)
+
+        public int ToInt()
         {
-            return int.Parse(param);
+            return int.Parse(_value.ToString());
         }
 
         // 转类布尔
         public static implicit operator bool(Param param)
         {
-            return param != 0;
+            return param.ToInt() != 0;
         }
     }
 
@@ -61,6 +61,7 @@ namespace Buff.Tool
         }
         public ParamList(List<string> outer)
         {
+            paramList = new List<Param>();
             foreach (var item in outer)
             {
                 paramList.Add(new Param(item));
@@ -115,6 +116,11 @@ namespace Buff.Tool
         public override string ToString()
         {
             return (baseValue + changeValue).ToString();
+        }
+        
+        public static implicit operator bool(ValueInt unit)
+        {
+            return unit != 0;
         }
         
     }

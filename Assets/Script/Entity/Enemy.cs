@@ -13,16 +13,21 @@ public class Enemy : BaseEntity
     private void Awake()
     {
         buff = GetComponent<BuffComponent>();
+        IsPlayer = false;
     }
 
     private void Start()
     {
         SetModel(name);
-        buff.RegisterFunc(ActionKey.AutoMove, AutoMove);
         buff.RegisterFunc(ActionKey.Hatred, Hatred);
+        
+        buff.RegisterFunc(ActionKey.Die, Die);
+        buff.RegisterFunc(TActionKey.Away, Away);
+        buff.RegisterFunc(TActionKey.SpawnPath, SpawnPath);
+        buff.RegisterFunc(TActionKey.Sleep, Sleep);
+        
     }
-
-    public void AutoMove() { }
+    
     public override void UseSkill(BaseEntity target)
     {
         base.UseSkill(target);
@@ -31,5 +36,6 @@ public class Enemy : BaseEntity
     public override void Hatred()
     {
         base.Hatred();
+        Harted = true;
     }
 }

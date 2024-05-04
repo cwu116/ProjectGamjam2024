@@ -163,6 +163,27 @@ public partial class BaseEntity : MonoBehaviour
         }
     }
 
+    public ValueInt WatchRange // 警戒圈
+    {
+        get
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.WatchRange))
+            {
+                return comp.ValueUnits[ValueKey.WatchRange];
+            }
+
+            return new ValueInt(_model.watchRange);
+        }
+        set
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.WatchRange))
+            {
+                comp.ValueUnits[ValueKey.WatchRange] = value;
+            }
+        }
+    }
     public ValueInt RangeLeft // 最小技能范围
     {
         get

@@ -61,5 +61,35 @@ namespace Buff
         } 
     }
 
+    public class DelayUnit
+    {
+        public int DelayTime;
+        public List<string> DelayBuff;
+        public GameObject Target;
+        
+
+        public DelayUnit(List<string> buffs, int duration, GameObject target)
+        {
+            DelayBuff = buffs;
+            DelayTime = duration;
+            Target = target;
+        }
+        
+        /// <summary>
+        /// 递减计时器
+        /// </summary>
+        /// <returns>bool 是否已为零</returns>
+        public bool Decrement()
+        {
+            DelayTime--;
+            return DelayTime <= 0;
+        }
+
+        ~DelayUnit()
+        {
+            StateSystem.Execution(DelayBuff, Target);
+        }
+    }
+
 }
 

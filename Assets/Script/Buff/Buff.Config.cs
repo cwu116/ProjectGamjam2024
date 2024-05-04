@@ -49,6 +49,7 @@ namespace Buff.Config
         Attack,                 // 攻击力
         Defence,                // 防御力
         MinSkillRange,          // 最小技能范围
+        WatchRange,             // 警戒范围
         bInvisible,             // 隐形
         bMislead,               // 误导
         bIsSilent,              // 沉默
