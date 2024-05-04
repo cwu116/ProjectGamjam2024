@@ -33,7 +33,6 @@ public class Player : BaseEntity
         transform.position = _curHexCell.transform.position;
         GameBody.GetSystem<MoveSystem>().PlayerMoveTo(gameObject, _curHexCell.Pos);
         EventSystem.Send<PlayerTurnBeginTrigger>();
-        
     }
 
 

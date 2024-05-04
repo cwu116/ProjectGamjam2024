@@ -19,7 +19,11 @@ namespace Game.System
 
         private void OnPlayerTurnBegin(AfterPlayerTurnBeginEvent v)
         {
-           Debug.Log(  GetRoundHexCell(Player.instance.CurHexCell.Pos, v.moveTimes > 0 ? 1 : 0));
+           HexCell[] cells= GetRoundHexCell(Player.instance.CurHexCell.Pos,2);
+            foreach(var cell in cells)
+            {
+                cell.GetComponentInChildren<SpriteRenderer>().color = Color.red;
+            }
         }
 
         private void OnMapInitFinish(MapInitFinishEvent @event)

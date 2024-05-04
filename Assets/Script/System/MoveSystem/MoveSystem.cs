@@ -34,7 +34,7 @@ namespace Game.System
             player.GetComponent<Player>().LastHexCell = player.GetComponent<Player>().CurHexCell;
 
             HexCell newCell = GridManager.Instance.hexCells[(int) path.x, (int) path.y];
-            player.GetComponent<Rigidbody2D>().MovePosition(newCell.transform.position);
+            //player.GetComponent<Rigidbody2D>().MovePosition(newCell.transform.position);
             player.GetComponent<Player>().CurHexCell = newCell;
             if (newCell.Type == HexType.Transport)
             {
