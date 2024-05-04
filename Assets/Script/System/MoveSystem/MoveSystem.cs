@@ -49,11 +49,12 @@ namespace Game.System
                     string.Format("Delay:[Create:{0},this],1", spawnInfo[0]),
                     string.Format("Delay:[Create:{0},this],{1}", newCell.Type.ToString(), 1 + spawnInfo[1])
                 }, newCell.gameObject);
-                player.GetComponent<Player>().MoveTimes.AddValue(-1);
-                Debug.Log(player.GetComponent<Player>().MoveTimes);
                 player.GetComponent<Player>().SpawningPath = null;
             }
-            
+
+            Debug.LogWarning("Buff:" + string.Join(' ', newCell.Instructions));
+            StateSystem.Execution(new List<string>(newCell.Instructions), player);
+            player.GetComponent<Player>().MoveTimes.AddValue(-1);
         }
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace Game.System
             HexCell lastCell = null;
             foreach (var cell in WholePath)
             {
-                rb.MovePosition(cell.Pos);
+                rb.MovePosition(cell.transform.position);
                 enemy.GetComponent<Enemy>().CurHexCell = cell;
                 if (cell.Type == HexType.Thorns || cell.Type == HexType.Moon || cell.Type == HexType.Fire)
                 {
@@ -119,10 +120,10 @@ namespace Game.System
                         string.Format("Delay:[Create:{0},this],1", spawnInfo[0]),
                         string.Format("Delay:[Create:{0},this],{1}", cell.Type.ToString(), 1 + spawnInfo[1])
                     }, cell.gameObject);
-                    enemy.GetComponent<Enemy>().MoveTimes.AddValue(-1);
+                    
                     enemy.GetComponent<Enemy>().SpawningPath = null;
                 }
-
+                enemy.GetComponent<Enemy>().MoveTimes.AddValue(-1);
                 if (enemy.GetComponent<Enemy>().MoveTimes <= 0)
                 {
                     break;
