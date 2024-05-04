@@ -65,7 +65,7 @@ public partial class BaseEntity : MonoBehaviour
         // paramList[2] : 对象
         Debug.Log("Away");
         List<HexCell> AllCell = new List<HexCell>(GameBody.GetSystem<MapSystem>()
-            .GetRoundHexCell(transform.position, paramList[0]));
+            .GetRoundHexCell(transform.position, paramList[0].ToInt()));
         List<GameObject> entities = new List<GameObject>();
         foreach (var cell in AllCell)
         {
@@ -79,7 +79,7 @@ public partial class BaseEntity : MonoBehaviour
         foreach (var entity in entities)
         {
             List<HexCell> CellUnits = new List<HexCell>(GameBody.GetSystem<MapSystem>()
-                .GetRoundHexCell(transform.position, paramList[1]));
+                .GetRoundHexCell(transform.position, paramList[1].ToInt()));
             HexCell target = null;
             do
             {
@@ -94,7 +94,7 @@ public partial class BaseEntity : MonoBehaviour
     {
         // paramList[0] : 类型
         // paramList[1] : 持续回合
-        spawningPath = string.Format("{0}*{1}", paramList[0], paramList[1]);
+        spawningPath = string.Format("{0}*{1}", paramList[0].ToInt(), paramList[1].ToInt());
     }
 
     public void Sleep(params Param[] paramList)

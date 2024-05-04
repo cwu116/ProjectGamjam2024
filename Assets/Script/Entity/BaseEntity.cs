@@ -22,6 +22,7 @@ public partial class BaseEntity : MonoBehaviour
     private bool bIsObstacle; // 是障碍物
     private bool bWillDoubleSkill;  //是否额外触发
     private bool bisPlayer;  //是否是玩家
+    private bool bHarted;    //拥有仇恨 
 
     private int currentHeightIndex;
     private int currentWidthIndex;
@@ -119,6 +120,12 @@ public partial class BaseEntity : MonoBehaviour
     {
         get => spawningPath;
         set => spawningPath = value;
+    }
+
+    public bool Harted
+    {
+        get => bHarted;
+        set => bHarted = value;
     }
 
 }

@@ -80,7 +80,12 @@ namespace Game.System
                     enemy.GetComponent<Enemy>().MoveTimes * enemy.GetComponent<Enemy>().StepLength));
             foreach (var cellUnit in hexcells)
             {
-                if (cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
+                if (cellUnit.OccupyObject.GetComponent<BaseEntity>().bMisLead)
+                {
+                    ThrowTarget(enemy, cellUnit.OccupyObject);
+                    break;
+                }
+                else if (cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
                 {
                     ThrowTarget(enemy, cellUnit.OccupyObject);
                     break;
