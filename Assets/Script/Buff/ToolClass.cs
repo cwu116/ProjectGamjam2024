@@ -95,11 +95,13 @@ namespace Buff.Tool
         {
             if (!isChange)
             {
-                if (changeValue + Value <= 0)
+                if (this + Value <= 0)
                 {
-                    changeValue = 0;
+                    changeValue = -baseValue;
                     return;
                 }
+
+                
                 changeValue += Value;
             }
             else

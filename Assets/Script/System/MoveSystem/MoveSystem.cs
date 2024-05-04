@@ -32,6 +32,11 @@ namespace Game.System
             {
                 return;
             }
+
+            if (player.GetComponent<Player>().MoveTimes <= 0)
+            {
+                return;
+            }
             player.GetComponent<Player>().LastHexCell = player.GetComponent<Player>().CurHexCell;
 
             HexCell newCell = GridManager.Instance.hexCells[(int) path.x, (int) path.y];
