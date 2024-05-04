@@ -11,11 +11,11 @@
   {
     "buffName" : "活靶子",
     "id" : "LiveTarget",
-    "description" : "每回合结束时恢复1点血，持续2回合。",
-    "buffCMD" : ["ChangeValue:Damage,-1"],
+    "description" : "每回合结束时恢复2点血，持续2回合",
+    "buffCMD" : ["ChangeValue:Damage,-2"],
     "isAdditive" : false,
     "isStartExec" : false,
-    "death" : []
+    "death" : ["State:HateValue,-5,true"]
   },
   {
     "buffName" : "血肉祝福",

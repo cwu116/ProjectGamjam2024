@@ -15,6 +15,7 @@ public partial class BaseEntity : MonoBehaviour
     private AttackType _attackType; //攻击类型
     private MaterialType _dropMaterial; //掉落材料
     protected HexCell _curHexCell; //当前所在地图格子
+    private Vector2 _spawnPoint;  // 出生点
     private Vector3 _direction; //方向
     
     protected BuffComponent buff; //自身buff
@@ -22,7 +23,6 @@ public partial class BaseEntity : MonoBehaviour
     private bool bIsObstacle; // 是障碍物
     private bool bWillDoubleSkill;  //是否额外触发
     private bool bisPlayer;  //是否是玩家
-    private bool bHarted;    //拥有仇恨 
 
     private int currentHeightIndex;
     private int currentWidthIndex;
@@ -31,6 +31,8 @@ public partial class BaseEntity : MonoBehaviour
 
     private void Awake()
     {
+        _spawnPoint = new Vector2(){};
+            
         _myType = _model.entityType;
         _attackType = _model.attackType;
         _dropMaterial = _model.dropMaterial;
@@ -122,10 +124,10 @@ public partial class BaseEntity : MonoBehaviour
         set => spawningPath = value;
     }
 
-    public bool Harted
+    public Vector2 SpawnPoint
     {
-        get => bHarted;
-        set => bHarted = value;
+        get => _spawnPoint;
+        set => _spawnPoint = value;
     }
 
 }

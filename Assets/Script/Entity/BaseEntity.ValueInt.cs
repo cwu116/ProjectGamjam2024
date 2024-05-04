@@ -227,6 +227,27 @@ public partial class BaseEntity : MonoBehaviour
             }
         }
     }
+    public ValueInt HateValue // 仇恨值
+    {
+        get
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.HateValue))
+            {
+                return comp.ValueUnits[ValueKey.HateValue];
+            }
+
+            return new ValueInt(_model.RangeRight);
+        }
+        set
+        {
+            BuffComponent comp = GetComponent<BuffComponent>();
+            if (comp.ValueUnits.ContainsKey(ValueKey.HateValue))
+            {
+                comp.ValueUnits[ValueKey.HateValue] = value;
+            }
+        }
+    }
 
     public ValueInt bInvisible // bool隐身
     {

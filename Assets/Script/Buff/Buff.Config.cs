@@ -50,6 +50,7 @@ namespace Buff.Config
         Defence,                // 防御力
         MinSkillRange,          // 最小技能范围
         WatchRange,             // 警戒范围
+        HateValue,              // 仇恨值
         bInvisible,             // 隐形
         bMislead,               // 误导
         bIsSilent,              // 沉默
@@ -59,7 +60,6 @@ namespace Buff.Config
     public enum ActionKey
     {
         Die,                    // 立即死亡
-        AutoMove,               // 自动移动
         Hatred,                 // 添加仇恨
     }
 

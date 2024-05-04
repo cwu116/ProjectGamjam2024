@@ -65,7 +65,7 @@ public partial class BaseEntity : MonoBehaviour
         // paramList[2] : 对象
         Debug.Log("Away");
         List<HexCell> AllCell = new List<HexCell>(GameBody.GetSystem<MapSystem>()
-            .GetRoundHexCell(transform.position, paramList[0].ToInt()));
+            .GetRoundHexCell(_curHexCell.Pos, paramList[0].ToInt()));
         List<GameObject> entities = new List<GameObject>();
         foreach (var cell in AllCell)
         {
@@ -79,7 +79,7 @@ public partial class BaseEntity : MonoBehaviour
         foreach (var entity in entities)
         {
             List<HexCell> CellUnits = new List<HexCell>(GameBody.GetSystem<MapSystem>()
-                .GetRoundHexCell(transform.position, paramList[1].ToInt()));
+                .GetRoundHexCell(_curHexCell.Pos, paramList[1].ToInt()));
             HexCell target = null;
             do
             {

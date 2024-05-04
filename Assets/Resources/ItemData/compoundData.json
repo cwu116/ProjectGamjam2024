@@ -59,7 +59,7 @@
         "Material_1": "red",
         "Material_2": "yellow",
         "MaterialSpecial": "C",
-        "Description": "使目标获得燃烧1，其在燃烧状态下技能范围增加1，持续至本场战斗结束",//本场结束？
+        "Description": "使目标获得燃烧1，其在燃烧状态下技能范围增加1，持续至本场战斗结束",
         "Type": [ "State:Burning,1,true", "ChangeValue:SkillRange,1,true" ]
     },
     {
@@ -77,8 +77,8 @@
         "Material_1": "yellow",
         "Material_2": "yellow",
         "MaterialSpecial": "A",
-        "Description": "使目标获得误导2，每回合结束时恢复1点血量并获得1点护甲，持续2回合",
-        "Type": [ "State:MisLead,2,true", "State:LiveTarget,2,false" ]
+        "Description": "使目标仇恨值增加5，每回合结束时恢复2点血，持续2回合",
+        "Type": [ "State:HateValue,5,true", "State:LiveTarget,2,false" ]
     },
     {
         "id": "Hibernation",
