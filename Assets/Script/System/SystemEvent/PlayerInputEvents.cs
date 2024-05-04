@@ -1,4 +1,5 @@
-﻿
+﻿using UnityEngine;
+
 namespace Game.System
 {
    struct OnMouseRightClick:IEvent
@@ -17,5 +18,11 @@ namespace Game.System
     struct UsePotionEvent:IEvent
     {
         public Item_Data potion;
+    }
+
+    struct GirdCilckEvent:IEvent
+    {
+        public HexCell cell;
+        public Transform transfrom;
     }
 }

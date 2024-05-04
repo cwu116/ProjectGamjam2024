@@ -16,7 +16,7 @@ namespace Game.System
         public void EnemyMoveTo(GameObject enemy);
     }
 
-    public class MoveSystem : BaseSystem, IMoveAction
+    public class MoveSystem : BaseSystem, IMoveAction,ICanUndo
     {
         private MapSystem mapSystem = new MapSystem();
 
@@ -27,6 +27,8 @@ namespace Game.System
         /// <param name="target">目标格子</param>
         public void PlayerMoveTo(GameObject player, Vector2 target)
         {
+            player.GetComponent<Player>().LastHexCell = player.GetComponent<Player>().CurHexCell;
+
             Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
             List<HexCell> WholePath = GameBody.GetSystem<MapSystem>().GetPath(player.transform.position, target);
             foreach (var cell in WholePath)
@@ -215,6 +217,17 @@ namespace Game.System
         public override void InitSystem()
         {
             // 系统初始化逻辑
+            RegisterEvents();
+        }
+
+        void RegisterEvents()
+        {
+            EventSystem.Register<GirdCilckEvent>(v => { PlayerMoveTo(Player.instance.gameObject, v.cell.Pos); });
+        }
+
+        public void Undo()
+        {
+            PlayerMoveTo(Player.instance.gameObject,Player.instance.LastHexCell.Pos);
         }
     }
 }

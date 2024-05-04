@@ -8,12 +8,15 @@ namespace Game.System
     }
     public class PlayerActionSystem : BaseSystem
     {
-        //private PlayerActionModel _playerActionModel;
+        private PlayerActionModel _playerActionModel;
         public override void InitSystem()
         {
-            //_playerActionModel = GameBody.GetModel<PlayerActionModel>();
+            _playerActionModel = GameBody.GetModel<PlayerActionModel>();
             RegisterEvents();
         }
+
+        public HexCell currentGird;
+
 
 
 
@@ -21,12 +24,12 @@ namespace Game.System
         void RegisterEvents()
         {
             EventSystem.Register<OnMouseRightClick>(Undo);
-            EventSystem.Register<UndoEvent>(v => { /*_PlayerActionModel.AddOperation(v.undo);*/});
+            EventSystem.Register<UndoEvent>(v => { _playerActionModel.AddOperation(v.undoOperation); });
         }
 
         private void Undo(OnMouseRightClick obj)
         {
-            //_playerActionModel.UndoOperation();
+            _playerActionModel.UndoOperation();
         }
     }
 }

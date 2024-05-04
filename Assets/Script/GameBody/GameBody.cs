@@ -18,7 +18,7 @@ namespace Game
             RegisterModels();
             RegisterSystems();
 
-            //InitModels();
+            InitModels();
             InitSystems();
         }
 
@@ -27,7 +27,16 @@ namespace Game
             RegisterSystem(new MapSystem());
             RegisterSystem(new StateSystem());
             RegisterSystem(new InventorySystem());
-            RegisterSystem(new AudioSystem());
+            //RegisterSystem(new AudioSystem());
+            RegisterSystem(new MoveSystem());
+            RegisterSystem(new BackpackSystem());
+            RegisterSystem(new GameFlowSystem());
+            RegisterSystem(new MoveSystem());
+            RegisterSystem(new PlayerActionSystem());
+            RegisterSystem(new PotionUseSystem());
+            RegisterSystem(new InventorySystem());
+            RegisterSystem(new StateSystem());
+            RegisterSystem(new TurnSystem());
         }
 
         private void RegisterModels()
@@ -39,6 +48,7 @@ namespace Game
             RegisterModel(new EnviromentUnitModel());
             RegisterModel(new EnviromentEffctModel());
             RegisterModel(new TurnModel());
+            RegisterModel(new PlayerActionModel());
         }
 
         private void InitSystems()

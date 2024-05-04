@@ -29,7 +29,7 @@ public partial class BaseEntity : MonoBehaviour
 
     private string spawningPath; //生成地块属性
 
-    private void Awake()
+    protected virtual void Start()
     {
         _myType = _model.entityType;
         _attackType = _model.attackType;
@@ -85,6 +85,12 @@ public partial class BaseEntity : MonoBehaviour
     {
         get { return _curHexCell; }
         set { _curHexCell = value; }
+    }
+
+    public HexCell LastHexCell
+    {
+        get;
+        set;
     }
 
     public Vector3 Direction
