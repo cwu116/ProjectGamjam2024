@@ -26,6 +26,7 @@ namespace Game.System
         /// <param name="path">Â·¾¶</param>
         public void PlayerMoveTo(GameObject player, Vector2 path)
         {
+            // Debug.LogWarning(GameBody.GetSystem<MapSystem>().GetRoundHexCell(player.GetComponent<Player>().CurHexCell.Pos ,2).Length);
             if (GameBody.GetSystem<MapSystem>().CalculateDistance(player.GetComponent<Player>().CurHexCell.Pos,
                 path) > 1)
             {
@@ -51,9 +52,9 @@ namespace Game.System
                 }, newCell.gameObject);
                 player.GetComponent<Player>().SpawningPath = null;
             }
-
-            Debug.LogWarning("Buff:" + string.Join(' ', newCell.Instructions));
+            // Debug.LogWarning("Buff:" + string.Join(' ', newCell.Instructions));
             StateSystem.Execution(new List<string>(newCell.Instructions), player);
+            Debug.LogWarning(player.GetComponent<Player>().MoveTimes.ToString());
             player.GetComponent<Player>().MoveTimes.AddValue(-1);
         }
 

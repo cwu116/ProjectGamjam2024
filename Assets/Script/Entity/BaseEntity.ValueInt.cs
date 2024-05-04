@@ -14,12 +14,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.Hp))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.Hp))
             {
-                return comp.ValueUnits[ValueKey.Hp];
+                comp.ValueUnits.Add(ValueKey.Hp, new ValueInt(_model.hp));
             }
-
-            return new ValueInt(_model.hp);
+            return comp.ValueUnits[ValueKey.Hp];
         }
         set
         {
@@ -36,12 +35,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.MaxHp))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.MaxHp))
             {
-                return comp.ValueUnits[ValueKey.MaxHp];
+                comp.ValueUnits.Add(ValueKey.MaxHp, new ValueInt(_model.hp));
             }
-
-            return new ValueInt(_model.hp);
+            return comp.ValueUnits[ValueKey.MaxHp];
         }
         set
         {
@@ -58,12 +56,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.MoveTimes))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.MoveTimes))
             {
-                return comp.ValueUnits[ValueKey.MoveTimes];
+                comp.ValueUnits.Add(ValueKey.MoveTimes, new ValueInt(_model.moveTimes));
             }
-
-            return new ValueInt(_model.moveTimes);
+            return comp.ValueUnits[ValueKey.MoveTimes];
         }
         set
         {
@@ -80,12 +77,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.MaxMoveTimes))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.MaxMoveTimes))
             {
-                return comp.ValueUnits[ValueKey.MaxMoveTimes];
+                comp.ValueUnits.Add(ValueKey.MaxMoveTimes, new ValueInt(_model.moveTimes));
             }
-
-            return new ValueInt(_model.moveTimes);
+            return comp.ValueUnits[ValueKey.MaxMoveTimes];
         }
         set
         {
@@ -102,12 +98,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.Attack))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.Attack))
             {
-                return comp.ValueUnits[ValueKey.Attack];
+                comp.ValueUnits.Add(ValueKey.Attack, new ValueInt(_model.Attack));
             }
-
-            return new ValueInt(_model.Attack);
+            return comp.ValueUnits[ValueKey.Attack];
         }
         set
         {
@@ -124,12 +119,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.Defence))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.Defence))
             {
-                return comp.ValueUnits[ValueKey.Defence];
+                comp.ValueUnits.Add(ValueKey.Defence, new ValueInt(0));
             }
-
-            return new ValueInt(0);
+            return comp.ValueUnits[ValueKey.Defence];
         }
         set
         {
@@ -146,12 +140,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.StepLenghth))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.StepLenghth))
             {
-                return comp.ValueUnits[ValueKey.StepLenghth];
+                comp.ValueUnits.Add(ValueKey.StepLenghth, new ValueInt(_model.stepLength));
             }
-
-            return new ValueInt(_model.stepLength);
+            return comp.ValueUnits[ValueKey.StepLenghth];
         }
         set
         {
@@ -168,12 +161,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.WatchRange))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.WatchRange))
             {
-                return comp.ValueUnits[ValueKey.WatchRange];
+                comp.ValueUnits.Add(ValueKey.WatchRange, new ValueInt(_model.watchRange));
             }
-
-            return new ValueInt(_model.watchRange);
+            return comp.ValueUnits[ValueKey.WatchRange];
         }
         set
         {
@@ -189,12 +181,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.MinSkillRange))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.MinSkillRange))
             {
-                return comp.ValueUnits[ValueKey.MinSkillRange];
+                comp.ValueUnits.Add(ValueKey.MinSkillRange, new ValueInt(_model.RangeLeft));
             }
-
-            return new ValueInt(_model.RangeLeft);
+            return comp.ValueUnits[ValueKey.MinSkillRange];
         }
         set
         {
@@ -211,12 +202,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.SkillRange))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.SkillRange))
             {
-                return comp.ValueUnits[ValueKey.SkillRange];
+                comp.ValueUnits.Add(ValueKey.SkillRange, new ValueInt(_model.RangeRight));
             }
-
-            return new ValueInt(_model.RangeRight);
+            return comp.ValueUnits[ValueKey.SkillRange];
         }
         set
         {
@@ -232,12 +222,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.HateValue))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.HateValue))
             {
-                return comp.ValueUnits[ValueKey.HateValue];
+                comp.ValueUnits.Add(ValueKey.HateValue, new ValueInt(0));
             }
-
-            return new ValueInt(_model.RangeRight);
+            return comp.ValueUnits[ValueKey.HateValue];
         }
         set
         {
@@ -254,12 +243,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.bInvisible))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.bInvisible))
             {
-                return comp.ValueUnits[ValueKey.bInvisible];
+                comp.ValueUnits.Add(ValueKey.bInvisible, new ValueInt(0));
             }
-
-            return new ValueInt(0);
+            return comp.ValueUnits[ValueKey.bInvisible];
         }
         set
         {
@@ -276,12 +264,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.bMislead))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.bMislead))
             {
-                return comp.ValueUnits[ValueKey.bMislead];
+                comp.ValueUnits.Add(ValueKey.bMislead, new ValueInt(0));
             }
-
-            return new ValueInt(0);
+            return comp.ValueUnits[ValueKey.bMislead];
         }
         set
         {
@@ -298,12 +285,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.bIsSilent))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.bIsSilent))
             {
-                return comp.ValueUnits[ValueKey.bIsSilent];
+                comp.ValueUnits.Add(ValueKey.bIsSilent, new ValueInt(0));
             }
-
-            return new ValueInt(0);
+            return comp.ValueUnits[ValueKey.bIsSilent];
         }
         set
         {
@@ -320,12 +306,11 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.bFlamePure))
+            if (!comp.ValueUnits.ContainsKey(ValueKey.bFlamePure))
             {
-                return comp.ValueUnits[ValueKey.bFlamePure];
+                comp.ValueUnits.Add(ValueKey.bFlamePure, new ValueInt(0));
             }
-
-            return new ValueInt(0);
+            return comp.ValueUnits[ValueKey.bFlamePure];
         }
         set
         {
