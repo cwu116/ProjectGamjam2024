@@ -15,7 +15,6 @@ namespace Game.System
 
         public override void InitSystem()
         {
-            Debug.Log("Init StateSystem");
             stateModel = GameBody.GetModel<StateModel>();
             delayStuff = new List<DelayUnit>();
         }

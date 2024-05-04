@@ -14,10 +14,8 @@ namespace Game.Model
 
         public override void InitModel()
         {
-            Debug.Log("InitModel");
             string json = ResourcesManager.LoadText(JsonPath.StatePath,JsonFileName.StateName);
             States = JsonUtil.ToObject<List<State>>(json);
-            Debug.Log(States[0].buffName);
         }
         
         //通过ID获取State数据

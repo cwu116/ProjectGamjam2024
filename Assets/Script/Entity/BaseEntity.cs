@@ -29,7 +29,7 @@ public partial class BaseEntity : MonoBehaviour
 
     private string spawningPath; //生成地块属性
 
-    protected virtual void Start()
+    protected void InitEntity()
     {
         _spawnPoint = new Vector2(){};
             
@@ -43,6 +43,13 @@ public partial class BaseEntity : MonoBehaviour
         buff.RegisterFunc(TActionKey.Away, Away);
         buff.RegisterFunc(TActionKey.SpawnPath, SpawnPath);
         buff.RegisterFunc(TActionKey.Sleep, Sleep);
+        
+        
+    }
+
+    protected virtual void Start()
+    {
+
     }
 
     // 组件-只读

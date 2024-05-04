@@ -19,13 +19,8 @@ public class Enemy : BaseEntity
     private void Start()
     {
         SetModel(name);
-
-        buff.RegisterFunc(ActionKey.Die, Die);
-        buff.RegisterFunc(TActionKey.Away, Away);
-        buff.RegisterFunc(TActionKey.SpawnPath, SpawnPath);
-        buff.RegisterFunc(TActionKey.Sleep, Sleep);
+        
         base.Start();
-
     }
 
 }

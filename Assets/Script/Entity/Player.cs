@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Buff;
 using Buff.Config;
+using Game;
 using UnityEngine;
 using Game.System;
 
@@ -19,14 +20,20 @@ public class Player : BaseEntity
 
     private void Start()
     {
-        SetModel("Player");
-        buff = GetComponent<BuffComponent>();
+        base.Start();
         
-        buff.RegisterFunc(ActionKey.Die, Die);
-        buff.RegisterFunc(TActionKey.Away, Away);
-        buff.RegisterFunc(TActionKey.SpawnPath, SpawnPath);
-        buff.RegisterFunc(TActionKey.Sleep, Sleep);
+        buff = GetComponent<BuffComponent>();
+        if (SetModel("玩家"))
+        {
+           InitEntity(); 
+        }
+        // 测试专用
+        _curHexCell = GridManager.Instance.hexCells[1, 1];
+        Debug.Log(_curHexCell.Pos);
+        transform.position = _curHexCell.transform.position;
+        GameBody.GetSystem<MoveSystem>().PlayerMoveTo(gameObject, _curHexCell.Pos);
         EventSystem.Send<PlayerTurnBeginTrigger>();
+        
     }
 
 

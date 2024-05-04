@@ -5,18 +5,17 @@ using RedBjorn.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NotImplementedException = System.NotImplementedException;
 using Random = UnityEngine.Random;
 
 namespace Game.System
 {
     public interface IMoveAction
     {
-        public void PlayerMoveTo(GameObject player, List<HexCell> path);
+        public void PlayerMoveTo(GameObject player, Vector2 path);
         public void EnemyMoveTo(GameObject enemy);
     }
 
-    public class MoveSystem : BaseSystem, IMoveAction,ICanUndo
+    public class MoveSystem : BaseSystem, IMoveAction, ICanUndo
     {
         private MapSystem mapSystem = new MapSystem();
 
@@ -25,43 +24,36 @@ namespace Game.System
         /// </summary>
         /// <param name="player">玩家</param>
         /// <param name="path">路径</param>
-        public void PlayerMoveTo(GameObject player, List<HexCell> path)
+        public void PlayerMoveTo(GameObject player, Vector2 path)
         {
+            if (GameBody.GetSystem<MapSystem>().CalculateDistance(player.GetComponent<Player>().CurHexCell.Pos,
+                path) > 1)
+            {
+                return;
+            }
             player.GetComponent<Player>().LastHexCell = player.GetComponent<Player>().CurHexCell;
 
-            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-            foreach (var cell in path)
+            HexCell newCell = GridManager.Instance.hexCells[(int) path.x, (int) path.y];
+            player.GetComponent<Rigidbody2D>().MovePosition(newCell.transform.position);
+            player.GetComponent<Player>().CurHexCell = newCell;
+            if (newCell.Type == HexType.Transport)
             {
-                // 玩家移动
-                rb.MovePosition(cell.Pos);
-                if (cell.Type == HexType.Thorns || cell.Type == HexType.Moon)
-                {
-                    StateSystem.Execution(new List<string>(cell.Instructions), player);
-                }
-                if (cell.Type == HexType.Transport)
-                {
-                    //TODO::设置游戏为通关
-                }
-                if (string.IsNullOrEmpty(player.GetComponent<Player>().SpawningPath))
-                {
-                    string[] spawnInfo = player.GetComponent<Player>().SpawningPath.Split(new []{'*'});
-                    StateSystem.Execution(new List<string>()
-                    {
-                        string.Format("Delay:[Create:{0},this],1", spawnInfo[0]),
-                        string.Format("Delay:[Create:{0},this],{1}", cell.Type.ToString(), 1+spawnInfo[1])
-                    }, cell.gameObject);
-                    player.GetComponent<Player>().MoveTimes.AddValue(-1);
-                    player.GetComponent<Player>().SpawningPath = null;
-                }
+                //TODO::设置游戏为通关
             }
 
-            // 设定玩家最后位于的格子
-            player.GetComponent<Player>().CurHexCell = path[^1];
-            // 玩家停留点
-            if (!new List<HexType>() {HexType.Spar, HexType.Spore}.Contains(path[^1].Type))
+            if (!string.IsNullOrEmpty(player.GetComponent<Player>().SpawningPath))
             {
-                StateSystem.Execution(new List<string>(path[^1].Instructions), player);
+                string[] spawnInfo = player.GetComponent<Player>().SpawningPath.Split(new[] {'*'});
+                StateSystem.Execution(new List<string>()
+                {
+                    string.Format("Delay:[Create:{0},this],1", spawnInfo[0]),
+                    string.Format("Delay:[Create:{0},this],{1}", newCell.Type.ToString(), 1 + spawnInfo[1])
+                }, newCell.gameObject);
+                player.GetComponent<Player>().MoveTimes.AddValue(-1);
+                Debug.Log(player.GetComponent<Player>().MoveTimes);
+                player.GetComponent<Player>().SpawningPath = null;
             }
+            
         }
 
         /// <summary>
@@ -94,7 +86,7 @@ namespace Game.System
             // 没检测到玩家或者仇恨对象，随机路径
             Vector2 target = GameBody.GetSystem<MapSystem>().RandomPatrol(enemy.GetComponent<Enemy>().SpawnPoint,
                 enemy.GetComponent<Enemy>().CurHexCell.Pos);
-            ThrowTarget(enemy,  GridManager.Instance.hexCells[(int)target.x, (int)target.y]);
+            ThrowTarget(enemy, GridManager.Instance.hexCells[(int) target.x, (int) target.y]);
         }
 
         private void ThrowTarget(GameObject enemy, HexCell target)
@@ -108,34 +100,38 @@ namespace Game.System
             Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
             List<HexCell> WholePath = GameBody.GetSystem<MapSystem>()
                 .GetPath(enemy.GetComponent<Enemy>().CurHexCell.Pos, target.Pos);
-            WholePath.RemoveAt(WholePath.Count-1);
+            WholePath.RemoveAt(WholePath.Count - 1);
             HexCell lastCell = null;
             foreach (var cell in WholePath)
             {
                 rb.MovePosition(cell.Pos);
                 enemy.GetComponent<Enemy>().CurHexCell = cell;
-                if (cell.Type == HexType.Thorns || cell.Type == HexType.Moon)
+                if (cell.Type == HexType.Thorns || cell.Type == HexType.Moon || cell.Type == HexType.Fire)
                 {
                     StateSystem.Execution(new List<string>(cell.Instructions), enemy);
                 }
+
                 if (string.IsNullOrEmpty(enemy.GetComponent<Enemy>().SpawningPath))
                 {
-                    string[] spawnInfo = enemy.GetComponent<Enemy>().SpawningPath.Split(new []{'*'});
+                    string[] spawnInfo = enemy.GetComponent<Enemy>().SpawningPath.Split(new[] {'*'});
                     StateSystem.Execution(new List<string>()
                     {
                         string.Format("Delay:[Create:{0},this],1", spawnInfo[0]),
-                        string.Format("Delay:[Create:{0},this],{1}", cell.Type.ToString(), 1+spawnInfo[1])
+                        string.Format("Delay:[Create:{0},this],{1}", cell.Type.ToString(), 1 + spawnInfo[1])
                     }, cell.gameObject);
                     enemy.GetComponent<Enemy>().MoveTimes.AddValue(-1);
                     enemy.GetComponent<Enemy>().SpawningPath = null;
                 }
+
                 if (enemy.GetComponent<Enemy>().MoveTimes <= 0)
                 {
                     break;
                 }
             }
+
             // 敌人停留点
-            if (!new List<HexType>() {HexType.Spar, HexType.Spore}.Contains(enemy.GetComponent<Enemy>().CurHexCell.Type))
+            if (!new List<HexType>() {HexType.Spar, HexType.Spore}.Contains(enemy.GetComponent<Enemy>().CurHexCell
+                .Type))
             {
                 StateSystem.Execution(new List<string>(enemy.GetComponent<Enemy>().CurHexCell.Instructions), enemy);
             }
@@ -222,7 +218,7 @@ namespace Game.System
 
         public void Undo()
         {
-            PlayerMoveTo(Player.instance.gameObject,Player.instance.LastHexCell.Pos);
+            PlayerMoveTo(Player.instance.gameObject, Player.instance.LastHexCell.Pos);
         }
     }
 }
