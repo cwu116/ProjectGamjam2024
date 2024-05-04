@@ -5,24 +5,28 @@ using System.Collections.Generic;
 using Buff;
 using Buff.Config;
 using UnityEngine;
+using Game.System;
 
 public class Player : BaseEntity
 {
+    public static Player instance;
 
     private void Awake()
     {
-        SetModel("Player");
+        instance = this;
         IsPlayer = true;
     }
 
     private void Start()
     {
+        SetModel("Player");
         buff = GetComponent<BuffComponent>();
         
         buff.RegisterFunc(ActionKey.Die, Die);
         buff.RegisterFunc(TActionKey.Away, Away);
         buff.RegisterFunc(TActionKey.SpawnPath, SpawnPath);
         buff.RegisterFunc(TActionKey.Sleep, Sleep);
+        EventSystem.Send<PlayerTurnBeginTrigger>();
     }
 
 

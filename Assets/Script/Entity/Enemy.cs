@@ -24,7 +24,8 @@ public class Enemy : BaseEntity
         buff.RegisterFunc(TActionKey.Away, Away);
         buff.RegisterFunc(TActionKey.SpawnPath, SpawnPath);
         buff.RegisterFunc(TActionKey.Sleep, Sleep);
-        
+        base.Start();
+
     }
 
 }

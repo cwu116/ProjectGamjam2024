@@ -21,6 +21,7 @@ namespace Game.System
             _mapModel = GameBody.GetModel<MapModel>();
             Console.WriteLine("MapSystem Init");
             LoadPrefabs();
+            RegisterEvent();
             //InitHW();
         }
 

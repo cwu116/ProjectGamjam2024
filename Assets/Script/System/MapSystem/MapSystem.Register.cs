@@ -14,6 +14,12 @@ namespace Game.System
         private void RegisterEvent()
         {
             EventSystem.Register<MapInitFinishEvent>(OnMapInitFinish);
+            EventSystem.Register<AfterPlayerTurnBeginEvent>(v => OnPlayerTurnBegin(v));
+        }
+
+        private void OnPlayerTurnBegin(AfterPlayerTurnBeginEvent v)
+        {
+           Debug.Log(  GetRoundHexCell(Player.instance.CurHexCell.Pos, v.moveTimes > 0 ? 1 : 0));
         }
 
         private void OnMapInitFinish(MapInitFinishEvent @event)

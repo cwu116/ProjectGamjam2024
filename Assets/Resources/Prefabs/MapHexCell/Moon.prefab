@@ -147,7 +147,8 @@ GameObject:
   - component: {fileID: 8912202681669395762}
   - component: {fileID: 8912202681669395761}
   - component: {fileID: 4996414519829961507}
-  m_Layer: 0
+  - component: {fileID: -795533447519012645}
+  m_Layer: 7
   m_Name: Moon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +221,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8912202681669395760}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -253,6 +254,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _instructions:
   - Delay:["ChangeValue:MaxMoveTimes,1,true"],1
+--- !u!114 &-795533447519012645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8912202681669395760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d21ee438c7e9b3046923ca77644d82ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8912202682143403571
 GameObject:
   m_ObjectHideFlags: 0

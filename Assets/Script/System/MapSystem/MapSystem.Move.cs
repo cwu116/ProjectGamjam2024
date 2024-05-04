@@ -9,7 +9,17 @@ using UnityEngine;
 
 namespace Game.System
 {
-    public partial class MapSystem : BaseSystem
+    interface MapFunction
+    {
+        int CalculateDistance(Vector2 origin, Vector2 target);//计算两点间距离
+        HexCell[] GetRoundHexCell(Vector2 position, int radius);//获得某个位置周围的格子
+        Vector2 RandomPatrol(Vector2 originPosition, Vector2 nowPosition);//敌人在出生点附近随机移动
+
+        List<HexCell> GetPath(Vector2 origin, Vector2 target);//获得完整寻路路径
+
+        Vector2 GetNextPosWorld(Vector2 origin, Vector2 target); //获取当玩家进入警戒范围时，移动到的下一格目标世界位置
+    }
+    public partial class MapSystem : BaseSystem,MapFunction
     {
         private int height;
         private int width;

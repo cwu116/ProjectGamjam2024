@@ -22,6 +22,7 @@ public class Item_s
     private string name;
     private string description;
     public int quantity;
+    public Sprite sprite;
 
     public string Id
     {
@@ -45,6 +46,7 @@ public class Item_s
         this.description = description;
         this.id = id;
         this.quantity = quantity;
+        //º”‘ÿsprite
     }
 }
 namespace Game.Model
