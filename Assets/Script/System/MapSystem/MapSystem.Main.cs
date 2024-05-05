@@ -46,5 +46,10 @@ namespace Game.System
             return enemies;
         }
 
+        public void ChangeMapData(string name)
+        {
+            _mapModel.changeMapData(name);
+        }
+
     }
 }

@@ -203,33 +203,41 @@ public class LevelDesign : EditorWindow
             }
         }
 
-        if (GUILayout.Button("保存地图"))
+        if (GUILayout.Button("保存地图1"))
         {
 
-            Mapdata map = new Mapdata();
-            map.height = cells.GetLength(0);
-            map.width = cells.GetLength(1);
-            map.cells = new HexType[map.height * map.width];
-            map.enemyNames = new string[enemeys.Count];
-            map.enemyposx = new int[enemeys.Count];
-            map.enemyposy = new int[enemeys.Count];
 
-            for (int i = 0; i < enemeys.Count; i++)
-            {
-                map.enemyNames[i] = enemeys[i].name;
-                map.enemyposx[i] = enemeys[i].CurrentHeightIndex;
-                map.enemyposy[i] = enemeys[i].CurrentWidthIndex;
-            }
-
-            for (int y = 0, i = 0; y < map.width; y++)
-            {
-                for (int x = 0; x < map.height; x++)
-                {
-                    map.cells[i++] = cells[x, y].Type;
-                }
-            }
-            File.WriteAllText("Assets/Resources/MapData/MapData.json", JsonUtil.ToJson(map));
+            File.WriteAllText("Assets/Resources/MapData/MapData1.json", JsonUtil.ToJson(SaveMap()));
         }
+
+        if (GUILayout.Button("保存地图2"))
+        {
+
+            SaveMap();
+            File.WriteAllText("Assets/Resources/MapData/MapData2.json", JsonUtil.ToJson(SaveMap()));
+        }
+
+        if (GUILayout.Button("保存地图3"))
+        {
+
+            SaveMap();
+            File.WriteAllText("Assets/Resources/MapData/MapData3.json", JsonUtil.ToJson(SaveMap()));
+        }
+
+        if (GUILayout.Button("保存地图4"))
+        {
+
+            SaveMap();
+            File.WriteAllText("Assets/Resources/MapData/MapData4.json", JsonUtil.ToJson(SaveMap()));
+        }
+
+        if (GUILayout.Button("保存地图5"))
+        {
+
+            SaveMap();
+            File.WriteAllText("Assets/Resources/MapData/MapData5.json", JsonUtil.ToJson(SaveMap()));
+        }
+
     }
 
 
@@ -245,7 +253,32 @@ public class LevelDesign : EditorWindow
             }
         }
     }
+    Mapdata SaveMap()
+    {
+        Mapdata map = new Mapdata();
+        map.height = cells.GetLength(0);
+        map.width = cells.GetLength(1);
+        map.cells = new HexType[map.height * map.width];
+        map.enemyNames = new string[enemeys.Count];
+        map.enemyposx = new int[enemeys.Count];
+        map.enemyposy = new int[enemeys.Count];
 
+        for (int i = 0; i < enemeys.Count; i++)
+        {
+            map.enemyNames[i] = enemeys[i].name;
+            map.enemyposx[i] = enemeys[i].CurrentHeightIndex;
+            map.enemyposy[i] = enemeys[i].CurrentWidthIndex;
+        }
+
+        for (int y = 0, i = 0; y < map.width; y++)
+        {
+            for (int x = 0; x < map.height; x++)
+            {
+                map.cells[i++] = cells[x, y].Type;
+            }
+        }
+        return map;
+    }
     void CreateOneCell(int x, int y, int i)
     {
         Vector3 position;

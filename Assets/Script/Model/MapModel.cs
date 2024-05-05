@@ -44,5 +44,11 @@ namespace Game.Model
             }
             return Prefabs;
         }
+
+        public void changeMapData(string name)
+        {
+            MapDatas = JsonUtil.ToObject<Mapdata>(
+                ResourcesManager.LoadText(JsonPath.MapPath, name));
+        }
     }
 }
