@@ -33,13 +33,13 @@ namespace Game.System
 
         public void PlayerStatesStart()
         {
-            GameObject player = GameObject.Find("Player");
+            GameObject player = GameObject.FindObjectOfType<Player>().gameObject;
             player.GetComponent<BuffComponent>().StatesStart();
         }
 
         public void PlayerStatesEnd()
         {
-            GameObject player = GameObject.Find("Player");
+            GameObject player = GameObject.FindObjectOfType<Player>().gameObject;
             player.GetComponent<BuffComponent>().StatesEnd();
         }
 

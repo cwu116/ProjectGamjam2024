@@ -45,21 +45,22 @@ public partial class BaseEntity : MonoBehaviour
         buff.RegisterFunc(TActionKey.SpawnPath, SpawnPath);
         buff.RegisterFunc(TActionKey.Sleep, Sleep);
         
-        BuffComp.ValueUnits.Add(ValueKey.Hp, new ValueInt(_model.hp));
-        BuffComp.ValueUnits.Add(ValueKey.MaxHp, new ValueInt(_model.hp));
-        BuffComp.ValueUnits.Add(ValueKey.Attack, new ValueInt(_model.Attack));
-        BuffComp.ValueUnits.Add(ValueKey.Defence, new ValueInt(0));
-        BuffComp.ValueUnits.Add(ValueKey.bInvisible, new ValueInt(0));
-        BuffComp.ValueUnits.Add(ValueKey.bMislead, new ValueInt(0));
-        BuffComp.ValueUnits.Add(ValueKey.bFlamePure, new ValueInt(0));
-        BuffComp.ValueUnits.Add(ValueKey.bIsSilent, new ValueInt(0));
-        BuffComp.ValueUnits.Add(ValueKey.HateValue, new ValueInt(0));
-        BuffComp.ValueUnits.Add(ValueKey.MoveTimes, new ValueInt(_model.moveTimes));
-        BuffComp.ValueUnits.Add(ValueKey.SkillRange, new ValueInt(_model.RangeRight));
-        BuffComp.ValueUnits.Add(ValueKey.StepLenghth, new ValueInt(_model.stepLength));
-        BuffComp.ValueUnits.Add(ValueKey.WatchRange, new ValueInt(_model.watchRange));
-        BuffComp.ValueUnits.Add(ValueKey.MaxMoveTimes, new ValueInt(_model.moveTimes));
-        BuffComp.ValueUnits.Add(ValueKey.MinSkillRange, new ValueInt(_model.RangeLeft));
+        buff.RegisterParam(ValueKey.Hp, new ValueInt(_model.hp));
+        buff.RegisterParam(ValueKey.Attack, new ValueInt(_model.Attack));
+        buff.RegisterParam(ValueKey.Defence, new ValueInt(0));
+        buff.RegisterParam(ValueKey.bInvisible, new ValueInt(0));
+        buff.RegisterParam(ValueKey.bMislead, new ValueInt(0));
+        buff.RegisterParam(ValueKey.bFlamePure, new ValueInt(0));
+        buff.RegisterParam(ValueKey.bIsSilent, new ValueInt(0));
+        buff.RegisterParam(ValueKey.HateValue, new ValueInt(0));
+        buff.RegisterParam(ValueKey.MoveTimes, new ValueInt(_model.moveTimes));
+        buff.RegisterParam(ValueKey.SkillRange, new ValueInt(_model.RangeRight));
+        buff.RegisterParam(ValueKey.StepLenghth, new ValueInt(_model.stepLength));
+        buff.RegisterParam(ValueKey.WatchRange, new ValueInt(_model.watchRange));
+        buff.RegisterParam(ValueKey.MaxMoveTimes, new ValueInt(_model.moveTimes));
+        buff.RegisterParam(ValueKey.MinSkillRange, new ValueInt(_model.RangeLeft));
+
+        // Debug.Log(" Ù–‘≥ı ºªØ");
     }
 
     protected virtual void Start()

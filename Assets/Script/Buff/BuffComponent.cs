@@ -29,9 +29,11 @@ namespace Buff
         {
             return ValueUnits[Enum.Parse<ValueKey>(paramName)];
         }
+        
 
         public void RegisterParam(ValueKey paramName, ValueInt value)
         {
+            value.name = paramName.ToString();
             ValueUnits.Add(paramName, value);
         }
 

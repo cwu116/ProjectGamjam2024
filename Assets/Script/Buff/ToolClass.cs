@@ -82,6 +82,8 @@ namespace Buff.Tool
     [Serializable]
     public class ValueInt
     {
+        public string name = null;
+        
         private int baseValue;
         private int changeValue;
         
@@ -91,11 +93,18 @@ namespace Buff.Tool
             this.baseValue = baseValue;
         }
         
+        public static ValueInt operator +(ValueInt left, int newValue)
+        {
+            left.AddValue(newValue);
+            Debug.LogFormat("{0}:{1}",left.name, left);
+            return left;
+        }
+
         public void AddValue(int Value, bool isChange = false)
         {
             if (!isChange)
             {
-                if (this + Value <= 0)
+                if (changeValue + baseValue + Value <= 0)
                 {
                     changeValue = -baseValue;
                     return;

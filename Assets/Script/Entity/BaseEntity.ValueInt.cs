@@ -77,6 +77,7 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
+            return comp.ValueUnits[ValueKey.MaxMoveTimes]; 
             if (!comp.ValueUnits.ContainsKey(ValueKey.MaxMoveTimes))
             {
                 comp.ValueUnits.Add(ValueKey.MaxMoveTimes, new ValueInt(_model.moveTimes));

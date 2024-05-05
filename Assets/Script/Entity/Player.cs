@@ -28,11 +28,6 @@ public class Player : BaseEntity
             Debug.Log("Success");
            InitEntity(); 
         }
-        // 测试专用
-        _curHexCell = GridManager.Instance.hexCells[2, 2];
-        Debug.Log(_curHexCell.Pos);
-        transform.position = _curHexCell.transform.position;
-        GameBody.GetSystem<MoveSystem>().PlayerMoveTo(gameObject, _curHexCell.Pos,true);
         EventSystem.Send<PlayerTurnBeginTrigger>();
     }
     
@@ -41,5 +36,10 @@ public class Player : BaseEntity
     public void ReleaseMedicalment(BaseEntity target)
     {
         MoveTimes.AddValue(-1);
+    }
+
+    private void Update()
+    {
+        Debug.Log("MaxMove:  " + MaxMoveTimes);
     }
 }

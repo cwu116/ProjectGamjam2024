@@ -6,13 +6,19 @@ using Game.System;
 
 public class BtnEndTurn : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private bool isForPlayer;
     void Start()
     {
-        this.GetComponent<Button>().onClick.AddListener(() => EventSystem.Send<PlayerTurnEndTrigger>());
+        if (isForPlayer)
+        {
+            this.GetComponent<Button>().onClick.AddListener(() => EventSystem.Send<PlayerTurnEndTrigger>());
+        }
+        else
+        {
+            this.GetComponent<Button>().onClick.AddListener(() => EventSystem.Send<EnemyTurnBeginTrigger>());
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
         
