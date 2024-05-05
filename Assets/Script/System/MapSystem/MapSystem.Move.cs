@@ -255,6 +255,224 @@ namespace Game.System
             return Vector2.zero;
         }
 
+        private Vector2[] dirs = new Vector2[] { new Vector2(0.87f, 0.5f), new Vector2(0f, 1f), new Vector2(-0.87f, 0.5f), new Vector2(-0.87f, -0.5f), new Vector2(0f, -1f), new Vector2(0.87f, -0.5f) };
+
+        /// <summary>
+        /// ≥Â∑Êπ÷÷±œﬂ≥Â¥Ã
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public List<HexCell> StraightRunPath(Vector2 origin, Vector2 target)
+        {
+            Vector2 direction = target - origin;
+            Vector2 runDirection = Vector2.zero;
+            foreach(Vector2 dir in dirs)
+            {
+                if(CalculateVector2Angle(direction,dir) <= 30)
+                {
+                    runDirection = dir;
+                    break;
+                }
+            }
+            List<HexCell> straightPath = new List<HexCell>();
+            if(runDirection == Vector2.zero)
+            {
+                return null;
+            }
+            CreateStraightPath(runDirection, origin, straightPath);
+            List<HexCell> res = new List<HexCell>();
+            foreach(var cell in straightPath)
+            {
+                if(cell.OccupyObject != null && cell.OccupyObject.GetComponent<BaseEntity>().IsObstacle == true)
+                {
+                    break;
+                }
+                else
+                {
+                    res.Add(cell);
+                }
+            }
+            if(res != null)
+            {
+                return res;
+            }
+            return null;
+        }
+        private float CalculateVector2Angle(Vector2 a, Vector2 b)
+        {
+            return Vector2.Angle(a, b);
+        }
+        private void CreateStraightPath(Vector2 runDirection, Vector2 origin, List<HexCell> straightPath)
+        {
+            if (runDirection == Vector2.zero)
+            {
+                return;
+            }
+            else if (runDirection == dirs[0])
+            {
+                if (origin.y % 2 == 0)
+                {
+                    if ((int)origin.x < height && (int)origin.y + 1 < width && (int)origin.x > 0 && (int)origin.y + 1 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x, (int)origin.y + 1]);
+                    }
+                    if ((int)origin.x + 1 < height && (int)origin.y + 2 < width && (int)origin.x + 1 > 0 && (int)origin.y + 2 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x + 1, (int)origin.y + 2]);
+                    }
+                    if ((int)origin.x + 1 < height && (int)origin.y + 3 < width && (int)origin.x + 1 > 0 && (int)origin.y + 3 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x + 1, (int)origin.y + 3]);
+                    }
+                }
+                else
+                {
+                    if ((int)origin.x + 1 < height && (int)origin.y + 1 < width && (int)origin.x + 1 > 0 && (int)origin.y + 1 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x + 1, (int)origin.y + 1]);
+                    }
+                    if ((int)origin.x + 1 < height && (int)origin.y + 2 < width && (int)origin.x + 1 > 0 && (int)origin.y + 2 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x + 1, (int)origin.y + 2]);
+                    }
+                    if ((int)origin.x + 2 < height && (int)origin.y + 3 < width && (int)origin.x + 2 > 0 && (int)origin.y + 3 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x + 2, (int)origin.y + 3]);
+                    }
+                }
+            }
+            else if (runDirection == dirs[1])
+            {
+                if ((int)origin.x + 1 < height && (int)origin.y < width && (int)origin.x + 1 > 0 && (int)origin.y > 0)
+                {
+                    straightPath.Add(GridManager.Instance.hexCells[(int)origin.x + 1, (int)origin.y]);
+                }
+                if ((int)origin.x + 2 < height && (int)origin.y < width && (int)origin.x + 2 > 0 && (int)origin.y > 0)
+                {
+                    straightPath.Add(GridManager.Instance.hexCells[(int)origin.x + 2, (int)origin.y]);
+                }
+                if ((int)origin.x + 3 < height && (int)origin.y < width && (int)origin.x + 3 > 0 && (int)origin.y > 0)
+                {
+                    straightPath.Add(GridManager.Instance.hexCells[(int)origin.x + 3, (int)origin.y]);
+                }
+            }
+            else if (runDirection == dirs[2])
+            {
+                if (origin.y % 2 == 0)
+                {
+                    if ((int)origin.x < height && (int)origin.y - 1 < width && (int)origin.x > 0 && (int)origin.y - 1 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x, (int)origin.y - 1]);
+                    }
+                    if ((int)origin.x + 1 < height && (int)origin.y - 2 < width && (int)origin.x + 1 > 0 && (int)origin.y - 2 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x + 1, (int)origin.y - 2]);
+                    }
+                    if ((int)origin.x + 1 < height && (int)origin.y - 3 < width && (int)origin.x + 1 > 0 && (int)origin.y - 3 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x + 1, (int)origin.y - 3]);
+                    }
+
+                }
+                else
+                {
+                    if ((int)origin.x + 1 < height && (int)origin.y - 1 < width && (int)origin.x + 1 > 0 && (int)origin.y - 1 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x + 1, (int)origin.y - 1]);
+                    }
+                    if ((int)origin.x + 1 < height && (int)origin.y - 2 < width && (int)origin.x + 1 > 0 && (int)origin.y - 2 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x + 1, (int)origin.y - 2]);
+                    }
+                    if ((int)origin.x + 2 < height && (int)origin.y - 3 < width && (int)origin.x + 2 > 0 && (int)origin.y - 3 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x + 2, (int)origin.y - 3]);
+                    }
+                }
+            }
+            else if (runDirection == dirs[3])
+            {
+                if (origin.y % 2 == 0)
+                {
+                    if ((int)origin.x - 1 < height && (int)origin.y - 1 < width && (int)origin.x - 1 > 0 && (int)origin.y - 1 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x - 1, (int)origin.y - 1]);
+                    }
+                    if ((int)origin.x - 1 < height && (int)origin.y - 2 < width && (int)origin.x - 1 > 0 && (int)origin.y - 2 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x - 1, (int)origin.y - 2]);
+                    }
+                    if ((int)origin.x - 2 < height && (int)origin.y - 3 < width && (int)origin.x - 2 > 0 && (int)origin.y - 3 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x - 2, (int)origin.y - 3]);
+                    }
+                }
+                else
+                {
+                    if ((int)origin.x < height && (int)origin.y - 1 < width && (int)origin.x > 0 && (int)origin.y - 1 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x, (int)origin.y - 1]);
+                    }
+                    if ((int)origin.x - 1 < height && (int)origin.y - 2 < width && (int)origin.x - 1 > 0 && (int)origin.y - 2 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x - 1, (int)origin.y - 2]);
+                    }
+                    if ((int)origin.x - 1 < height && (int)origin.y - 3 < width && (int)origin.x - 1 > 0 && (int)origin.y - 3 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x - 1, (int)origin.y - 3]);
+                    }
+                }
+            }
+            else if (runDirection == dirs[4])
+            {
+                if ((int)origin.x - 1 < height && (int)origin.y < width && (int)origin.x - 1 > 0 && (int)origin.y > 0)
+                {
+                    straightPath.Add(GridManager.Instance.hexCells[(int)origin.x - 1, (int)origin.y]);
+                }
+                if ((int)origin.x - 2 < height && (int)origin.y < width && (int)origin.x - 2 > 0 && (int)origin.y > 0)
+                {
+                    straightPath.Add(GridManager.Instance.hexCells[(int)origin.x - 2, (int)origin.y]);
+                }
+                if ((int)origin.x - 3 < height && (int)origin.y < width && (int)origin.x - 3 > 0 && (int)origin.y > 0)
+                {
+                    straightPath.Add(GridManager.Instance.hexCells[(int)origin.x - 3, (int)origin.y]);
+                }
+            }
+            else if (runDirection == dirs[5])
+            {
+                if (origin.y % 2 == 0)
+                {
+                    if ((int)origin.x - 1 < height && (int)origin.y + 1 < width && (int)origin.x - 1 > 0 && (int)origin.y + 1 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x - 1, (int)origin.y + 1]);
+                    }
+                    if ((int)origin.x - 1 < height && (int)origin.y + 2 < width && (int)origin.x - 1 > 0 && (int)origin.y + 2 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x - 1, (int)origin.y + 2]);
+                    }
+                    if ((int)origin.x - 2 < height && (int)origin.y + 3 < width && (int)origin.x - 2 > 0 && (int)origin.y + 3 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x - 2, (int)origin.y + 3]);
+                    }
+                }
+                else
+                {
+                    if ((int)origin.x < height && (int)origin.y + 1 < width && (int)origin.x > 0 && (int)origin.y + 1 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x, (int)origin.y + 1]);
+                    }
+                    if ((int)origin.x - 1 < height && (int)origin.y + 2 < width && (int)origin.x - 1 > 0 && (int)origin.y + 2 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x - 1, (int)origin.y + 2]);
+                    }
+                    if ((int)origin.x - 1 < height && (int)origin.y + 3 < width && (int)origin.x - 1 > 0 && (int)origin.y + 3 > 0)
+                    {
+                        straightPath.Add(GridManager.Instance.hexCells[(int)origin.x - 1, (int)origin.y + 3]);
+                    }
+                }
+            }
+        }
 
     }
 }
