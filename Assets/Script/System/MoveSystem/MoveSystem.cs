@@ -21,10 +21,10 @@ namespace Game.System
         private MapSystem mapSystem = new MapSystem();
 
         /// <summary>
-        /// Íæ¼ÒÒÆ¶¯ÖÁÄ¿±ê£¨È«Â·¾¶£©
+        /// ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½Ä¿ï¿½ê£¨È«Â·ï¿½ï¿½ï¿½ï¿½
         /// </summary>
-        /// <param name="player">Íæ¼Ò</param>
-        /// <param name="path">Â·¾¶</param>
+        /// <param name="player">ï¿½ï¿½ï¿½</param>
+        /// <param name="path">Â·ï¿½ï¿½</param>
         public void PlayerMoveTo(GameObject player, Vector2 path,bool isUndo=false)
         {
             if (GameBody.GetSystem<MapSystem>().CalculateDistance(player.GetComponent<Player>().CurHexCell.Pos,
@@ -44,7 +44,7 @@ namespace Game.System
             player.GetComponent<Player>().CurHexCell = newCell;
             if (newCell.Type == HexType.Transport)
             {
-                //TODO::ÉèÖÃÓÎÏ·ÎªÍ¨¹Ø
+                //TODO::ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ÎªÍ¨ï¿½ï¿½
             }
 
             if (!string.IsNullOrEmpty(player.GetComponent<Player>().SpawningPath))
@@ -66,15 +66,15 @@ namespace Game.System
         }
 
         /// <summary>
-        /// µÐÈËÒÆÖÁÄ³Î»ÖÃ
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³Î»ï¿½ï¿½
         /// </summary>
-        /// <param name="enemy">µÐÈË</param>
+        /// <param name="enemy">ï¿½ï¿½ï¿½ï¿½</param>
         public void EnemyMoveTo(GameObject enemy)
         {
-            // Ñ°ÕÒ¾¯½ä·¶Î§ÄÚÄ¿±ê
+            // Ñ°ï¿½Ò¾ï¿½ï¿½ä·¶Î§ï¿½ï¿½Ä¿ï¿½ï¿½
             List<HexCell> hexcells = new List<HexCell>(GameBody.GetSystem<MapSystem>()
                 .GetRoundHexCell(enemy.GetComponent<Enemy>().CurHexCell.Pos, enemy.GetComponent<Enemy>().WatchRange));
-            // Ñ°ÕÒ¿ÉÒÆ¶¯×î´ó·¶Î§Ä¿±ê
+            // Ñ°ï¿½Ò¿ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½Î§Ä¿ï¿½ï¿½
             List<HexCell> AllCell = new List<HexCell>(GameBody.GetSystem<MapSystem>()
                 .GetRoundHexCell(enemy.GetComponent<Enemy>().CurHexCell.Pos,
                     enemy.GetComponent<Enemy>().MoveTimes * enemy.GetComponent<Enemy>().StepLength));
@@ -106,16 +106,17 @@ namespace Game.System
                 }
             }
 
-            // Ã»¼ì²âµ½Íæ¼Ò»òÕß³ðºÞ¶ÔÏó£¬Ëæ»úÂ·¾¶
+            // Ã»ï¿½ï¿½âµ½ï¿½ï¿½Ò»ï¿½ï¿½ß³ï¿½Þ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
             Vector2 target = GameBody.GetSystem<MapSystem>().RandomPatrol(enemy.GetComponent<Enemy>().SpawnPoint,
                 enemy.GetComponent<Enemy>().CurHexCell.Pos);
             Debug.Log(enemy.GetComponent<Enemy>().SpawnPoint);
             ThrowTarget(enemy, GridManager.Instance.hexCells[(int) target.x, (int) target.y]);
+            EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() }) ;
         }
 
         private void ThrowTarget(GameObject enemy, HexCell target)
         {
-            // ÐÐ¶¯µãÎª0£¬ÍË³ö
+            // ï¿½Ð¶ï¿½ï¿½ï¿½Îª0ï¿½ï¿½ï¿½Ë³ï¿½
             if (enemy.GetComponent<Enemy>().MoveTimes <= 0 || enemy.GetComponent<Enemy>().StepLength <= 0)
             {
                 return;
@@ -128,7 +129,7 @@ namespace Game.System
             HexCell lastCell = null;
             foreach (var cell in WholePath)
             {
-                enemy.transform.DOMove(cell.transform.position, 0.5f);
+                enemy.transform.DOMove(cell.transform.position,0.5f);
                 enemy.GetComponent<Enemy>().CurHexCell = cell;
                 if (cell.Type == HexType.Thorns || cell.Type == HexType.Moon || cell.Type == HexType.Fire)
                 {
@@ -153,7 +154,7 @@ namespace Game.System
                 }
             }
 
-            // µÐÈËÍ£Áôµã
+            // ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½ï¿½
             if (!new List<HexType>() {HexType.Spar, HexType.Spore}.Contains(enemy.GetComponent<Enemy>().CurHexCell
                 .Type))
             {
@@ -162,7 +163,7 @@ namespace Game.System
         }
 
         [Obsolete]
-        // ¸ù¾Ýµ¥Î»µÄµ±Ç°Î»ÖÃ¡¢Ä¿µÄµØÎ»ÖÃºÍÒÆ¶¯Á¦£¨¿ÉÒÔÒÆ¶¯µÄ´ÎÊý£©ÒÆ¶¯µ¥Î»
+        // ï¿½ï¿½ï¿½Ýµï¿½Î»ï¿½Äµï¿½Ç°Î»ï¿½Ã¡ï¿½Ä¿ï¿½Äµï¿½Î»ï¿½Ãºï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½Î»
         public void Move(Vector2 position, Vector2 targetPosition, int stepLength, GameObject unit)
         {
             Rigidbody2D rb = unit.GetComponent<Rigidbody2D>();
@@ -171,7 +172,7 @@ namespace Game.System
                 float distance = Vector2.Distance(position, targetPosition);
                 if (distance <= stepLength)
                 {
-                    // Ê¹ÓÃ Rigidbody ½øÐÐÎïÀíÒÆ¶¯
+                    // Ê¹ï¿½ï¿½ Rigidbody ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
                     rb.MovePosition(targetPosition);
                 }
             }
@@ -182,7 +183,7 @@ namespace Game.System
         }
 
         [Obsolete]
-        // ´¦Àí¹ÖÎïµÄAIÒÆ¶¯¾ö²ß
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½AIï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
         void Run_AI(Vector2 position, int stepLength, GameObject unit)
         {
             var hexCells = mapSystem.GetRoundHexCell(position, stepLength);
@@ -207,7 +208,7 @@ namespace Game.System
         }
 
         [Obsolete]
-        // Ö´ÐÐËæ»úÒÆ¶¯
+        // Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
         void RandomMove(Vector2 position, int stepLength, GameObject unit)
         {
             Vector2 randomDirection = Random.insideUnitCircle.normalized * stepLength;
@@ -217,21 +218,21 @@ namespace Game.System
         }
 
         [Obsolete]
-        // µÝ¹é»ñÈ¡´Óµ±Ç°Î»ÖÃµ½Ä¿±êÎ»ÖÃµÄ×î¶ÌÂ·¾¶
+        // ï¿½Ý¹ï¿½ï¿½È¡ï¿½Óµï¿½Ç°Î»ï¿½Ãµï¿½Ä¿ï¿½ï¿½Î»ï¿½Ãµï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
         void Run_Move(Vector2 currentPosition, Vector2 targetPosition, int stepLength, GameObject unit)
         {
             List<Vector2> path = null;
             if (path != null && path.Count > 0)
             {
                 Rigidbody2D rb = unit.GetComponent<Rigidbody2D>();
-                // ÒÆ¶¯µ½Â·¾¶µÄÏÂÒ»¸öµã
+                // ï¿½Æ¶ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
                 rb.MovePosition(path[0]);
             }
         }
 
         public override void InitSystem()
         {
-            // ÏµÍ³³õÊ¼»¯Âß¼­
+            // ÏµÍ³ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ß¼ï¿½
             RegisterEvents();
         }
 

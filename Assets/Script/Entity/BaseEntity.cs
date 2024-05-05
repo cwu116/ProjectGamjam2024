@@ -28,6 +28,7 @@ public partial class BaseEntity : MonoBehaviour
     private int currentWidthIndex;
 
     private string spawningPath; //生成地块属性
+    public bool isDead;//是否死亡
 
     protected void InitEntity()
     {

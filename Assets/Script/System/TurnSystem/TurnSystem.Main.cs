@@ -10,6 +10,7 @@ namespace Game.System
         {
             _turnModel = GameBody.GetModel<TurnModel>();
             RegisterEvents();
+            stateSystem = GameBody.GetSystem<StateSystem>();
         }
 
         

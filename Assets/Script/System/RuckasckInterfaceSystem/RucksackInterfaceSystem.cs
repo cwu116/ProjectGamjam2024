@@ -21,7 +21,7 @@ namespace Game.System
                 
                 if (materials.Count > 1 && materials.Count < 3 && (item_s.Id.Equals("A") || item_s.Id.Equals("B") || item_s.Id.Equals("C") || item_s.Id.Equals("D")))
                 {
-                    materials.Add(new Item_s(item_s.Name, item_s.Id, item_s.Description, item_s.quantity));
+                    materials.Add(new Item_s(item_s.Id, item_s.Name, item_s.Description, item_s.quantity));
 
                     Debug.Log("[特殊材料] 添加成功");
                     return;
@@ -34,7 +34,7 @@ namespace Game.System
                 
                 if (!(item_s.Id.Equals("A") || item_s.Id.Equals("B") || item_s.Id.Equals("C") || item_s.Id.Equals("D")))
                 {
-                    materials.Add(new Item_s(item_s.Name, item_s.Id, item_s.Description, item_s.quantity));
+                    materials.Add(new Item_s(item_s.Id, item_s.Name, item_s.Description, item_s.quantity));
                     Debug.Log("[普通材料] 添加成功");
                     return;
                 }
@@ -96,17 +96,17 @@ namespace Game.System
             }
             if (item_SModel_1 != null && item_SModel_2 != null)
             {
-                foreach (var i in compoundModel.Item_Data)//检索合成表
+                foreach (var i in compoundModel.Item_Data)//检索合成表 
                 {
                     if ((i.Material_1.Equals(item_SModel_1.Id) && i.Material_2.Equals(item_SModel_2.Id)) || (i.Material_1.Equals(item_SModel_2.Id) && i.Material_2.Equals(item_SModel_1.Id)))
                         list.Add(new Item_s(i.id, i.Name, i.Description, 1));//将满足要求的配方存储起来
                 }
-                if (item_SModel_3 == null && list != null)
+                if (item_SModel_3 == null && list.Count!=0)
                 {
                     Debug.Log("随机药物");
-                    var result_ = list[Random.Range(0, list.Count)];
+                    Item_s result_ = list[Random.Range(0, list.Count)];
                     var result = compoundModel.Item_Data.Find(v => v.id == result_.Id);
-                    EventSystem.Send(new CraftResultEvent() { result = result });
+                    //EventSystem.Send(new CraftResultEvent() { result = result });
                     return result;//没有特殊配方则随机返回一个药水
                 }
                 foreach (var i in compoundModel.Item_Data)//在拥有特殊材料的情况下将满足条件的直接返回
@@ -116,14 +116,14 @@ namespace Game.System
                         Debug.Log("生成指定药物");
                         var result_ = new Item_s(i.id, i.Name, i.Description, 1);
                         var result = compoundModel.Item_Data.Find(v => v.id == result_.Id);
-                        EventSystem.Send(new CraftResultEvent() { result = result });
+                        //EventSystem.Send(new CraftResultEvent() { result = result });
                         return result;
                     }
 
                 }
             }
             Debug.Log("无满足条件的药物");
-            EventSystem.Send(new CraftResultEvent());
+            //EventSystem.Send(new CraftResultEvent());
             return null;//以上都不满足则返回null
         }
         public override void InitSystem()

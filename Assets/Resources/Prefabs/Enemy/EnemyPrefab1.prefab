@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 6946606434009195273}
   - component: {fileID: 6603655280787003027}
   - component: {fileID: 2639573753041178145}
-  - component: {fileID: 4352539062555591599}
-  - component: {fileID: -5721388508139801349}
-  - component: {fileID: 5115431697629015098}
+  - component: {fileID: 8739598007064159462}
+  - component: {fileID: -7609100685488679418}
+  - component: {fileID: -9094517654568821056}
   m_Layer: 0
-  m_Name: EnemyPrefab
+  m_Name: EnemyPrefab1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,7 +86,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4352539062555591599
+--- !u!114 &8739598007064159462
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: "\u8FD1\u6218\u602A"
---- !u!114 &-5721388508139801349
+--- !u!114 &-7609100685488679418
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fb0d4f892594e5796b16ab373c5b91f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &5115431697629015098
+--- !u!65 &-9094517654568821056
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

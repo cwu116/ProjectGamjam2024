@@ -37,6 +37,7 @@ namespace Game
             RegisterSystem(new InventorySystem());
             RegisterSystem(new StateSystem());
             RegisterSystem(new TurnSystem());
+            RegisterSystem(new EnemyBehaviourSystem());
         }
 
         private void RegisterModels()

@@ -8,6 +8,6 @@ public class BtnAddMat : MonoBehaviour
 {
     private void Start()
     {
-        this.GetComponent<Button>().onClick.AddListener(() => EventSystem.Send<AddItemEvent>(new AddItemEvent() { item = new Item_s("»ÆÉ«µôÂäÎï", "¶À½Ç", "aaaa", 0), count = 3 }));
+        this.GetComponent<Button>().onClick.AddListener(() => EventSystem.Send<AddItemEvent>(new AddItemEvent() { item = new Item_s("yellow", "»ÆÉ«²ÝÒ©", "aaaa", 0), count = 3 }));
     }
 }

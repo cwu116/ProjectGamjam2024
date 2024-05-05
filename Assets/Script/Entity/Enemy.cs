@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using Buff;
 using Buff.Config;
 using UnityEngine;
+using Game;
+using Game.System;
 
 public class Enemy : BaseEntity
 {
@@ -38,6 +40,15 @@ public class Enemy : BaseEntity
             default:
                 throw new ArgumentOutOfRangeException();
         }   
+    }
+
+    private void OnMouseDown()
+    {
+        if (GameBody.GetModel<PlayerActionModel>().currentPotion != null)
+        {
+            GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().currentPotion, this.gameObject);
+            return;
+        }
     }
 
 }

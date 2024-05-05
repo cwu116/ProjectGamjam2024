@@ -109,13 +109,12 @@ namespace Game.UI
 
 
             btnBack.onClick.AddListener(() => Close());
-            btnCraft.onClick.AddListener(() => EventSystem.Send<CraftTriggerEvent>());
+            btnCraft.onClick.AddListener(() => { EventSystem.Send<CraftTriggerEvent>(); });
             EventSystem.Register<UICraftIconClickEvent>(v => OnUICraftIconClicked(v.craftIcon));
             EventSystem.Register<UICraftMaterialClickEvent>(v => OnUICraftMaterialClicked(v.item));
             EventSystem.Register<RefreshBackpackUIEvent>(v => OnRefreshBackpackUI(v));
             EventSystem.Register<CraftResultEvent>(v => OnCraftResult(v));
         }
-
 
         private void OnUICraftIconClicked(UICraftIcon c)
         {
@@ -173,6 +172,8 @@ namespace Game.UI
 
         private void OnRefreshBackpackUI(RefreshBackpackUIEvent v)
         {
+            if (v.normalItems == null && v.specialItems == null)
+                return;
             for (int i = 0; i < normalMaterialSlots.Count; i++)
             {
                 var slot = normalMaterialSlots[i];
@@ -204,6 +205,22 @@ namespace Game.UI
 
         private void OnCraftResult(CraftResultEvent v)
         {
+            if (v.result != null)
+            {
+                foreach (var i in normalIcons)
+                {
+                    i.item = null;
+                }
+            }
+            RefreshCraftIcon();
+            foreach (var element in UICraftElements)
+            {
+                Destroy(element.Value);
+            }
+            UICraftElements.Clear();
+            RefreshCraftIconState();
+
+
             //合成药水表现
             EventSystem.Send<RefreshBackpackUIRequest>();
         }
@@ -211,11 +228,16 @@ namespace Game.UI
 
         void RefreshCraftIconState()
         {
-            foreach(var i in normalIcons)
+            //foreach(var i in normalIcons)
+            //{
+            //    i.icon.sprite = i.item==null?null:Resources.Load<Sprite>(UIImagePath.ImagePath+i.item.Id);
+            //}
+            //specialIcon.icon.sprite = specialIcon.item == null ? null : Resources.Load<Sprite>(UIImagePath.ImagePath + specialIcon.item.Id);
+            foreach (var i in normalIcons)
             {
-                i.icon.sprite = i.item==null?null:Resources.Load<Sprite>(UIImagePath.ImagePath+i.item.Id);
+                i.GetComponent<Image>().sprite = i.item == null ? craftIconNormal : craftIconActive;
             }
-            specialIcon.icon.sprite = specialIcon.item == null ? null : Resources.Load<Sprite>(UIImagePath.ImagePath + specialIcon.item.Id);
+            specialIcon.GetComponent<Image>().sprite = specialIcon.item == null ? craftIconSpeicalNormal : craftIconSpecialActive;
         }
 
         void ShowDescription(UIRecipeElement element)

@@ -78,11 +78,14 @@ public class BackpackModel : BaseModel
 
     public void AddPotion(Item_Data potion)
     {
+        if (potions.Count >= 5)
+            return;
         potions.Add(potion);
     }
 
     public void RemovePotion(Item_Data potion)
     {
         potions.Remove(potion);
+        EventSystem.Send<RefreshBackpackUIEvent>(new RefreshBackpackUIEvent { potions = potions });
     }
 }
