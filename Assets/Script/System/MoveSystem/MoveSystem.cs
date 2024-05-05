@@ -38,7 +38,7 @@ namespace Game.System
             {
                 return;
             }
-
+            
             player.GetComponent<Player>().LastHexCell = player.GetComponent<Player>().CurHexCell;
 
             HexCell newCell = GridManager.Instance.hexCells[(int) path.x, (int) path.y];
@@ -120,8 +120,7 @@ namespace Game.System
             {
                 return;
             }
-
-
+            
             List<HexCell> WholePath = GameBody.GetSystem<MapSystem>()
                 .GetPath(enemy.GetComponent<Enemy>().CurHexCell.Pos, target.Pos);
             HexCell lastCell = null;

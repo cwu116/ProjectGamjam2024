@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Buff.Config;
 using Buff.Tool;
@@ -68,26 +68,25 @@ namespace Buff
 
         public void StatesStart()
         {
-            for (int i = 0; i < StateUnits.Count; i++)
+            for (int i = StateUnits.Count-1; i > 0; i--)
             {
-                var unit = StateUnits[i];
-                if (unit.Info.isStartExec)
+                if (StateUnits[i].Info.isStartExec)
                 {
-                    if (unit.Info.isAdditive)
+                    if (StateUnits[i].Info.isAdditive)
                     {
-                        for (int j = 0; j < unit.Duration; j++)
+                        for (int j = 0; j < StateUnits[i].Duration; j++)
                         {
-                            StateSystem.Execution(unit.Info.buffCMD, transform.gameObject);
+                            StateSystem.Execution(StateUnits[i].Info.buffCMD, transform.gameObject);   
                         }
                     }
                     else
                     {
-                        StateSystem.Execution(unit.Info.buffCMD, transform.gameObject);
+                        StateSystem.Execution(StateUnits[i].Info.buffCMD, transform.gameObject);
                     }
 
-                    if (unit.Decrement())
+                    if (StateUnits[i].Decrement())
                     {
-                        RemoveState(unit);
+                        RemoveState(StateUnits[i]);
                     }
                 }
             }
@@ -97,25 +96,25 @@ namespace Buff
 
         public void StatesEnd()
         {
-            foreach (var unit in StateUnits)
+            for (int i = StateUnits.Count-1; i > 0; i--)
             {
-                if (!unit.Info.isStartExec)
+                if (!StateUnits[i].Info.isStartExec)
                 {
-                    if (unit.Info.isAdditive)
+                    if (StateUnits[i].Info.isAdditive)
                     {
-                        for (int i = 0; i < unit.Duration; i++)
+                        for (int j = 0; j < StateUnits[i].Duration; j++)
                         {
-                            StateSystem.Execution(unit.Info.buffCMD, transform.gameObject);   
+                            StateSystem.Execution(StateUnits[i].Info.buffCMD, transform.gameObject);   
                         }
                     }
                     else
                     {
-                        StateSystem.Execution(unit.Info.buffCMD, transform.gameObject);
+                        StateSystem.Execution(StateUnits[i].Info.buffCMD, transform.gameObject);
                     }
                 }
-                if (unit.Decrement())
+                if (StateUnits[i].Decrement())
                 {
-                    RemoveState(unit);
+                    RemoveState(StateUnits[i]);
                 }
             }
         }

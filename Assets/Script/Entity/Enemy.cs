@@ -7,6 +7,7 @@ using Buff.Config;
 using UnityEngine;
 using Game;
 using Game.System;
+using UnityEngine.UI;
 
 public class Enemy : BaseEntity
 {
@@ -20,12 +21,13 @@ public class Enemy : BaseEntity
 
     private void Start()
     {
-       if (SetModel(name))
+        if (SetModel(name))
         {
             InitEntity();
         }
         
         base.Start();
+        RefreshHpInUI();
     }
 
     public override void UseSkill(BaseEntity target)
