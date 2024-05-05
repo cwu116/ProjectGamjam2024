@@ -23,4 +23,21 @@ public class Enemy : BaseEntity
         base.Start();
     }
 
+    public override void UseSkill(BaseEntity target)
+    {
+        base.UseSkill(target);
+        switch (MyAttackType)
+        {
+            case AttackType.Sword:
+                target.GetHurt(Attack);
+                break;
+            case AttackType.Range:
+                break;
+            case AttackType.NULL:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }   
+    }
+
 }

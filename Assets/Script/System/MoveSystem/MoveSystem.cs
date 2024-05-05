@@ -27,7 +27,6 @@ namespace Game.System
         /// <param name="path">路径</param>
         public void PlayerMoveTo(GameObject player, Vector2 path,bool isUndo=false)
         {
-            // Debug.LogWarning(GameBody.GetSystem<MapSystem>().GetRoundHexCell(player.GetComponent<Player>().CurHexCell.Pos ,2).Length);
             if (GameBody.GetSystem<MapSystem>().CalculateDistance(player.GetComponent<Player>().CurHexCell.Pos,
                 path) > 1)
             {
@@ -41,7 +40,6 @@ namespace Game.System
             player.GetComponent<Player>().LastHexCell = player.GetComponent<Player>().CurHexCell;
 
             HexCell newCell = GridManager.Instance.hexCells[(int) path.x, (int) path.y];
-            //player.GetComponent<Rigidbody2D>().MovePosition(newCell.transform.position);
             player.transform.DOMove(newCell.transform.position, 0.5f);
             player.GetComponent<Player>().CurHexCell = newCell;
             if (newCell.Type == HexType.Transport)
@@ -82,27 +80,36 @@ namespace Game.System
                     enemy.GetComponent<Enemy>().MoveTimes * enemy.GetComponent<Enemy>().StepLength));
             foreach (var cellUnit in hexcells)
             {
-                if (cellUnit.OccupyObject is null)
+                if (cellUnit.OccupyObject is null || cellUnit.OccupyObject == enemy)
                 {
+                    Debug.Log("no");
                     continue;
                 }
+                else
+                {
+                    Debug.LogError(cellUnit.OccupyObject.name);
+                    GameObject.Destroy(cellUnit.OccupyObject);
+                }
+
+                Debug.Log(cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer);
                 if (cellUnit.OccupyObject.GetComponent<BaseEntity>().bMisLead)
                 {
                     Debug.LogError("I see you!");
                     ThrowTarget(enemy, cellUnit);
-                    break;
+                    return;
                 }
                 else if (cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
                 {
                     Debug.LogError("I see you!");
                     ThrowTarget(enemy, cellUnit);
-                    break;
+                    return;
                 }
             }
 
             // 没检测到玩家或者仇恨对象，随机路径
             Vector2 target = GameBody.GetSystem<MapSystem>().RandomPatrol(enemy.GetComponent<Enemy>().SpawnPoint,
                 enemy.GetComponent<Enemy>().CurHexCell.Pos);
+            Debug.Log(enemy.GetComponent<Enemy>().SpawnPoint);
             ThrowTarget(enemy, GridManager.Instance.hexCells[(int) target.x, (int) target.y]);
         }
 
@@ -113,15 +120,15 @@ namespace Game.System
             {
                 return;
             }
-
-            Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
+            
+            
             List<HexCell> WholePath = GameBody.GetSystem<MapSystem>()
                 .GetPath(enemy.GetComponent<Enemy>().CurHexCell.Pos, target.Pos);
             WholePath.RemoveAt(WholePath.Count - 1);
             HexCell lastCell = null;
             foreach (var cell in WholePath)
             {
-                rb.MovePosition(cell.transform.position);
+                enemy.transform.DOMove(cell.transform.position, 0.5f);
                 enemy.GetComponent<Enemy>().CurHexCell = cell;
                 if (cell.Type == HexType.Thorns || cell.Type == HexType.Moon || cell.Type == HexType.Fire)
                 {

@@ -58,11 +58,8 @@ public class GridManager : MonoSingleton<GridManager>
         prefabEnmeyList = mapSystem.GetEnemies();
         CreateCells();
         CreateEnmey();
-<<<<<<< HEAD
-        mapSystem.InitHW();
-=======
         GameBody.GetSystem<MapSystem>().InitHW();
->>>>>>> fe25a3a7a8ff78dbacb4384bf11dbc0e009de4ed
+
     }
 
     // Update is called once per frame
@@ -125,11 +122,12 @@ public class GridManager : MonoSingleton<GridManager>
                 {
                     BaseEntity enemy = Instantiate(prefabEnmeyList[j]).GetComponent<BaseEntity>();
                     enemy.CurHexCell = cells[x, y];
+                    cells[x, y].OccupyObject = enemy.gameObject;
                     enemy.CurrentHeightIndex = x;
                     enemy.CurrentWidthIndex = y;
+                    enemy.SpawnPoint = enemy.CurHexCell.Pos;
                     enemy.transform.position = cells[x, y].transform.position;
                     enemys.Add(enemy);
-                    Debug.Log(enemy.name);
                     GameObject EnemyParent = GameObject.Find("Enemys");
                     enemy.transform.SetParent(EnemyParent.transform, false);
                     break;

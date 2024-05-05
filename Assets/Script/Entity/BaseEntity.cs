@@ -22,7 +22,7 @@ public partial class BaseEntity : MonoBehaviour
 
     private bool bIsObstacle; // 是障碍物
     private bool bWillDoubleSkill;  //是否额外触发
-    private bool bisPlayer;  //是否是玩家
+    [SerializeField] private bool bisPlayer;  //是否是玩家
 
     private int currentHeightIndex;
     private int currentWidthIndex;
@@ -44,7 +44,21 @@ public partial class BaseEntity : MonoBehaviour
         buff.RegisterFunc(TActionKey.SpawnPath, SpawnPath);
         buff.RegisterFunc(TActionKey.Sleep, Sleep);
         
-        
+        BuffComp.ValueUnits.Add(ValueKey.Hp, new ValueInt(_model.hp));
+        BuffComp.ValueUnits.Add(ValueKey.MaxHp, new ValueInt(_model.hp));
+        BuffComp.ValueUnits.Add(ValueKey.Attack, new ValueInt(_model.Attack));
+        BuffComp.ValueUnits.Add(ValueKey.Defence, new ValueInt(0));
+        BuffComp.ValueUnits.Add(ValueKey.bInvisible, new ValueInt(0));
+        BuffComp.ValueUnits.Add(ValueKey.bMislead, new ValueInt(0));
+        BuffComp.ValueUnits.Add(ValueKey.bFlamePure, new ValueInt(0));
+        BuffComp.ValueUnits.Add(ValueKey.bIsSilent, new ValueInt(0));
+        BuffComp.ValueUnits.Add(ValueKey.HateValue, new ValueInt(0));
+        BuffComp.ValueUnits.Add(ValueKey.MoveTimes, new ValueInt(_model.moveTimes));
+        BuffComp.ValueUnits.Add(ValueKey.SkillRange, new ValueInt(_model.RangeRight));
+        BuffComp.ValueUnits.Add(ValueKey.StepLenghth, new ValueInt(_model.stepLength));
+        BuffComp.ValueUnits.Add(ValueKey.WatchRange, new ValueInt(_model.watchRange));
+        BuffComp.ValueUnits.Add(ValueKey.MaxMoveTimes, new ValueInt(_model.moveTimes));
+        BuffComp.ValueUnits.Add(ValueKey.MinSkillRange, new ValueInt(_model.RangeLeft));
     }
 
     protected virtual void Start()

@@ -25,6 +25,7 @@ public class Player : BaseEntity
         buff = GetComponent<BuffComponent>();
         if (SetModel("玩家"))
         {
+            Debug.Log("Success");
            InitEntity(); 
         }
         // 测试专用
@@ -34,14 +35,9 @@ public class Player : BaseEntity
         GameBody.GetSystem<MoveSystem>().PlayerMoveTo(gameObject, _curHexCell.Pos,true);
         EventSystem.Send<PlayerTurnBeginTrigger>();
     }
+    
 
-
-    public override void UseSkill(BaseEntity target)
-    {
-        base.UseSkill(target);
-
-    }
-
+    // 投掷药水
     public void ReleaseMedicalment(BaseEntity target)
     {
         MoveTimes.AddValue(-1);
