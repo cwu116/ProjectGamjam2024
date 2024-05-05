@@ -13,13 +13,14 @@ namespace Managers
     }
     static class UIManager
     {
-        const string UIPath = "Prefab/UI/";
+        const string UIPath = "Prefabs/UI/";
         static Dictionary<Type, UIElement> UIResources = new Dictionary<Type, UIElement>();
 
-        //////////////////////////Â·¾¶ºóÃæ¼ÓµÄÃû×ÖÓëprefabµÄÃû³Æ±£³ÖÒ»ÖÂ/////////////////////
+        //////////////////////////è·¯å¾„åé¢åŠ çš„åå­—ä¸prefabçš„åç§°ä¿æŒä¸€è‡´/////////////////////
         static UIManager()
         {
             UIResources[typeof(DemoUI)] = new UIElement { ResourcePath = UIPath + "DemoUI" };
+            UIResources[typeof(UICraft)] = new UIElement { ResourcePath = UIPath + "UICraft" };
         }
 
         public static T Show<T>() where T : BasePanel
@@ -27,20 +28,21 @@ namespace Managers
             Type type = typeof(T);
             if (!UIResources.ContainsKey(type))
             {
-                Debug.LogError("Show:" + type + "Ã»ÓĞÔÚUIManagerÖĞ×¢²á");
+                Debug.LogError("Show:"+type + "æ²¡æœ‰åœ¨UIManagerä¸­æ³¨å†Œ");
                 return default;
             }
             UIElement element = UIResources[type];
 
-            if (element.instance == null)//µÚÒ»´Î¼ÓÔØ
+            if (element.instance == null)//ç¬¬ä¸€æ¬¡åŠ è½½
             {
                 GameObject prefab = Resources.Load(element.ResourcePath) as GameObject;
                 if (prefab == null)
                 {
-                    Debug.LogError(element.ResourcePath + " Ã»ÓĞÕÒµ½¶ÔÓ¦Ô¤ÖÆÌå");
+                    Debug.LogError(element.ResourcePath + " æ²¡æœ‰æ‰¾åˆ°å¯¹åº”é¢„åˆ¶ä½“");
                     return default;
                 }
                 element.instance = GameObject.Instantiate(prefab);
+                element.instance.SetActive(true);
                 (element.instance.GetComponent<T>() as BasePanel).InitPanel();
                 (element.instance.GetComponent<T>() as BasePanel).Refresh();
                 return element.instance.GetComponent<T>();
@@ -57,22 +59,22 @@ namespace Managers
         {
             if (!UIResources.ContainsKey(typeof(T)))
             {
-                Debug.Log("Close:" + typeof(T) + " Ã»ÓĞÔÚUIManager×¢²á");
+                Debug.LogError("Close:" + typeof(T) + " æ²¡æœ‰åœ¨UIManageræ³¨å†Œ");
                 return;
             }
             UIResources[typeof(T)].instance.SetActive(false);
         }
 
-        public static T Get<T>() where T : BasePanel
+        public static T Get<T>() where T:BasePanel
         {
             if (!UIResources.ContainsKey(typeof(T)))
             {
-                Debug.LogError("Close:" + typeof(T) + " Ã»ÓĞÔÚUIManager×¢²á");
+                Debug.LogError("Close:" + typeof(T) + " æ²¡æœ‰åœ¨UIManageræ³¨å†Œ");
                 return default;
             }
-            if (UIResources[typeof(T)].instance == null)
+            if(UIResources[typeof(T)].instance==null)
             {
-                Debug.LogError("Close:" + typeof(T) + " Ã»ÓĞ³õÊ¼»¯");
+                Debug.LogError("Close:" + typeof(T) + " æ²¡æœ‰åˆå§‹åŒ–");
                 return default;
             }
             return UIResources[typeof(T)].instance.GetComponent<T>();

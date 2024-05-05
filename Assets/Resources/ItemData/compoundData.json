@@ -1,194 +1,218 @@
 [
     {
-        "id": "",
+        "id": "Whip",
         "Name": "鞭子",
         "Material_1": "red",
         "Material_2": "red",
         "MaterialSpecial": "A",
-        "Type": [ "Damage","ChangeValue" ]
+        "Description": "对目标造成2点伤害，该单位下2次移动时的移动力加1",
+        "Type": [ "ChangeValue:Damage,2", "Delay:[ChangeValue:StepLenghth,1,true],1", "Delay:[ChangeValue:StepLenghth,1,true],2" ]
     },
     {
-        "id": "",
+        "id": "Physical_ransformation",
         "Name": "肉体改造",
         "Material_1": "red",
         "Material_2": "red",
         "MaterialSpecial": "B",
-        "Type": [ "Damage","ChangeValue","ChangeValue" ]
+        "Description": "对目标造成2点伤害，该单位血量上限加1，随后3个回合开始时恢复1点血量",
+        "Type": [ "ChangeValue:Damage,2", "ChangeValue:HpMax,1", "State:ResumeHp,3,false" ]
     },
     {
-        "id": "",
-        "Name": "回光返照",
+        "id": "Strength",
+        "Name": "力量",
         "Material_1": "red",
         "Material_2": "red",
         "MaterialSpecial": "C",
-        "Type": [ "Damage","Buff" ]
+        "Description": "对目标造成2点伤害，该单位下1次造成的所有伤害加1，且技能范围增加1",
+        "Type": [ "ChangeValue:Damage,2", "Delay:[ChangeValue:Attack,1,true*ChangeValue:SkillRange,1,true],1", "Delay:[ChangeValue:Attack,-1,true*ChangeValue:SkillRange,-1,true],1" ]
     },
     {
-        "id": "",
+        "id": "Ghost",
         "Name": "幽魂",
         "Material_1": "red",
         "Material_2": "red",
         "MaterialSpecial": "D",
-        "Type": ["Damage","Buff"]
+        "Description": "对目标造成2点伤害，该单位获得隐形2",
+        "Type": [ "ChangeValue:Damage,2", "State:Invisible,2,true" ]
     },
     {
-        "id": "",
+        "id": "Stimulant_poisons",
         "Name": "兴奋毒药",
         "Material_1": "red",
         "Material_2": "yellow",
         "MaterialSpecial": "A",
-        "Type": [ "" ]
+        "Description": "使目标获得中毒2，该单位额外获得1个行动点，持续2个回合",
+        "Type": [ "State:Poison,2,true", "ChangeValue:MoveTimes,1,true", "Delay:[ChangeValue:MaxMoveTimes,1,true],1", "Delay:[ChangeValue:MaxMoveTimes,1,true],2" ]
     },
     {
-        "id": "",
+        "id": "Fifty_steps_snake",
         "Name": "五十步蛇",
         "Material_1": "red",
         "Material_2": "yellow",
         "MaterialSpecial": "B",
-        "Type": [""]
+        "Description": "使目标获得中毒2，下1次移动时的移动力加2",
+        "Type": [ "State:Poison,1,true", "Delay:[ChangeValue:StepLenghth,2,true],1" ]
     },
     {
-        "id": "",
+        "id": "Demonic_Edict",
         "Name": "恶魔敕令",
         "Material_1": "red",
         "Material_2": "yellow",
         "MaterialSpecial": "C",
-        "Type": [ "Buff","ChangeValue" ]
+        "Description": "使目标获得燃烧1，其在燃烧状态下技能范围增加1，持续至本场战斗结束",
+        "Type": [ "State:Burning,1,true", "ChangeValue:SkillRange,1,true" ]
     },
     {
-        "id": "",
+        "id": "Demonic_powers",
         "Name": "恶魔力量",
         "Material_1": "red",
         "Material_2": "yellow",
         "MaterialSpecial": "D",
-        "Type": [ "Skill","Buff" ]
+        "Description": "使目标获得燃烧1，其在燃烧状态下造成的所有伤害加1，持续至本场战斗结束",
+        "Type": [ "State:Burning,1,true", "ChangeValue:Attack,1,true" ]
     },
     {
-        "id": "",
+        "id": "Live_target",
         "Name": "活靶子",
         "Material_1": "yellow",
         "Material_2": "yellow",
         "MaterialSpecial": "A",
-        "Type": [ "" ]
+        "Description": "使目标仇恨值增加5，每回合结束时恢复2点血，持续2回合",
+        "Type": [ "ChangeValue:HateValue,5,true", "State:LiveTarget,2,false" ]
     },
     {
-        "id": "",
-        "Name": "石肤",
+        "id": "Hibernation",
+        "Name": "冬眠",
         "Material_1": "yellow",
         "Material_2": "yellow",
         "MaterialSpecial": "B",
-        "Type": [ "" ]
+        "Description": "使目标下2次移动时的移动力减1，但血量立即恢复至上限",
+        "Type": [ "Delay:[ChangeValue:StepLenghth,-1,true],1", "ChangeValue:StepLenghth,-1,true", "$Hp = $MaxHp" ]
     },
     {
-        "id": "",
+        "id": "Hidden_in_the_dust",
         "Name": "隐入尘烟",
         "Material_1": "yellow",
         "Material_2": "yellow",
         "MaterialSpecial": "C",
-        "Type": [ "Skill" ]
+        "Description": "令目标周围2格范围内的所有敌方或玩家单位远离目标1格，随后这些单位获得隐形1",
+        "Type": [ "Action:Away,[2,1,this]","State:Invisible,1,true" ]
     },
     {
-        "id": "",
+        "id": "Chrysalis",
         "Name": "蛹",
         "Material_1": "yellow",
         "Material_2": "yellow",
         "MaterialSpecial": "D",
-        "Type": [ "" ]
+        "Description": "使目标下回合行动点减1，在回合结束时恢复2点血量",
+        "Type": [ "Delay:[ChangeValue:StepLenghth,-1,false],1", "State:Chrysalis,1,false" ]
     },
     {
-        "id": "",
+        "id": "Flesh_and_blood_blessings",
         "Name": "血肉祝福",
         "Material_1": "red",
         "Material_2": "blue",
         "MaterialSpecial": "A",
-        "Type": [ "Skill" ]
+        "Description": "使目标当前生命值翻倍，在第3个回合结束时该单位直接死亡",
+        "Type": [ "State:BloodBless,3,true"]
     },
     {
-        "id": "",
+        "id": "Molotov_cocktail",
         "Name": "燃烧瓶",
         "Material_1": "red",
         "Material_2": "blue",
         "MaterialSpecial": "B",
-        "Type": [ "Action" ]
+        "Description": "使目标获得燃烧1，其移动经过的路径会在下个回合生成火焰环境，持续3个回合",
+        "Type": [ "State:Molotov_cocktail,3,true"  ]
     },
     {
-        "id": "",
+        "id": "Suffocate",
         "Name": "窒息",
         "Material_1": "red",
         "Material_2": "blue",
         "MaterialSpecial": "C",
-        "Type": [ "" ]
+        "Description": "使目标获得中毒2，其移动经过的路径会在下个回合生成黑雾环境，持续3个回合",
+        "Type": [ "State:Poison,2,true","Action:SpawnPath,[BlackMist,3]" ]
     },
     {
-        "id": "",
+        "id": "Heart_of_Darkness",
         "Name": "黑暗之心",
         "Material_1": "red",
         "Material_2": "blue",
         "MaterialSpecial": "D",
-        "Type": [ "" ]
+        "Description": "使目标获得睡眠3，行动点变为0，并在回合结束时获得2点血量，持续3回合。若目标周围1格内出现任何其他单位，则该状态消失", 
+        "Type": [ "Action:Sleep,[1]" ]
     },
     {
-        "id": "",
+        "id": "Swell",
         "Name": "膨胀",
         "Material_1": "blue",
-        "Material_2": "bule",
+        "Material_2": "blue",
         "MaterialSpecial": "A",
-        "Type": [ "" ]
+        "Description": "使目标下本场战斗血量上限增加1。每回合恢复1点血量，但技能范围减1，持续2个回合",
+        "Type": [ "State:Expansion,2,true" ]
     },
     {
-        "id": "",
+        "id": "Flame_purification",
         "Name": "火焰净化",
         "Material_1": "blue",
-        "Material_2": "bule",
+        "Material_2": "blue",
         "MaterialSpecial": "B",
-        "Type": [ "" ]
+        "Description": "使目标每回合血量上限减1，但造成的任何伤害能使自身回复等量血量，持续2回合",
+        "Type": [ "State:Flame_purification,2,true" ]
     },
     {
-        "id": "",
+        "id": "Glass_cannons",
         "Name": "玻璃大炮",
         "Material_1": "blue",
-        "Material_2": "bule",
+        "Material_2": "blue",
         "MaterialSpecial": "C",
-        "Type": [ "ChangeValue","ChangeValue" ]
+        "Description": "使目标造成的所有伤害增加1，但血量上限减1，持续至本场战斗结束",
+        "Type": [ "State:GlassCannon,-1,true" ]
     },
     {
-        "id": "",
+        "id": "Gibbon_monkeys",
         "Name": "长臂猴",
         "Material_1": "blue",
-        "Material_2": "bule",
+        "Material_2": "blue",
         "MaterialSpecial": "D",
-        "Type": [ "" ]
+        "Description": "使目标技能范围增加1，但血量上限减1，持续至本场战斗结束",
+        "Type": [ "State:LongArmMonkey,-1,true" ]
     },
     {
-        "id": "",
+        "id": "Subject_1",
         "Name": "实验体1号",
         "Material_1": "yellow",
-        "Material_2": "bule",
+        "Material_2": "blue",
         "MaterialSpecial": "A",
-        "Type": ["Action"]
+        "Description": "在1格空的地块上创造1只喇叭蛙，该喇叭蛙死亡时会在当前地块诞生一只冲锋怪",
+        "Type": [ "Create:false,TrumpetFrog,this" ]
     },
     {
-        "id": "",
+        "id": "Subject_2",
         "Name": "实验体2号",
         "Material_1": "yellow",
-        "Material_2": "bule",
+        "Material_2": "blue",
         "MaterialSpecial": "B",
-        "Type": [ "Action" ]
+        "Description": "在1格空的地块上创造1只黑雾蛙，2回合后该黑雾蛙会变成远程怪",
+        "Type": [ "Create:false,BlackMistFrog,this" ]
     },
     {
-        "id": "",
+        "id": "Subject_3",
         "Name": "实验体3号",
         "Material_1": "yellow",
-        "Material_2": "bule",
+        "Material_2": "blue",
         "MaterialSpecial": "C",
-        "Type": [ "Action" ]
+        "Description": "在1格空的地块上创造1只爆炸蛙，该爆炸蛙死亡时会在当前地块诞生一只炮塔怪",
+        "Type": [ "Create:false,BombFrog,this" ]
     },
     {
-        "id": "",
+        "id": "Green_herbs",
         "Name": "青草药剂",
         "Material_1": "yellow",
-        "Material_2": "bule",
+        "Material_2": "blue",
         "MaterialSpecial": "D",
-        "Type": [ "Action" ]
+        "Description": "使1格地块变成草地环境，持续2回合，2回合后该地块变为火焰环境",
+        "Type": [ "Create:true,Grass,this", "Delay:[Create:true,Fire,this],2" ]
     }
 ]

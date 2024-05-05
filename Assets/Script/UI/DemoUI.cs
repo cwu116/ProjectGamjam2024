@@ -1,4 +1,5 @@
-﻿using System.Collections;
+using System.Collections;
+using Game;
 using Game.Extensions;
 using Game.System;
 using UnityEngine;
@@ -13,10 +14,6 @@ namespace Game.UI
         private Button _closeBtn;
         public override void InitPanel()
         {
-            _mapSystem = GameBody.GetSystem<MapSystem>();
-
-            _closeBtn = transform.FindByName<Button>("CloseBtn");
-
         }
 
         //public override void Show(IUiData uiData)

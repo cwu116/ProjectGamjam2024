@@ -40,6 +40,7 @@ namespace HexMapToolsExamples
                 isHighlighted = value;
 
                 animator.SetBool("IsHighlighted", isHighlighted);
+                Debug.Log("HighlightCell");
             }
         }
 
