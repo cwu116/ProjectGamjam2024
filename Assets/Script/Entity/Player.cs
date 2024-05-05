@@ -25,8 +25,7 @@ public class Player : BaseEntity
         buff = GetComponent<BuffComponent>();
         if (SetModel("玩家"))
         {
-            Debug.Log("Success");
-           InitEntity(); 
+            InitEntity(); 
         }
         EventSystem.Send<PlayerTurnBeginTrigger>();
     }
@@ -37,9 +36,5 @@ public class Player : BaseEntity
     {
         MoveTimes.AddValue(-1);
     }
-
-    private void Update()
-    {
-        Debug.Log("MaxMove:  " + MaxMoveTimes);
-    }
+    
 }

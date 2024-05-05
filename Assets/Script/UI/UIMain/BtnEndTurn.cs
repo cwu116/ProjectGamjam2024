@@ -15,7 +15,7 @@ public class BtnEndTurn : MonoBehaviour
         }
         else
         {
-            this.GetComponent<Button>().onClick.AddListener(() => EventSystem.Send<EnemyTurnBeginTrigger>());
+            this.GetComponent<Button>().onClick.AddListener(() => EventSystem.Send<EnemyTurnEndTrigger>());
         }
     }
 

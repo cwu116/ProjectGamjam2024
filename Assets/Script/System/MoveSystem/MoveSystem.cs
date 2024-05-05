@@ -108,8 +108,8 @@ namespace Game.System
             // û��⵽��һ��߳�޶������·��
             Vector2 target = GameBody.GetSystem<MapSystem>().RandomPatrol(enemy.GetComponent<Enemy>().SpawnPoint,
                 enemy.GetComponent<Enemy>().CurHexCell.Pos);
-            Debug.Log(enemy.GetComponent<Enemy>().SpawnPoint);
             ThrowTarget(enemy, GridManager.Instance.hexCells[(int) target.x, (int) target.y]);
+            
             EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() {enemy = enemy.GetComponent<Enemy>()});
         }
 
@@ -123,7 +123,6 @@ namespace Game.System
 
             List<HexCell> WholePath = GameBody.GetSystem<MapSystem>()
                 .GetPath(enemy.GetComponent<Enemy>().CurHexCell.Pos, target.Pos);
-            WholePath.RemoveAt(WholePath.Count - 1);
             HexCell lastCell = null;
             foreach (var cell in WholePath)
             {

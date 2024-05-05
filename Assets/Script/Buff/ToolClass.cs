@@ -96,7 +96,6 @@ namespace Buff.Tool
         public static ValueInt operator +(ValueInt left, int newValue)
         {
             left.AddValue(newValue);
-            Debug.LogFormat("{0}:{1}",left.name, left);
             return left;
         }
 
