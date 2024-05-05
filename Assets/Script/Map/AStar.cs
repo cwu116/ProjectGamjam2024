@@ -87,12 +87,13 @@ public class AStar
                 HexCell hexCell = map[x, y];
                 Vector3 hexCellPosition = hexCell.transform.position;
                 //TODO::这里应当改成该网格上的物体是否是阻碍物
-                bool isObstacle = hexCell.OccupyObject.GetComponent<BaseEntity>().IsObstacle;
+                bool isObstacle = false;
+                if (hexCell.OccupyObject != null)
+                    isObstacle = hexCell.OccupyObject.GetComponent<BaseEntity>().IsObstacle;
                 grid[x, y] = new Node(x, y, hexCellPosition.x, hexCellPosition.y, isObstacle);
             }
         }
     }
-
     /// <summary>
     /// 这个A*构造函数是专门用来计算两点距离，而不考虑障碍物的
     /// </summary>

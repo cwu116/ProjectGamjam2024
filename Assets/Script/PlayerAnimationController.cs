@@ -31,6 +31,6 @@ public class PlayerAnimationController : MonoBehaviour
     {
         anim.SetTrigger("Move");
         await System.Threading.Tasks.Task.Delay(500);
-        transform.DOMove(v.currentCell.transform.position, 0.5f).SetEase(Ease.Linear);
+        transform.DOMove(v.currentCell.transform.position+Vector3.up*3, 0.5f).SetEase(Ease.Linear);
     }
 }
