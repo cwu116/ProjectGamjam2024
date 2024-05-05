@@ -16,8 +16,6 @@ namespace Game.System
             RegisterEvents();
         }
 
-        public HexCell currentGird;
-
 
 
 
@@ -26,6 +24,7 @@ namespace Game.System
         {
             EventSystem.Register<OnMouseRightClick>(Undo);
             EventSystem.Register<UndoEvent>(v => { _playerActionModel.AddOperation(v.undoOperation); });
+            EventSystem.Register<OnPotionClick>(v => _playerActionModel.currentPotion = v.potion);
         }
 
         private void Undo(OnMouseRightClick obj)

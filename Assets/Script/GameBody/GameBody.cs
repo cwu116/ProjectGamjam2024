@@ -49,6 +49,7 @@ namespace Game
             RegisterModel(new EnviromentEffctModel());
             RegisterModel(new TurnModel());
             RegisterModel(new PlayerActionModel());
+            RegisterModel(new BackpackModel());
         }
 
         private void InitSystems()

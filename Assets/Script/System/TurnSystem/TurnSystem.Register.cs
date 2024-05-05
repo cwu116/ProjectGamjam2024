@@ -21,6 +21,7 @@ namespace Game.System
         {
             AfterPlayerTurnEndEvent info = new AfterPlayerTurnEndEvent() { /*–≈œ¢∏≥÷µ*/};
             EventSystem.Send(info);
+            OnEnemyTurnBeginTrigger(default);
         }
 
         private void OnEnemyTurnBeginTrigger(EnemyTurnBeginTrigger obj)

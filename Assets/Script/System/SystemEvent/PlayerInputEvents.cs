@@ -25,4 +25,10 @@ namespace Game.System
         public HexCell cell;
         public Transform transfrom;
     }
+
+    struct PlayerMoveEvent:IEvent
+    {
+        public HexCell currentCell;
+        public int moveTimes;
+    }
 }

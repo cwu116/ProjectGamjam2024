@@ -14,16 +14,17 @@ public class BackpackModel : BaseModel
     void Register()
     {
         EventSystem.Register<CraftAddMaterialEvent>(v => { RemoveMatrial(v.item); });
-        EventSystem.Register<CraftRemoveMaterialEvent>(v => { AddMatrial(v.item); });
+        EventSystem.Register<CraftRemoveMaterialEvent>(v => { AddMaterial(v.item); });
         EventSystem.Register<CraftResultEvent>(v => { AddPotion(v.result); });
         EventSystem.Register<UsePotionEvent>(v => RemovePotion(v.potion));
+        EventSystem.Register<AddItemEvent>(v => AddMaterial(v.item, v.count));
     }
 
     public List<Item_s> specialMaterials = new List<Item_s>();
     public List<Item_s> normalMaterials = new List<Item_s>();
     public List<Item_Data> potions = new List<Item_Data>();
 
-    public void AddMatrial(Item_s item,int count=1)
+    public void AddMaterial(Item_s item,int count=1)
     {
         if (item.Id.Equals("A") || item.Id.Equals("B") || item.Id.Equals("C") || item.Id.Equals("D"))
         {
@@ -45,7 +46,7 @@ public class BackpackModel : BaseModel
                 normalMaterials.Add(newItem);
             }
             else
-                target.quantity += 1;
+                target.quantity += count;
         }
     }
 
@@ -57,7 +58,7 @@ public class BackpackModel : BaseModel
             if (target == null)
                 return;
             else
-                target.quantity = -1;
+                target.quantity -=1;
 
             if (target.quantity <= 0)
                 specialMaterials.Remove(target);
@@ -68,7 +69,7 @@ public class BackpackModel : BaseModel
             if (target == null)
                 return;
             else
-                target.quantity = -1;
+                target.quantity -=1;
 
             if (target.quantity <= 0)
                 normalMaterials.Remove(target);

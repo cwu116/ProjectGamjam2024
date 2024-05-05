@@ -12,7 +12,7 @@ namespace Game.System
     public class InventorySystem : BaseSystem
     {
         List<Item_s> materials = new List<Item_s>(); // ¡Ÿ ±¥Ê¥¢
-        CompoundModel compoundModel = new CompoundModel();
+        CompoundModel compoundModel;
         // ÃÌº”≤ƒ¡œ
         public void AddMaterial(Item_s item_s)
         {
@@ -129,6 +129,7 @@ namespace Game.System
         public override void InitSystem()
         {
             RegisterEvents();
+            compoundModel = GameBody.GetModel<CompoundModel>();
         }
 
         void RegisterEvents()

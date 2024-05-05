@@ -91,6 +91,14 @@ public class HexCell : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    private bool isHighlight;
+    public bool IsHightlight
+    {
+        get => isHighlight;
+        set => isHighlight = value;
+    }
+
     public HexCell()
     {
         _type = HexType.Empty;

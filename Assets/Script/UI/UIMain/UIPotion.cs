@@ -25,7 +25,10 @@ namespace Game.UI
         public void OnPointerClick(PointerEventData eventData)
         {
             if(owner.currentPotion!=this.potion)
+            {
                 owner.currentPotion = this.potion;
+                Game.System.EventSystem.Send<OnPotionClick>(new OnPotionClick() { potion = potion });
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)

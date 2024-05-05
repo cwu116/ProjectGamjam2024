@@ -4,6 +4,7 @@ using Game.UI;
 using Game.System;
 using System.Collections.Generic;
 using System;
+using Managers;
 
 public class UIMain : BasePanel
 {
@@ -18,13 +19,18 @@ public class UIMain : BasePanel
         
     }
 
+
+    private void Start()
+    {
+        InitPanel();
+    }
     public override void InitPanel()
     {
         btnCraft = transform.Find("BtnCraft").GetComponent<Button>();
         potions = transform.Find("Potions").GetComponentsInChildren<UIPotion>();
         descriptionUI = transform.Find("PotionDescription").GetComponent<UIPoitonDescription>();
-        btnCraft.onClick.AddListener(() => EventSystem.Send<OpenCraftUITrigger>());//在CraftSystem添加Undo
-
+        //btnCraft.onClick.AddListener(() => EventSystem.Send<OpenCraftUITrigger>());//在CraftSystem添加Undo
+        btnCraft.onClick.AddListener(() => UIManager.Show<UICraft>());
         EventSystem.Register<RefreshBackpackUIEvent>(v => OnRefreshBackpackUI(v));
     }
 

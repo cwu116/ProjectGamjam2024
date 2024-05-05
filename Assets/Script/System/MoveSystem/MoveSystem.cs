@@ -6,12 +6,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using DG.Tweening;
 
 namespace Game.System
 {
     public interface IMoveAction
     {
-        public void PlayerMoveTo(GameObject player, Vector2 path);
+        public void PlayerMoveTo(GameObject player, Vector2 path, bool isUndo = false);
         public void EnemyMoveTo(GameObject enemy);
     }
 
@@ -24,7 +25,7 @@ namespace Game.System
         /// </summary>
         /// <param name="player">Íæ¼Ò</param>
         /// <param name="path">Â·¾¶</param>
-        public void PlayerMoveTo(GameObject player, Vector2 path)
+        public void PlayerMoveTo(GameObject player, Vector2 path,bool isUndo=false)
         {
             if (GameBody.GetSystem<MapSystem>().CalculateDistance(player.GetComponent<Player>().CurHexCell.Pos,
                 path) > 1)
@@ -35,6 +36,7 @@ namespace Game.System
 
             HexCell newCell = GridManager.Instance.hexCells[(int) path.x, (int) path.y];
             //player.GetComponent<Rigidbody2D>().MovePosition(newCell.transform.position);
+            player.transform.DOMove(newCell.transform.position, 0.5f);
             player.GetComponent<Player>().CurHexCell = newCell;
             if (newCell.Type == HexType.Transport)
             {
@@ -55,6 +57,9 @@ namespace Game.System
             Debug.LogWarning("Buff:" + string.Join(' ', newCell.Instructions));
             StateSystem.Execution(new List<string>(newCell.Instructions), player);
             player.GetComponent<Player>().MoveTimes.AddValue(-1);
+            EventSystem.Send(new PlayerMoveEvent() { currentCell = newCell, moveTimes = player.GetComponent<Player>().MoveTimes });
+            //if(!isUndo)
+            //EventSystem.Send(new UndoEvent() {undoOperation=this });
         }
 
         /// <summary>
@@ -219,7 +224,9 @@ namespace Game.System
 
         public void Undo()
         {
-            PlayerMoveTo(Player.instance.gameObject, Player.instance.LastHexCell.Pos);
+            PlayerMoveTo(Player.instance.gameObject, Player.instance.LastHexCell.Pos, true);
+            Player.instance.MoveTimes.AddValue(1);
+            Debug.Log("+1");
         }
     }
 }

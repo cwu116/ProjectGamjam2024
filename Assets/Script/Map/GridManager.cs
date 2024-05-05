@@ -58,6 +58,7 @@ public class GridManager : MonoSingleton<GridManager>
         prefabEnmeyList = mapSystem.GetEnemies();
         CreateCells();
         CreateEnmey();
+        mapSystem.InitHW();
     }
 
     // Update is called once per frame

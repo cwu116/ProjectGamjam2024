@@ -154,7 +154,7 @@ namespace Game.System
             {
                 int a = roundIndex[i][0];
                 int b = roundIndex[i][1];
-                roundHexCells[i] = hexCells[b, a];
+                roundHexCells[i] = hexCells[a, b];
             }
             if(roundHexCells != null)
             {

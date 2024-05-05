@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
     class UIImagePath
     {
-    public const string ImagePath="";
+    public const string ImagePath= "Sprites/";
     }
 

@@ -45,5 +45,9 @@ namespace Game.System
     {
 
     }
+    struct OnPotionClick:IEvent
+    {
+        public Item_Data potion;
+    }
 
 }

@@ -44,13 +44,11 @@ namespace Game.UI
         Sprite craftIconSpeicalNormal;
         Sprite craftIconSpecialActive;
 
+        Dictionary<UICraftIcon, GameObject> UICraftElements;
+
         public override void Close()
         {
             UIManager.Close<UICraft>();
-        }
-        private void Awake()
-        {
-            InitPanel();
         }
 
         public override void InitPanel()
@@ -73,19 +71,40 @@ namespace Game.UI
             flask =transform.Find("Flask");
             spawnPoint = flask.Find("SpawnPoint");
 
-            craftPrefab = Resources.Load<GameObject>("Prefabs/Prefab/UI/UICraftElement");
-            recipePrefab = Resources.Load<GameObject>("Prefabs/Prefab/UI/UIRecipeElement");
+            craftPrefab = Resources.Load<GameObject>("Prefabs/UI/UICraftElement");
+            recipePrefab = Resources.Load<GameObject>("Prefabs/UI/UIRecipeElement");
 
-            foreach (var normalSlot in transform.Find("Materials").Find("Normal").GetComponentsInChildren<UICraftMatSlot>())
+            normalMaterialSlots.AddRange(transform.Find("Materials").Find("Normal").GetComponentsInChildren<UICraftMatSlot>());
+            //foreach (var normalSlot in transform.Find("Materials").Find("Normal").GetComponentsInChildren<UICraftMatSlot>())
+            //{
+            //    normalMaterialSlots.Add(normalSlot);
+            //}
+            specialMaterialSlots.AddRange(transform.Find("Materials").Find("Special").GetComponentsInChildren<UICraftMatSlot>());
+            //foreach (var specialSlot in transform.Find("Materials").Find("Special").GetComponentsInChildren<UICraftMatSlot>())
+            //{
+            //    //specialMaterialSlots.Add(specialSlot);
+            //}
+
+            for (int i = 0; i < normalMaterialSlots.Count; i++)
             {
-                normalMaterialSlots.Add(normalSlot);
+                var slot = normalMaterialSlots[i];
+                slot.icon = slot.transform.Find("Icon").GetComponent<Image>();
+                slot.countText = slot.transform.Find("Count").GetComponent<TextMeshProUGUI>();
+                slot.matName = slot.transform.Find("Name").GetComponent<TextMeshProUGUI>();
             }
-
-            foreach (var specialSlot in transform.Find("Materials").Find("Special").GetComponentsInChildren<UICraftMatSlot>())
+            for (int i = 0; i < specialMaterialSlots.Count; i++)
             {
-                specialMaterialSlots.Add(specialSlot);
-            }
+                var slot = specialMaterialSlots[i];
+                slot.icon = slot.transform.Find("Icon").GetComponent<Image>();
+                slot.countText = slot.transform.Find("Count").GetComponent<TextMeshProUGUI>();
+                slot.matName = slot.transform.Find("Name").GetComponent<TextMeshProUGUI>();
 
+            }
+            craftIconNormal = Resources.Load<Sprite>(UIImagePath.ImagePath + "材料框");
+            craftIconSpeicalNormal = Resources.Load<Sprite>(UIImagePath.ImagePath + "特殊材料框");
+            craftIconActive = Resources.Load<Sprite>(UIImagePath.ImagePath + "材料框空");
+            craftIconSpecialActive = Resources.Load<Sprite>(UIImagePath.ImagePath + "特殊材料框空");
+            UICraftElements = new Dictionary<UICraftIcon, GameObject>();
 
 
 
@@ -114,7 +133,7 @@ namespace Game.UI
             EventSystem.Send<RefreshBackpackUIRequest>();
         }
 
-        Dictionary<UICraftIcon, GameObject> UICraftElements=new();
+        
         private void OnUICraftMaterialClicked(Item_s item)
         {
             if (currentCraftIcon != null)
@@ -130,22 +149,25 @@ namespace Game.UI
                     EventSystem.Send(new CraftRemoveMaterialEvent() { item=item});
                 }
                 currentCraftIcon.item = item;
-                currentCraftIcon.icon.sprite = item.sprite;
+                //currentCraftIcon.icon.sprite = Resources.Load<Sprite>(UIImagePath.ImagePath + item.Id);
                 EventSystem.Send(new CraftAddMaterialEvent() { item = item });
                 //装上材料  减少物品
                 GameObject go= GameObject.Instantiate(craftPrefab, flask);
                 go.transform.position = spawnPoint.position;
-                go.GetComponent<Image>().sprite = item.sprite;
+                go.GetComponent<Image>().sprite =Resources.Load<Sprite>(UIImagePath.ImagePath+item.Id);
                 UICraftElements[currentCraftIcon] = go;
             }
             EventSystem.Send<RefreshBackpackUIRequest>();
+            RefreshCraftIconState();
+            RefreshCraftIcon();
         }
 
         public override void Refresh()
         {
             currentCraftIcon = null;
-            UICraftElements = null;
             RefreshCraftIconState();
+            RefreshCraftIcon();
+            Dictionary<UICraftIcon, GameObject> UICraftElements = new Dictionary<UICraftIcon, GameObject>();
             EventSystem.Send<RefreshBackpackUIRequest>();
         }
 
@@ -154,17 +176,30 @@ namespace Game.UI
             for (int i = 0; i < normalMaterialSlots.Count; i++)
             {
                 var slot = normalMaterialSlots[i];
-                slot.icon.gameObject.SetActive(i < v.normalItems.Count );
+                slot.SetActive(i < v.normalItems.Count );
                 if(i<v.normalItems.Count)
                     slot.Refresh(v.normalItems[i]);
             }
             for (int i = 0; i < specialMaterialSlots.Count; i++)
             {
                 var slot = specialMaterialSlots[i];
-                slot.icon.gameObject.SetActive(i < v.specialItems.Count);
+                slot.SetActive(i < v.specialItems.Count);
                 if (i < v.specialItems.Count)
                     slot.Refresh(v.specialItems[i]);
             }
+        }
+
+        private void RefreshCraftIcon()
+        {
+            foreach (var i in normalIcons)
+            {
+                i.icon.gameObject.SetActive(!(i.item == null));
+                if (i.item != null)
+                    i.icon.sprite = Resources.Load<Sprite>(UIImagePath.ImagePath + i.item.Id);
+            }
+            specialIcon.icon.gameObject.SetActive(!(specialIcon.item == null));
+            if (specialIcon.item != null)
+                specialIcon.icon.sprite = Resources.Load<Sprite>(UIImagePath.ImagePath + specialIcon.item.Id);
         }
 
         private void OnCraftResult(CraftResultEvent v)
@@ -178,9 +213,9 @@ namespace Game.UI
         {
             foreach(var i in normalIcons)
             {
-                i.GetComponent<Image>().sprite = i.item == null ? craftIconNormal : craftIconActive;
+                i.icon.sprite = i.item==null?null:Resources.Load<Sprite>(UIImagePath.ImagePath+i.item.Id);
             }
-            specialIcon.GetComponent<Image>().sprite = specialIcon.item == null ? craftIconSpeicalNormal : craftIconSpecialActive;
+            specialIcon.icon.sprite = specialIcon.item == null ? null : Resources.Load<Sprite>(UIImagePath.ImagePath + specialIcon.item.Id);
         }
 
         void ShowDescription(UIRecipeElement element)
@@ -203,7 +238,7 @@ namespace Game.UI
             description.gameObject.SetActive(false);
         }
 
-        private void OnEnable()//各种回收
+        private void OnDisable()//各种回收
         {
             foreach(var iconSlot in normalIcons)
             {

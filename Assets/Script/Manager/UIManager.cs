@@ -13,13 +13,14 @@ namespace Managers
     }
     static class UIManager
     {
-        const string UIPath = "Prefab/UI/";
+        const string UIPath = "Prefabs/UI/";
         static Dictionary<Type, UIElement> UIResources = new Dictionary<Type, UIElement>();
 
         //////////////////////////路径后面加的名字与prefab的名称保持一致/////////////////////
         static UIManager()
         {
             UIResources[typeof(DemoUI)] = new UIElement { ResourcePath = UIPath + "DemoUI" };
+            UIResources[typeof(UICraft)] = new UIElement { ResourcePath = UIPath + "UICraft" };
         }
 
         public static T Show<T>() where T : BasePanel
@@ -41,6 +42,7 @@ namespace Managers
                     return default;
                 }
                 element.instance = GameObject.Instantiate(prefab);
+                element.instance.SetActive(true);
                 (element.instance.GetComponent<T>() as BasePanel).InitPanel();
                 (element.instance.GetComponent<T>() as BasePanel).Refresh();
                 return element.instance.GetComponent<T>();

@@ -22,7 +22,6 @@ namespace Game.System
             Console.WriteLine("MapSystem Init");
             LoadPrefabs();
             RegisterEvent();
-            //InitHW();
         }
 
         public Mapdata LoadMap()

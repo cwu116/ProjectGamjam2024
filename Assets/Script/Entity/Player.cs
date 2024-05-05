@@ -28,10 +28,10 @@ public class Player : BaseEntity
            InitEntity(); 
         }
         // 测试专用
-        _curHexCell = GridManager.Instance.hexCells[1, 1];
+        _curHexCell = GridManager.Instance.hexCells[2, 2];
         Debug.Log(_curHexCell.Pos);
         transform.position = _curHexCell.transform.position;
-        GameBody.GetSystem<MoveSystem>().PlayerMoveTo(gameObject, _curHexCell.Pos);
+        GameBody.GetSystem<MoveSystem>().PlayerMoveTo(gameObject, _curHexCell.Pos,true);
         EventSystem.Send<PlayerTurnBeginTrigger>();
     }
 
