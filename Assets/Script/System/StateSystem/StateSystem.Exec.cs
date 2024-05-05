@@ -51,7 +51,7 @@ namespace Game.System
                     // args[0]    :     命令名
                     // args[1]    :     参数数组
                     List<string> Params = new List<string>(args[1].Split(new char[] {','}));
-                    BaseEntity entity = GameObject.Find("Player").GetComponent<BaseEntity>();
+                    BaseEntity entity = target.GetComponent<BaseEntity>();
                     BuffComponent temp = entity.BuffComp;
                     switch (Enum.Parse<BuffType>(args[0]))
                     {
@@ -59,12 +59,13 @@ namespace Game.System
                             if (Params[0] == "Damage")
                             {
                                 entity.GetHurt(int.Parse(Params[1]));
-                                Debug.Log(entity.Hp.ToString());
+                                Debug.Log(entity.name + ": " + "Hp: " + entity.Hp);
                             }
                             else
                             {
                                 if (Params[1].Contains('-'))
                                 {
+                                    // - 代表清零
                                     temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])].AddValue(temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])] * -1);
                                 }
                                 else
@@ -78,6 +79,8 @@ namespace Game.System
                                         temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])]
                                             .AddValue(int.Parse(Params[1]), true);
                                     }
+                                    Debug.Log(entity.name + ": " + Params[0] + ": " + temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])]);
+
                                 }
                             }
 

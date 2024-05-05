@@ -27,8 +27,14 @@ namespace Game.System
         /// <param name="path">Â·¾¶</param>
         public void PlayerMoveTo(GameObject player, Vector2 path,bool isUndo=false)
         {
+            // Debug.LogWarning(GameBody.GetSystem<MapSystem>().GetRoundHexCell(player.GetComponent<Player>().CurHexCell.Pos ,2).Length);
             if (GameBody.GetSystem<MapSystem>().CalculateDistance(player.GetComponent<Player>().CurHexCell.Pos,
                 path) > 1)
+            {
+                return;
+            }
+
+            if (player.GetComponent<Player>().MoveTimes <= 0)
             {
                 return;
             }
@@ -53,7 +59,6 @@ namespace Game.System
                 }, newCell.gameObject);
                 player.GetComponent<Player>().SpawningPath = null;
             }
-
             Debug.LogWarning("Buff:" + string.Join(' ', newCell.Instructions));
             StateSystem.Execution(new List<string>(newCell.Instructions), player);
             player.GetComponent<Player>().MoveTimes.AddValue(-1);
@@ -77,13 +82,19 @@ namespace Game.System
                     enemy.GetComponent<Enemy>().MoveTimes * enemy.GetComponent<Enemy>().StepLength));
             foreach (var cellUnit in hexcells)
             {
+                if (cellUnit.OccupyObject is null)
+                {
+                    continue;
+                }
                 if (cellUnit.OccupyObject.GetComponent<BaseEntity>().bMisLead)
                 {
+                    Debug.LogError("I see you!");
                     ThrowTarget(enemy, cellUnit);
                     break;
                 }
                 else if (cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
                 {
+                    Debug.LogError("I see you!");
                     ThrowTarget(enemy, cellUnit);
                     break;
                 }
@@ -117,7 +128,7 @@ namespace Game.System
                     StateSystem.Execution(new List<string>(cell.Instructions), enemy);
                 }
 
-                if (string.IsNullOrEmpty(enemy.GetComponent<Enemy>().SpawningPath))
+                if (!string.IsNullOrEmpty(enemy.GetComponent<Enemy>().SpawningPath))
                 {
                     string[] spawnInfo = enemy.GetComponent<Enemy>().SpawningPath.Split(new[] {'*'});
                     StateSystem.Execution(new List<string>()

@@ -40,7 +40,7 @@ public partial class BaseEntity : MonoBehaviour
         int realDamage = damage - this.Defence;
         if (realDamage > 0)
         {
-            Hp.AddValue(realDamage);
+            Hp.AddValue(-realDamage);
             if (this.Hp <= 0)
             {
                 Die();

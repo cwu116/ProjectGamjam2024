@@ -1,1 +1,8 @@
-{"height":5,"width":5,"cells":[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0],"enemyNames":["EnemyPrefab","EnemyPrefab1","EnemyPrefab1","EnemyPrefab1"],"enemyposx":[2,4,3,0],"enemyposy":[2,1,4,3]}
+{
+  "height":5,
+  "width":5,
+  "cells":[3,2,1,0,2,5,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0],
+  "enemyNames":["EnemyPrefab","EnemyPrefab1","EnemyPrefab1","EnemyPrefab1","Player"],
+  "enemyposx":[2,4,3,0,1],
+  "enemyposy":[2,1,4,3,1]
+}
