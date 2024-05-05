@@ -38,11 +38,12 @@ namespace Game.System
             {
                 return;
             }
-
+            
             player.GetComponent<Player>().LastHexCell = player.GetComponent<Player>().CurHexCell;
 
             HexCell newCell = GridManager.Instance.hexCells[(int) path.x, (int) path.y];
             player.transform.DOMove(newCell.transform.position, 0.5f);
+            player.GetComponent<Player>().LastHexCell.OccupyObject = null;
             player.GetComponent<Player>().CurHexCell = newCell;
             if (newCell.Type == HexType.Transport)
             {
@@ -119,8 +120,7 @@ namespace Game.System
             {
                 return;
             }
-
-
+            
             List<HexCell> WholePath = GameBody.GetSystem<MapSystem>()
                 .GetPath(enemy.GetComponent<Enemy>().CurHexCell.Pos, target.Pos);
             HexCell lastCell = null;

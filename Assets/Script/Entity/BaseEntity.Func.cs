@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Buff.Config;
 using Game.System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public partial class BaseEntity : MonoBehaviour
 {
@@ -45,8 +46,31 @@ public partial class BaseEntity : MonoBehaviour
             {
                 Die();
             }
+        }
+    }
 
-            return;
+    public void RefreshHpInUI()
+    {
+        if (IsPlayer)
+        {
+            UIMain.Instance.RefreshPlayerHp();
+        }
+        else
+        {
+            HorizontalLayoutGroup hpBar = transform.Find("HpEnemy").GetComponent<HorizontalLayoutGroup>();
+            foreach (Transform child in hpBar.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            for (int i = 0; i < Hp; i++)
+            {
+               Heart HeartUI = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Heart"), hpBar.transform).GetComponent<Heart>();
+               HeartUI.isPlayer = false;
+               // HeartUI.GetComponent<RectTransform>().localScale = new Vector3(0.055f,0.055f,1);
+               HeartUI.gameObject.GetComponent<RectTransform>().rect.Set(2.3134f,2.3134f,2.3134f, 2.3134f);
+               HeartUI.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(2.3134f, 2.3134f);
+            }
         }
     }
 

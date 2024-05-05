@@ -18,6 +18,14 @@ public class UIMain : BasePanel
     public UIPoitonDescription descriptionUI;
     public Item_Data currentPotion;
 
+    // Single Instance Mode Construstion
+    public static UIMain Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     public override void Close()
     {
     }

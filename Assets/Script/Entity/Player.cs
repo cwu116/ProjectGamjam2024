@@ -27,6 +27,7 @@ public class Player : BaseEntity
         {
             InitEntity(); 
         }
+        RefreshHpInUI();
         EventSystem.Send<PlayerTurnBeginTrigger>();
     }
     
