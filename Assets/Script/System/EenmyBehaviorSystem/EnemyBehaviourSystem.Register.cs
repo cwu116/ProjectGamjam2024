@@ -10,6 +10,13 @@ namespace Game.System
         {
             EventSystem.Register<AfterEnemyTurnBeginEvent>(TriggerEnemiesAction);
             EventSystem.Register<EnemyActionComplete>(OnEnemyAcionComplete);
+            EventSystem.Register<EnemyDieEvent>(OnEnemyDie);
+        }
+
+        private void OnEnemyDie(EnemyDieEvent obj)
+        {
+            enemies.Remove(obj.enemy as Enemy);
+            GameObject.Destroy(obj.enemy.gameObject);
         }
 
         int completeConter = 0;
@@ -39,9 +46,12 @@ namespace Game.System
             {
                 enemies.Add(enemy.GetComponent<Enemy>());
             }
-            foreach (var enemy in enemies)
+            if(enemies.Count<=0)
+                EventSystem.Send<EnemyTurnEndTrigger>();
+            for (int i=0;i<enemies.Count;i++)
             {
-                //ChekoutExitsPlayer(enemy, obj.playerPos);
+                Enemy enemy = enemies[i];
+                enemy.GetComponent<Enemy>().MoveTimes = new Buff.Tool.ValueInt(enemy.GetComponent<Enemy>().MaxMoveTimes);
                 GameBody.GetSystem<MoveSystem>().EnemyMoveTo(enemy.gameObject);
             }
         }

@@ -111,7 +111,7 @@ namespace Game.System
                 enemy.GetComponent<Enemy>().CurHexCell.Pos);
             ThrowTarget(enemy, GridManager.Instance.hexCells[(int) target.x, (int) target.y]);
             
-            EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() {enemy = enemy.GetComponent<Enemy>()});
+           
         }
 
         private void ThrowTarget(GameObject enemy, HexCell target)
@@ -151,6 +151,7 @@ namespace Game.System
                     break;
                 }
             }
+            EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });
         }
 
         public override void InitSystem()

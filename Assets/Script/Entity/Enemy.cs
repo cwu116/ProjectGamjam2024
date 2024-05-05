@@ -51,6 +51,7 @@ public class Enemy : BaseEntity
     {
         if (GameBody.GetModel<PlayerActionModel>().currentPotion != null)
         {
+            Debug.Log("use");
             GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().currentPotion, this.gameObject);
             return;
         }

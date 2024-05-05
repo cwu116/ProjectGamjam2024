@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Buff.Config;
 using Buff.Tool;
@@ -91,6 +91,8 @@ namespace Buff
                 }
             }
         }
+            
+            
 
         public void StatesEnd()
         {

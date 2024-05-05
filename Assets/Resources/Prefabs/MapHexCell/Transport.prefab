@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _instructions: []
+  isHighlight: 0
 --- !u!114 &-8902498592182823523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,7 +305,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 350df8e99676e934c95d04588d7a5383, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fc53840d5488d5645a4cacdfe952532a, type: 3}
   m_Color: {r: 0.40784317, g: 0.26666668, b: 0.9921569, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -332,7 +333,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8661818067470196312
 RectTransform:
   m_ObjectHideFlags: 0

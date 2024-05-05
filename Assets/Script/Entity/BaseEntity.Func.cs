@@ -77,6 +77,7 @@ public partial class BaseEntity : MonoBehaviour
     public virtual void Die()
     {
         isDead = true;
+        EventSystem.Send<EnemyDieEvent>(new EnemyDieEvent { enemy = this }); 
     }
 
     public virtual void Hatred()
