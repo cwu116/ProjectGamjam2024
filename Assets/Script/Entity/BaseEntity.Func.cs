@@ -39,13 +39,21 @@ public partial class BaseEntity : MonoBehaviour
 
     public void GetHurt(int damage)
     {
-        int realDamage = damage - this.Defence;
-        if (realDamage > 0)
+        if (damage < 0)
         {
-            Hp.AddValue(-realDamage);
-            if (this.Hp <= 0)
+            Hp.AddValue(-damage);
+        }
+        else
+        {
+            int realDamage = damage - this.Defence;
+            if (realDamage > 0)
             {
-                Die();
+                Hp.AddValue(-realDamage);
+                Debug.LogError(Hp);
+                if (this.Hp <= 0)
+                {
+                    Die();
+                }
             }
         }
     }

@@ -15,7 +15,7 @@
         "Material_2": "red",
         "MaterialSpecial": "B",
         "Description": "对目标造成2点伤害，该单位血量上限加1，随后3个回合开始时恢复1点血量",
-        "Type": [ "ChangeValue:Damage,2", "ChangeValue:HpMax,1", "State:ResumeHp,3,false" ]
+        "Type": [ "ChangeValue:Damage,2", "ChangeValue:MaxHp,1,true", "State:ResumeHp,4,false" ]
     },
     {
         "id": "Strength",

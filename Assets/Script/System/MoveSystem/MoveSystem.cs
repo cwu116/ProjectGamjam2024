@@ -87,11 +87,8 @@ namespace Game.System
             {
                 if (cellUnit.OccupyObject is null || cellUnit.OccupyObject == enemy)
                 {
-                    Debug.Log("no");
                     continue;
                 }
-
-                Debug.Log(cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer);
                 if (cellUnit.OccupyObject.GetComponent<BaseEntity>().bMisLead)
                 {
                     Debug.LogError("I see you!");
