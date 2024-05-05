@@ -87,7 +87,8 @@ public class AStar
                 HexCell hexCell = map[x, y];
                 Vector3 hexCellPosition = hexCell.transform.position;
                 //TODO::这里应当改成该网格上的物体是否是阻碍物
-                grid[x, y] = new Node(x, y, hexCellPosition.x, hexCellPosition.y,false);
+                bool isObstacle = hexCell.OccupyObject.GetComponent<BaseEntity>().IsObstacle;
+                grid[x, y] = new Node(x, y, hexCellPosition.x, hexCellPosition.y, isObstacle);
             }
         }
     }

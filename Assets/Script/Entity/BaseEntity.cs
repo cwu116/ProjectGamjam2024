@@ -1,58 +1,92 @@
+using Buff;
+using Buff.Tool;
+using Game;
 using Game.Model;
 using System.Collections;
 using System.Collections.Generic;
+using Buff.Config;
 using UnityEngine;
 
-public class BaseEntity : MonoBehaviour
+public partial class BaseEntity : MonoBehaviour
 {
-    private AttackUnitModel model;
-    private int _curHp;
-    private int _maxHp;
-    public int restMoveTimes;
-    private int _attck;
-    private EntityType _myType;
-    private AttackType _attackType;
-    private int _stepLenghth;
-    private int _rangeLeft;
-    private int _rangeRight;
-    private MaterialType _dropMaterial;
-    private HexCell _curHexCell;
-    private Vector3 _direction;
+    private AttackUnit_Data _model; //战斗单位表，用于初始化
+
+    private EntityType _myType; //实体类型
+    private AttackType _attackType; //攻击类型
+    private MaterialType _dropMaterial; //掉落材料
+    protected HexCell _curHexCell; //当前所在地图格子
+    private Vector2 _spawnPoint;  // 出生点
+    private Vector3 _direction; //方向
+    
+    protected BuffComponent buff; //自身buff
+
+    private bool bIsObstacle; // 是障碍物
+    private bool bWillDoubleSkill;  //是否额外触发
+    [SerializeField] private bool bisPlayer;  //是否是玩家
 
     private int currentHeightIndex;
     private int currentWidthIndex;
 
-    public BaseEntity()
+    private string spawningPath; //生成地块属性
+    public bool isDead;//是否死亡
+
+    protected void InitEntity()
     {
-        _curHp = model.hp;
-        _maxHp = model.hp;
-        _attck = model.Attack;
-        _myType = model.entityType;
-        _attackType = model.attackType;
-        _stepLenghth = model.stepLength;
-        _rangeLeft = model.RangeLeft;
-        _rangeRight = model.RangeRight;
-        _dropMaterial = model.dropMaterial;
+        _spawnPoint = new Vector2(){};
+            
+        _myType = _model.entityType;
+        _attackType = _model.attackType;
+        _dropMaterial = _model.dropMaterial;
+        
+        buff = GetComponent<BuffComponent>();
+        
+        buff.RegisterFunc(ActionKey.Die, Die);
+        buff.RegisterFunc(TActionKey.Away, Away);
+        buff.RegisterFunc(TActionKey.SpawnPath, SpawnPath);
+        buff.RegisterFunc(TActionKey.Sleep, Sleep);
+        
+        buff.RegisterParam(ValueKey.Hp, new ValueInt(_model.hp));
+        buff.RegisterParam(ValueKey.MaxHp, new ValueInt(_model.hp));
+        buff.RegisterParam(ValueKey.Attack, new ValueInt(_model.Attack));
+        buff.RegisterParam(ValueKey.Defence, new ValueInt(0));
+        buff.RegisterParam(ValueKey.bInvisible, new ValueInt(0));
+        buff.RegisterParam(ValueKey.bMislead, new ValueInt(0));
+        buff.RegisterParam(ValueKey.bFlamePure, new ValueInt(0));
+        buff.RegisterParam(ValueKey.bIsSilent, new ValueInt(0));
+        buff.RegisterParam(ValueKey.HateValue, new ValueInt(0));
+        buff.RegisterParam(ValueKey.MoveTimes, new ValueInt(_model.moveTimes));
+        buff.RegisterParam(ValueKey.SkillRange, new ValueInt(_model.RangeRight));
+        buff.RegisterParam(ValueKey.StepLenghth, new ValueInt(_model.stepLength));
+        buff.RegisterParam(ValueKey.WatchRange, new ValueInt(_model.watchRange));
+        buff.RegisterParam(ValueKey.MaxMoveTimes, new ValueInt(_model.moveTimes));
+        buff.RegisterParam(ValueKey.MinSkillRange, new ValueInt(_model.RangeLeft));
+
+        // Debug.Log("属性初始化");
     }
 
-    public int CurHP
+    protected virtual void Start()
     {
-        get { return _curHp; }
-        set { _curHp = value; }
+
     }
 
-    public int MaxHp
+    // 组件-只读
+    public BuffComponent BuffComp
     {
-        get { return _maxHp; }
-        set { _maxHp = value; }
+        get { return buff; }
+    }
+    
+    public int CurrentHeightIndex
+    {
+        get { return currentHeightIndex; }
+        set { currentHeightIndex = value; }
     }
 
-    public int Attack
+    public int CurrentWidthIndex
     {
-        get { return _attck; }
-
-        set { }
+        get { return currentWidthIndex; }
+        set { currentWidthIndex = value; }
     }
+
 
     public EntityType MyType
     {
@@ -66,23 +100,6 @@ public class BaseEntity : MonoBehaviour
         set { }
     }
 
-    public int StepLength
-    {
-        get { return _stepLenghth; }
-        set { _stepLenghth = value; }
-    }
-
-    public int RangeLeft
-    {
-        get { return _rangeLeft; }
-        set { _rangeLeft = value; }
-    }
-
-    public int RangeRight
-    {
-        get { return _rangeRight; }
-        set { _rangeRight = value; }
-    }
 
     public MaterialType DropMaterial
     {
@@ -96,62 +113,51 @@ public class BaseEntity : MonoBehaviour
         set { _curHexCell = value; }
     }
 
+    public HexCell LastHexCell
+    {
+        get;
+        set;
+    }
+
     public Vector3 Direction
     {
         get { return _direction; }
         set { _direction = value; }
     }
 
-    public int CurrentHeightIndex
+    public HexCell GetCurrentHexCell()
     {
-        get { return currentHeightIndex; }
-        set { currentHeightIndex = value; }
+        return this.CurHexCell;
     }
 
-    public int CurrentWidthIndex
+    public bool IsObstacle
     {
-        get { return currentWidthIndex; }
-        set { currentWidthIndex = value; }
-    }
-    public bool SetModel(string name)
-    {
-        foreach (AttackUnitModel aum in DataManager.Instance.attackUnits)
-        {
-            if (aum.name == name)
-            {
-                this.model = aum;
-                return true;
-            }
-        }
-
-        return false;
+        get => bIsObstacle;
+        set => bIsObstacle = value;
     }
 
-    public bool CanMove()
+    public bool WillDoubleSkill
     {
-        if (this.restMoveTimes <= 0)
-            return false;
-
-        return true;
+        get => bWillDoubleSkill;
+        set => bWillDoubleSkill = value;
     }
 
-
-    public virtual void UseSkill(BaseEntity target)
+    public bool IsPlayer
     {
-        this.restMoveTimes--;
+        get => bisPlayer;
+        set => bisPlayer = value;
     }
 
-    public void GetHurt(int damege)
+    public string SpawningPath
     {
-        this.CurHP -= damege;
-        if (this.CurHP <= 0)
-        {
-            Die();
-        }
+        get => spawningPath;
+        set => spawningPath = value;
     }
 
-    public virtual void Die()
+    public Vector2 SpawnPoint
     {
-
+        get => _spawnPoint;
+        set => _spawnPoint = value;
     }
+
 }

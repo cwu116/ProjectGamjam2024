@@ -25,13 +25,32 @@ namespace Game
         private void RegisterSystems()
         {
             RegisterSystem(new MapSystem());
-            RegisterSystem(new InventorySystem());//合成数据处理接口
+            RegisterSystem(new StateSystem());
+            RegisterSystem(new InventorySystem());
+            //RegisterSystem(new AudioSystem());
+            RegisterSystem(new MoveSystem());
+            RegisterSystem(new BackpackSystem());
+            RegisterSystem(new GameFlowSystem());
+            RegisterSystem(new MoveSystem());
+            RegisterSystem(new PlayerActionSystem());
+            RegisterSystem(new PotionUseSystem());
+            RegisterSystem(new InventorySystem());
+            RegisterSystem(new StateSystem());
+            RegisterSystem(new TurnSystem());
+            RegisterSystem(new EnemyBehaviourSystem());
         }
 
         private void RegisterModels()
         {
             RegisterModel(new MapModel());
-            RegisterModel(new CompoundModel());//合成配方Json(CompoundData)
+            RegisterModel(new StateModel());
+            RegisterModel(new CompoundModel());
+            RegisterModel(new AttackUnitModel());
+            RegisterModel(new EnviromentUnitModel());
+            RegisterModel(new EnviromentEffctModel());
+            RegisterModel(new TurnModel());
+            RegisterModel(new PlayerActionModel());
+            RegisterModel(new BackpackModel());
         }
 
         private void InitSystems()

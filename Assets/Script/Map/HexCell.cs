@@ -77,6 +77,7 @@ public class HexCell : MonoBehaviour
         }
     }
 
+    [SerializeField]
     private string[] _instructions = null;
     public string[] Instructions
     {
@@ -88,6 +89,14 @@ public class HexCell : MonoBehaviour
         {
             _instructions = value;
         }
+    }
+
+    [SerializeField]
+    private bool isHighlight;
+    public bool IsHightlight
+    {
+        get => isHighlight;
+        set => isHighlight = value;
     }
 
     public HexCell()

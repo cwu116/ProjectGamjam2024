@@ -14,6 +14,12 @@ namespace Assets.Script.Config
         public const string GameMapName4 = "MapData4";
         public const string GameMapName5 = "MapData5";
         public const string CommpoundData = "CompoundData";
+        public const string Medicalment = "Medicalment";
+        public const string StateName = "StateTable";
+        public const string CompoundDataName = "CompoundData";
         public const string GameMedicalName = "Medicalment";
+        public const string AttackUnit = "AttackUnit";
+        public const string EnviromentUnit = "EnviromentUnit";
+        public const string EnviromentEffect = "EnviromentEffect";
     }
 }
