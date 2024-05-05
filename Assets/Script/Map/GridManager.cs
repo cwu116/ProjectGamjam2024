@@ -78,7 +78,7 @@ public class GridManager : MonoSingleton<GridManager>
         }
     }
 
-    void CreateOneCell(int x, int y, int i, HexType type)
+    HexCell CreateOneCell(int x, int y, int i, HexType type)
     {
         Vector3 position;
         position.y = (x + y * 0.5f - y / 2) * (Hex.innerRadius * 2f);
@@ -103,6 +103,7 @@ public class GridManager : MonoSingleton<GridManager>
         GameObject gridmanager = GameObject.Find("GridManager");
         cell.transform.SetParent(gridmanager.transform, false);
         cell.transform.localPosition = position;
+        return cell;
     }
 
     void CreateEnmey()
@@ -129,6 +130,15 @@ public class GridManager : MonoSingleton<GridManager>
                 }
             }
         }
+    }
+
+    void ChangeHexCell(HexCell deleteCell, HexType type)
+    {
+        int heightIndex = deleteCell.HeightIndex;
+        int widthIndex = deleteCell.WidthIndex;
+        Destroy(cells[deleteCell.HeightIndex, deleteCell.WidthIndex].gameObject);
+        cells[heightIndex, widthIndex] = null;
+        cells[heightIndex, widthIndex] = CreateOneCell(heightIndex, widthIndex, 0, type);
     }
 }
 
