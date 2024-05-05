@@ -23,6 +23,10 @@ namespace Game.System
         /// <param name="target">作用对象</param>
         public static void Execution(List<string> CMDlist, GameObject target)
         {
+            if (CMDlist.Count == 0)
+            {
+                return;
+            }
             foreach (var cmdLine in CMDlist)
             {
                 string _raw = cmdLine;
@@ -35,13 +39,13 @@ namespace Game.System
                 if (_raw.Contains("="))
                 {
                     List<string> args = new List<string>(_raw.Split(new char[] {'='}));
-                    BuffComponent temp = GameObject.Find("Player").GetComponent<BuffComponent>();
+                    BuffComponent temp = target.GetComponent<BuffComponent>();
                     temp.ValueUnits[Enum.Parse<ValueKey>(args[0].Remove(0))].AddValue(ParseParam(args[1], temp));
                 }
                 else if (_raw.Contains("+"))
                 {
                     List<string> args = new List<string>(_raw.Split(new char[] {'='}));
-                    BuffComponent temp = GameObject.Find("Player").GetComponent<BuffComponent>();
+                    BuffComponent temp = target.GetComponent<BuffComponent>();
                     temp.ValueUnits[Enum.Parse<ValueKey>(args[0].Remove(0))].AddValue(ParseParam(args[1], temp), true);
                 }
                 else

@@ -110,7 +110,7 @@ public partial class BaseEntity : MonoBehaviour
             {
                 target = CellUnits[Random.Range(0, CellUnits.Count)];
             } while (Vector3.Cross(transform.forward, transform.position).y *
-                Vector3.Cross(transform.forward, GameObject.Find(paramList[2]).transform.position).y < 0);
+                Vector3.Cross(transform.forward, entity.transform.position).y < 0);
             entity.GetComponent<Rigidbody2D>().MovePosition(target.Pos);
         }
     }
