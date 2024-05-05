@@ -35,6 +35,7 @@ public class UIMain : BasePanel
     {
         InitPanel();
         Invoke("RefreshPlayerHp", 0.1f);
+        EventSystem.Send<RefreshBackpackUIRequest>();
     }
 
     public override void InitPanel()

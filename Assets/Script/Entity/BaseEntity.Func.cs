@@ -48,6 +48,12 @@ public partial class BaseEntity : MonoBehaviour
                 Die();
             }
         }
+
+        EventSystem.Send<EntityHurtEvent>(new EntityHurtEvent() { enetity = this });
+        if(this as Enemy)
+        {
+            this.GetComponent<Animator>().SetTrigger("Hit");
+        }
     }
 
     public void RefreshHpInUI()

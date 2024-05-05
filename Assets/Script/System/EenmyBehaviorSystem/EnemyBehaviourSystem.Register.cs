@@ -1,6 +1,7 @@
 ﻿
 using System;
 using UnityEngine;
+using System.Threading.Tasks;
 
 namespace Game.System
 {
@@ -39,7 +40,7 @@ namespace Game.System
         /// 触发敌人逻辑
         /// </summary>
         /// <param name="obj">玩家位置信息</param>
-        private void TriggerEnemiesAction(AfterEnemyTurnBeginEvent obj)
+        private async void TriggerEnemiesAction(AfterEnemyTurnBeginEvent obj)
         {
             enemies.Clear();
             foreach(var enemy in GameObject.FindGameObjectsWithTag("Enemy"))

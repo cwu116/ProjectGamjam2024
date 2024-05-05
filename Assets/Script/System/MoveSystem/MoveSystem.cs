@@ -8,6 +8,7 @@ using Buff.Tool;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using DG.Tweening;
+using System.Threading.Tasks;
 
 namespace Game.System
 {
@@ -42,7 +43,6 @@ namespace Game.System
             player.GetComponent<Player>().LastHexCell = player.GetComponent<Player>().CurHexCell;
 
             HexCell newCell = GridManager.Instance.hexCells[(int) path.x, (int) path.y];
-            player.transform.DOMove(newCell.transform.position, 0.5f);
             player.GetComponent<Player>().LastHexCell.OccupyObject = null;
             player.GetComponent<Player>().CurHexCell = newCell;
             if (newCell.Type == HexType.Transport)
@@ -114,7 +114,7 @@ namespace Game.System
            
         }
 
-        private void ThrowTarget(GameObject enemy, HexCell target)
+        private async void ThrowTarget(GameObject enemy, HexCell target)
         {
             if (enemy.GetComponent<Enemy>().MoveTimes <= 0 || enemy.GetComponent<Enemy>().StepLength <= 0)
             {
@@ -126,6 +126,8 @@ namespace Game.System
             HexCell lastCell = null;
             foreach (var cell in WholePath)
             {
+                enemy.GetComponent<Enemy>().anim.SetTrigger("Move");
+                await Task.Delay(300);
                 enemy.transform.DOMove(cell.transform.position, 0.5f);
                 enemy.GetComponent<Enemy>().CurHexCell = cell;
                 if (cell.Type == HexType.Thorns || cell.Type == HexType.Moon || cell.Type == HexType.Fire)
