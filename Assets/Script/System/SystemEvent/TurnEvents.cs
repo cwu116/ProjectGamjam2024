@@ -37,4 +37,10 @@ namespace Game.System
     {
         public Enemy enemy;
     }
+
+    struct EnemyDieEvent : IEvent
+    {
+        public BaseEntity enemy;
+    }
+
 }

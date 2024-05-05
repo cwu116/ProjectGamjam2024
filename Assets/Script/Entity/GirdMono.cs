@@ -12,6 +12,8 @@ public class GirdMono : MonoBehaviour
     {
         if (GameBody.GetModel<TurnModel>().CurrentTurn != TurnType.PlayerTurn)
             return;
+        if (GameBody.GetModel<PlayerActionModel>().currentPotion != null)
+            return;
        
         Game.System.EventSystem.Send<GirdCilckEvent>(new GirdCilckEvent { cell = this.GetComponent<HexCell>(), transfrom = this.transform });
     }

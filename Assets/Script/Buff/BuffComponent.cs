@@ -68,20 +68,21 @@ namespace Buff
 
         public void StatesStart()
         {
-            foreach (var unit in StateUnits)
+            for (int i = 0; i < StateUnits.Count; i++)
             {
+                var unit = StateUnits[i];
                 if (unit.Info.isStartExec)
                 {
                     if (unit.Info.isAdditive)
                     {
-                        for (int i = 0; i < unit.Duration; i++)
+                        for (int j = 0; j < unit.Duration; j++)
                         {
-                            StateSystem.Execution(unit.Info.buffCMD, transform.parent.gameObject);   
+                            StateSystem.Execution(unit.Info.buffCMD, transform.gameObject);
                         }
                     }
                     else
                     {
-                        StateSystem.Execution(unit.Info.buffCMD, transform.parent.gameObject);
+                        StateSystem.Execution(unit.Info.buffCMD, transform.gameObject);
                     }
 
                     if (unit.Decrement())
@@ -91,6 +92,8 @@ namespace Buff
                 }
             }
         }
+            
+            
 
         public void StatesEnd()
         {
@@ -102,12 +105,12 @@ namespace Buff
                     {
                         for (int i = 0; i < unit.Duration; i++)
                         {
-                            StateSystem.Execution(unit.Info.buffCMD, transform.parent.gameObject);   
+                            StateSystem.Execution(unit.Info.buffCMD, transform.gameObject);   
                         }
                     }
                     else
                     {
-                        StateSystem.Execution(unit.Info.buffCMD, transform.parent.gameObject);
+                        StateSystem.Execution(unit.Info.buffCMD, transform.gameObject);
                     }
                 }
                 if (unit.Decrement())

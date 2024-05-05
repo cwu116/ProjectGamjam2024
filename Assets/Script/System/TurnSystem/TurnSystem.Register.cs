@@ -17,7 +17,7 @@ namespace Game.System
         {
             _turnModel.CurrentTurn = TurnType.PlayerTurn;
             stateSystem.PlayerStatesStart();
-            Player.instance.MoveTimes = new ValueInt(Player.instance.MaxMoveTimes);
+            Player.instance.MoveTimes = new Buff.Tool.ValueInt( Player.instance.MaxMoveTimes);
             AfterPlayerTurnBeginEvent info = new AfterPlayerTurnBeginEvent() { moveTimes=Player.instance.MoveTimes};
             EventSystem.Send(info);
         }
@@ -33,7 +33,7 @@ namespace Game.System
         {
             _turnModel.CurrentTurn = TurnType.EnemyTurn;
             stateSystem.EnemyStatesStart();
-            AfterEnemyTurnBeginEvent info = new AfterEnemyTurnBeginEvent() { /*???¦Ë????*/};
+            AfterEnemyTurnBeginEvent info = new AfterEnemyTurnBeginEvent() { /*???ï¿½ï¿½????*/};
             EventSystem.Send(info);
         }
 

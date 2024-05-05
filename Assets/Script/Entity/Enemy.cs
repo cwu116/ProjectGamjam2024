@@ -20,7 +20,10 @@ public class Enemy : BaseEntity
 
     private void Start()
     {
-        SetModel(name);
+       if (SetModel(name))
+        {
+            InitEntity();
+        }
         
         base.Start();
     }
@@ -46,6 +49,7 @@ public class Enemy : BaseEntity
     {
         if (GameBody.GetModel<PlayerActionModel>().currentPotion != null)
         {
+            Debug.Log("use");
             GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().currentPotion, this.gameObject);
             return;
         }

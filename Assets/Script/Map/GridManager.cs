@@ -106,6 +106,7 @@ public class GridManager : MonoSingleton<GridManager>
         GameObject gridmanager = GameObject.Find("GridManager");
         cell.transform.SetParent(gridmanager.transform, false);
         cell.transform.localPosition = position;
+        cell.transform.rotation = Quaternion.Euler(0, 0, 120);
     }
 
     void CreateEnmey()

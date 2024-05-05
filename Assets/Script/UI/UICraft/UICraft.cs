@@ -100,10 +100,10 @@ namespace Game.UI
                 slot.matName = slot.transform.Find("Name").GetComponent<TextMeshProUGUI>();
 
             }
-            craftIconNormal = Resources.Load<Sprite>(UIImagePath.ImagePath + "²ÄÁÏ¿ò");
-            craftIconSpeicalNormal = Resources.Load<Sprite>(UIImagePath.ImagePath + "ÌØÊâ²ÄÁÏ¿ò");
-            craftIconActive = Resources.Load<Sprite>(UIImagePath.ImagePath + "²ÄÁÏ¿ò¿Õ");
-            craftIconSpecialActive = Resources.Load<Sprite>(UIImagePath.ImagePath + "ÌØÊâ²ÄÁÏ¿ò¿Õ");
+            craftIconNormal = Resources.Load<Sprite>(UIImagePath.ImagePath + "ææ–™æ¡†");
+            craftIconSpeicalNormal = Resources.Load<Sprite>(UIImagePath.ImagePath + "ç‰¹æ®Šææ–™æ¡†");
+            craftIconActive = Resources.Load<Sprite>(UIImagePath.ImagePath + "ææ–™æ¡†ç©º");
+            craftIconSpecialActive = Resources.Load<Sprite>(UIImagePath.ImagePath + "ç‰¹æ®Šææ–™æ¡†ç©º");
             UICraftElements = new Dictionary<UICraftIcon, GameObject>();
 
 
@@ -139,7 +139,7 @@ namespace Game.UI
             {
                 if (currentCraftIcon.item != null)
                 {
-                    //Ğ¶ÏÂ²ÄÁÏ Ôö¼ÓÎïÆ·
+                    //Ğ¶ï¿½Â²ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·
                     if (UICraftElements.ContainsKey(currentCraftIcon))
                     {
                         Destroy(UICraftElements[currentCraftIcon]);
@@ -150,7 +150,7 @@ namespace Game.UI
                 currentCraftIcon.item = item;
                 //currentCraftIcon.icon.sprite = Resources.Load<Sprite>(UIImagePath.ImagePath + item.Id);
                 EventSystem.Send(new CraftAddMaterialEvent() { item = item });
-                //×°ÉÏ²ÄÁÏ  ¼õÉÙÎïÆ·
+                //×°ï¿½Ï²ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·
                 GameObject go= GameObject.Instantiate(craftPrefab, flask);
                 go.transform.position = spawnPoint.position;
                 go.GetComponent<Image>().sprite =Resources.Load<Sprite>(UIImagePath.ImagePath+item.Id);
@@ -221,7 +221,7 @@ namespace Game.UI
             RefreshCraftIconState();
 
 
-            //ºÏ³ÉÒ©Ë®±íÏÖ
+            //ï¿½Ï³ï¿½Ò©Ë®ï¿½ï¿½ï¿½ï¿½
             EventSystem.Send<RefreshBackpackUIRequest>();
         }
 
@@ -252,7 +252,7 @@ namespace Game.UI
                     e.GetComponent<Image>().sprite = rcipeNormal;
             }
             description.gameObject.SetActive(true);
-            //Ë¢ĞÂDescription
+            //Ë¢ï¿½ï¿½Description
         }
 
         void CloseDescription()
@@ -260,7 +260,7 @@ namespace Game.UI
             description.gameObject.SetActive(false);
         }
 
-        private void OnDisable()//¸÷ÖÖ»ØÊÕ
+        private void OnDisable()//ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½
         {
             foreach(var iconSlot in normalIcons)
             {

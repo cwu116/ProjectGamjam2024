@@ -78,6 +78,8 @@ public class BackpackModel : BaseModel
 
     public void AddPotion(Item_Data potion)
     {
+        if (potion == null)
+            return;
         if (potions.Count >= 5)
             return;
         potions.Add(potion);

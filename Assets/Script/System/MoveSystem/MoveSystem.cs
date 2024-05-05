@@ -43,6 +43,7 @@ namespace Game.System
 
             HexCell newCell = GridManager.Instance.hexCells[(int) path.x, (int) path.y];
             player.transform.DOMove(newCell.transform.position, 0.5f);
+            player.GetComponent<Player>().LastHexCell.OccupyObject = null;
             player.GetComponent<Player>().CurHexCell = newCell;
             if (newCell.Type == HexType.Transport)
             {
@@ -110,7 +111,7 @@ namespace Game.System
                 enemy.GetComponent<Enemy>().CurHexCell.Pos);
             ThrowTarget(enemy, GridManager.Instance.hexCells[(int) target.x, (int) target.y]);
             
-            EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() {enemy = enemy.GetComponent<Enemy>()});
+           
         }
 
         private void ThrowTarget(GameObject enemy, HexCell target)
@@ -151,6 +152,7 @@ namespace Game.System
                     break;
                 }
             }
+            EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });
         }
 
         public override void InitSystem()

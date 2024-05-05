@@ -15,7 +15,7 @@ namespace Game.System
         {
             EventSystem.Send<UsePotionEvent>(new UsePotionEvent() { potion = item_Data });
             StateSystem.Execution(item_Data.Type, EffectObject);
-            Debug.Log("生效");
+            Debug.Log("生效"+EffectObject.name+" "+item_Data.Name);
         }
         public override void InitSystem()
         {
