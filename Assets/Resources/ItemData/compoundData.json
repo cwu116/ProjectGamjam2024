@@ -78,7 +78,7 @@
         "Material_2": "yellow",
         "MaterialSpecial": "A",
         "Description": "使目标仇恨值增加5，每回合结束时恢复2点血，持续2回合",
-        "Type": [ "State:HateValue,5,true", "State:LiveTarget,2,false" ]
+        "Type": [ "ChangeValue:HateValue,5,true", "State:LiveTarget,2,false" ]
     },
     {
         "id": "Hibernation",

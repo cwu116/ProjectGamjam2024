@@ -23,6 +23,7 @@ namespace Game.System
         /// <param name="target">作用对象</param>
         public static void Execution(List<string> CMDlist, GameObject target)
         {
+            Debug.Log(string.Join(' ',CMDlist) + "::" + target.name);
             if (CMDlist.Count == 0)
             {
                 return;
@@ -40,13 +41,15 @@ namespace Game.System
                 {
                     List<string> args = new List<string>(_raw.Split(new char[] {'='}));
                     BuffComponent temp = target.GetComponent<BuffComponent>();
-                    temp.ValueUnits[Enum.Parse<ValueKey>(args[0].Remove(0))].AddValue(ParseParam(args[1], temp));
+                    temp.ValueUnits[Enum.Parse<ValueKey>(args[0].Replace("$",""))].AddValue(ParseParam(args[1], temp), true);
+                    target.GetComponent<BaseEntity>().RefreshHpInUI();
                 }
                 else if (_raw.Contains("+"))
                 {
-                    List<string> args = new List<string>(_raw.Split(new char[] {'='}));
+                    List<string> args = new List<string>(_raw.Split(new char[] {'+'}));
                     BuffComponent temp = target.GetComponent<BuffComponent>();
-                    temp.ValueUnits[Enum.Parse<ValueKey>(args[0].Remove(0))].AddValue(ParseParam(args[1], temp), true);
+                    temp.ValueUnits[Enum.Parse<ValueKey>(args[0].Remove(0))].AddValue(ParseParam(args[1], temp));
+                    target.GetComponent<BaseEntity>().RefreshHpInUI();
                 }
                 else
                 {
@@ -62,26 +65,30 @@ namespace Game.System
                         case BuffType.ChangeValue:
                             if (Params[0] == "Damage")
                             {
+                                Debug.Log("damage");
                                 entity.GetHurt(int.Parse(Params[1]));
-                                Debug.Log(entity.name + ": " + "Hp: " + entity.Hp);
+                                target.GetComponent<BaseEntity>().RefreshHpInUI();
                             }
                             else
                             {
-                                if (Params[1].Contains('-'))
+                                if (Params[1] == "-")
                                 {
                                     // - 代表清零
                                     temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])].AddValue(temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])] * -1);
+                                    target.GetComponent<BaseEntity>().RefreshHpInUI();
                                 }
                                 else
                                 {
                                     if (bool.Parse(Params[2]))
                                     {
                                         temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])].AddValue(int.Parse(Params[1]));
+                                        target.GetComponent<BaseEntity>().RefreshHpInUI();
                                     }
                                     else
                                     {
                                         temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])]
                                             .AddValue(int.Parse(Params[1]), true);
+                                        target.GetComponent<BaseEntity>().RefreshHpInUI();
                                     }
                                     Debug.Log(entity.name + ": " + Params[0] + ": " + temp.ValueUnits[Enum.Parse<ValueKey>(Params[0])]);
 
@@ -96,6 +103,7 @@ namespace Game.System
                             }
                             else
                             {
+                                Debug.Log("添加状态");
                                 temp.AddState(GameBody.GetModel<StateModel>().GetStateFromID(Params[0]),
                                     int.Parse(Params[1]) == -1 ? 9999 : int.Parse(Params[1]),
                                     target);
@@ -210,7 +218,7 @@ namespace Game.System
         {
             if (arg.Contains("$"))
             {
-                return target.ValueUnits[Enum.Parse<ValueKey>(arg.Remove(0))];
+                return target.ValueUnits[Enum.Parse<ValueKey>(arg.Replace("$",""))];
             }
             else
             {

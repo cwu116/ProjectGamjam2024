@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Game.System;
 using UnityEngine.UI;
+using EventSystem = UnityEngine.EventSystems.EventSystem;
 
 public class UICraftIcon : MonoBehaviour, IPointerClickHandler
 {
@@ -17,6 +18,9 @@ public class UICraftIcon : MonoBehaviour, IPointerClickHandler
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        Game.System.EventSystem.Send(new UICraftIconClickEvent(this));
+        if (!EventSystem.current.currentSelectedGameObject)
+        {
+            Game.System.EventSystem.Send(new UICraftIconClickEvent(this));
+        }
     }
 }

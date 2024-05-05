@@ -53,9 +53,9 @@ namespace Game.System
 
         public void EnemyStatesEnd()
         {
-            foreach (var enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+            foreach (var enemy in GameObject.FindObjectsOfType<Enemy>())
             {
-                enemy.GetComponent<BuffComponent>().StatesEnd();
+                enemy.gameObject.GetComponent<BuffComponent>().StatesEnd();
             }
         }
 

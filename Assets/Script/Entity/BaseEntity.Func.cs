@@ -5,6 +5,7 @@ using Game.Model;
 using System.Collections;
 using System.Collections.Generic;
 using Buff.Config;
+using DG.Tweening;
 using Game.System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,6 +52,15 @@ public partial class BaseEntity : MonoBehaviour
 
     public void RefreshHpInUI()
     {
+        Debug.Log("MaxHp: " + MaxHp + ",Hp: " + Hp);
+        if (MaxHp < Hp)
+        {
+            if (MaxHp < 1)
+            {
+                MaxHp.AddValue(1, true);
+            }
+            Hp.AddValue(MaxHp, true);
+        }
         if (IsPlayer)
         {
             UIMain.Instance.RefreshPlayerHp();
@@ -107,12 +117,16 @@ public partial class BaseEntity : MonoBehaviour
             List<HexCell> CellUnits = new List<HexCell>(GameBody.GetSystem<MapSystem>()
                 .GetRoundHexCell(_curHexCell.Pos, paramList[1].ToInt()));
             HexCell target = null;
-            do
+            foreach (var cell in CellUnits)
             {
-                target = CellUnits[Random.Range(0, CellUnits.Count)];
-            } while (Vector3.Cross(transform.forward, transform.position).y *
-                Vector3.Cross(transform.forward, entity.transform.position).y < 0);
-            entity.GetComponent<Rigidbody2D>().MovePosition(target.Pos);
+                if (Vector3.Cross(transform.forward, transform.position).y *
+                    Vector3.Cross(transform.forward, entity.transform.position).y < 0)
+                {
+                    target = cell;
+                    break;
+                }
+            }
+            entity.transform.DOMove(target.transform.position, 0.5f);
         }
     }
 

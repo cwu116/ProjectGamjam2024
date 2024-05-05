@@ -114,7 +114,7 @@ namespace Buff.Tool
             }
             else
             {
-                changeValue = Value;
+                changeValue = Value - baseValue;
             }
         }
 

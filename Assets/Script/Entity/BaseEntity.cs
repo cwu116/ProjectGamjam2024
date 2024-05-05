@@ -46,6 +46,7 @@ public partial class BaseEntity : MonoBehaviour
         buff.RegisterFunc(TActionKey.Sleep, Sleep);
         
         buff.RegisterParam(ValueKey.Hp, new ValueInt(_model.hp));
+        buff.RegisterParam(ValueKey.MaxHp, new ValueInt(_model.hp));
         buff.RegisterParam(ValueKey.Attack, new ValueInt(_model.Attack));
         buff.RegisterParam(ValueKey.Defence, new ValueInt(0));
         buff.RegisterParam(ValueKey.bInvisible, new ValueInt(0));

@@ -11,11 +11,11 @@ namespace Game.System
 {
     public class PotionUseSystem : BaseSystem
     {
-        public void Use(Item_Data item_Data, GameObject EffectObject)//药水,生效对象
+        public void Use(Item_Data item_Data, GameObject EffectObject)//鑽按,鐢熸晥瀵硅薄
         {
             EventSystem.Send<UsePotionEvent>(new UsePotionEvent() { potion = item_Data });
             StateSystem.Execution(item_Data.Type, EffectObject);
-            Debug.Log("生效"+EffectObject.name+" "+item_Data.Name);
+            Debug.Log("鐢熸晥"+EffectObject.name+" "+item_Data.Name);
         }
         public override void InitSystem()
         {

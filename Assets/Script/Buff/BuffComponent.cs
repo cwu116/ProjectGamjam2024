@@ -96,19 +96,22 @@ namespace Buff
 
         public void StatesEnd()
         {
-            for (int i = StateUnits.Count-1; i > 0; i--)
+            for (int i = 0; i < StateUnits.Count; i++)
             {
+                Debug.LogError(StateUnits.Count);
                 if (!StateUnits[i].Info.isStartExec)
                 {
                     if (StateUnits[i].Info.isAdditive)
                     {
                         for (int j = 0; j < StateUnits[i].Duration; j++)
                         {
+                            Debug.LogError(string.Join(' ',StateUnits[i].Info.buffCMD) + "::" + gameObject);
                             StateSystem.Execution(StateUnits[i].Info.buffCMD, transform.gameObject);   
                         }
                     }
                     else
                     {
+                        Debug.LogError(string.Join(' ',StateUnits[i].Info.buffCMD) + "::" + gameObject);
                         StateSystem.Execution(StateUnits[i].Info.buffCMD, transform.gameObject);
                     }
                 }
