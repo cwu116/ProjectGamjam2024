@@ -9,11 +9,15 @@ using Game;
 using Game.System;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Managers;
 
 public class Enemy : BaseEntity,IPointerClickHandler,IPointerEnterHandler,IPointerExitHandler
 {
     public Animator anim;
     [SerializeField] private new string name;
+
+    public string dropedItemId;
+    public string dropedItemName;
     private void Awake()
     {
         buff = GetComponent<BuffComponent>();
@@ -32,7 +36,7 @@ public class Enemy : BaseEntity,IPointerClickHandler,IPointerEnterHandler,IPoint
         RefreshHpInUI();
     }
 
-    public override void UseSkill(BaseEntity target)
+    public async override void UseSkill(BaseEntity target)
     {
         base.UseSkill(target);
         switch (MyAttackType)
@@ -50,16 +54,22 @@ public class Enemy : BaseEntity,IPointerClickHandler,IPointerEnterHandler,IPoint
                 throw new ArgumentOutOfRangeException();
         }
         anim.SetTrigger("Attack");
+        await System.Threading.Tasks.Task.Delay(300);
+        AudioManager.PlaySound(AudioPath.Pop);
     }
 
 
-    public void OnPointerClick(PointerEventData eventData)
+    public async void OnPointerClick(PointerEventData eventData)
     {
         if (GameBody.GetModel<PlayerActionModel>().CurrentPotion != null)
         {
             if (GameBody.GetSystem<MapSystem>().CalculateDistance(Player.instance.CurHexCell.Pos, this.CurHexCell.Pos) > Player.instance.RangeRight)
                 return;
+            if (Player.instance.MoveTimes <= 0)
+                return;
             GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().CurrentPotion, this.gameObject);
+            await System.Threading.Tasks.Task.Delay(1200);
+            AudioManager.PlaySound(AudioPath.Attack);
             return;
         }
     }

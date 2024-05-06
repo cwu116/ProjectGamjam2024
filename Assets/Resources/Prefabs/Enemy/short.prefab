@@ -54,6 +54,8 @@ MonoBehaviour:
   isDisturbed: 0
   anim: {fileID: 0}
   name: "\u8FD1\u6218\u602A"
+  dropedItemId: A
+  dropedItemName: "\u5927\u8471"
 --- !u!114 &-7609100685488679418
 MonoBehaviour:
   m_ObjectHideFlags: 0

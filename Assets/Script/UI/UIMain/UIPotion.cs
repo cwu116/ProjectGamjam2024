@@ -38,6 +38,8 @@ namespace Game.UI
             {
                 Game.System.EventSystem.Send<OnPotionClick>(new OnPotionClick() { potion = potion });
             }
+            if (Player.instance.MoveTimes <= 0)
+                return;
             GameBody.GetSystem<MapSystem>().HighLightCells(Player.instance.RangeRight);
         }
 

@@ -27,7 +27,7 @@ namespace Game
             RegisterSystem(new MapSystem());
             RegisterSystem(new StateSystem());
             RegisterSystem(new InventorySystem());
-            //RegisterSystem(new AudioSystem());
+            RegisterSystem(new AudioSystem());
             RegisterSystem(new MoveSystem());
             RegisterSystem(new BackpackSystem());
             RegisterSystem(new GameFlowSystem());

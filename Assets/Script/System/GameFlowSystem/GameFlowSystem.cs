@@ -1,5 +1,6 @@
 ﻿
 using System;
+using Managers;
 
 namespace Game.System
 {
@@ -9,6 +10,7 @@ namespace Game.System
         {
             RegisterEvents();
             EventSystem.Send<ShowUIStartPanelTriggerEvent>();
+            AudioManager.PlayMusic(AudioPath.FightMusic);
         }
 
 

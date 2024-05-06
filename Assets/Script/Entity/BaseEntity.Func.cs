@@ -9,6 +9,7 @@ using DG.Tweening;
 using Game.System;
 using UnityEngine;
 using UnityEngine.UI;
+using Managers;
 
 public partial class BaseEntity : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public partial class BaseEntity : MonoBehaviour
         MoveTimes.AddValue(-1);
     }
 
-    public void GetHurt(int damage)
+    public async void GetHurt(int damage)
     {
         if (damage < 0)
         {
@@ -61,6 +62,8 @@ public partial class BaseEntity : MonoBehaviour
         if(this as Enemy)
         {
             this.GetComponent<Animator>().SetTrigger("Hit");
+            await System.Threading.Tasks.Task.Delay(300);
+            AudioManager.PlaySound(AudioPath.Hit);
         }
     }
 
@@ -106,6 +109,10 @@ public partial class BaseEntity : MonoBehaviour
         if (this is Enemy)
         {
             EventSystem.Send<EnemyDieEvent>(new EnemyDieEvent { enemy = this });
+            GameObject dropPrefab = Resources.Load<GameObject>("Prefabs/DropItems/DropItem");
+            GameObject go = GameObject.Instantiate(dropPrefab);
+            go.transform.position = this.transform.position;
+            go.GetComponent<DropItem>().Init((this as Enemy).dropedItemId, (this as Enemy).dropedItemName);
         }
         else if (this is Player)
         {
