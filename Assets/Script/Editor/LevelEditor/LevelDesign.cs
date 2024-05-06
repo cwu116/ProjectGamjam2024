@@ -45,7 +45,7 @@ public class LevelDesign : EditorWindow
     int width = 0;
     int height = 0;
     HexCell[,] cells;
-    List<Enemy> enemeys;
+    List<BaseEntity> enemeys;
     void OnEnable()
     {
         // 查找所有预制体
@@ -72,7 +72,7 @@ public class LevelDesign : EditorWindow
         }
         enemyPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(enemyPrefabPaths[0]);
 
-        enemeys = new List<Enemy>();
+        enemeys = new List<BaseEntity>();
     }
 
     void OnGUI()
@@ -172,7 +172,7 @@ public class LevelDesign : EditorWindow
                 return;
             }
             GameObject enemyPrefabs = GameObject.Find("Enemys");
-            Enemy enemy = Instantiate(enemyPrefab, enemyPrefabs.transform).GetComponent<Enemy>();
+            BaseEntity enemy = Instantiate(enemyPrefab, enemyPrefabs.transform).GetComponent<BaseEntity>();
             enemy.transform.position = UnityEditor.Selection.transforms[0].position;
             enemy.gameObject.name = enemyPrefab.name;
             enemy.CurrentHeightIndex = UnityEditor.Selection.transforms[0].GetComponent<HexCell>().HeightIndex;
