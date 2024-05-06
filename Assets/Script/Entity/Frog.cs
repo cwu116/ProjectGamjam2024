@@ -47,8 +47,9 @@ public class Frog : Enemy
     }
 
     // 受到攻击时
-    void OnDamage()
+    public override void GetHurt(int damage)
     {
+        base.GetHurt(damage);
         switch (frogType)
         {
             case FrogType.TrumpetFrog:
