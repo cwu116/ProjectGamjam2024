@@ -53,7 +53,9 @@ namespace Game.System
         {
             if (materials != null || materials.Count >= 0)//移除材料
             {
-                materials.Remove(item_s);
+                var target = materials.Find(v => v.Id == item_s.Id);
+                if(target!=null)
+                    materials.Remove(target);
                 return;
             }
             Debug.LogWarning("已经没有物品了");
@@ -89,7 +91,7 @@ namespace Game.System
                 }
                 if (sum == 2)
                 {
-                    item_SModel_2 = i;
+                    item_SModel_3 = i;
                     sum++;
                     continue;
                 }

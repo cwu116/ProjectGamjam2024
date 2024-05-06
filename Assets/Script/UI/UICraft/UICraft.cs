@@ -217,6 +217,7 @@ namespace Game.UI
                 {
                     i.item = null;
                 }
+                specialIcon.item = null;
                 foreach (var element in UICraftElements)
                 {
                     Destroy(element.Value);
