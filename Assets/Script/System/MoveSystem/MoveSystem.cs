@@ -53,6 +53,7 @@ namespace Game.System
             player.GetComponent<Player>().CurHexCell.OccupyObject=player;
             if (newCell.Type == HexType.Transport)
             {
+                EventSystem.Send<GameSuccessEvent>();
                 //TODO::通关事件
             }
 

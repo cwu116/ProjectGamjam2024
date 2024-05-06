@@ -61,6 +61,7 @@ public partial class BaseEntity : MonoBehaviour
         EventSystem.Send<EntityHurtEvent>(new EntityHurtEvent() { enetity = this });//玩家受伤动画
         if(this as Enemy)
         {
+            await System.Threading.Tasks.Task.Delay(1000);
             this.GetComponent<Animator>().SetTrigger("Hit");
             await System.Threading.Tasks.Task.Delay(300);
             AudioManager.PlaySound(AudioPath.Hit);

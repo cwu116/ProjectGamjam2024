@@ -24,7 +24,7 @@ namespace Game.Model
             {
                 CurrentPotion = null;
                 GameBody.GetSystem<MapSystem>().ClearHighlightCells();
-                GameBody.GetSystem<MapSystem>().HighLightCells(Player.instance.MoveTimes > 0 ? 1 : 0);
+                GameBody.GetSystem<MapSystem>().HighLightCells(Player.instance.MoveTimes > 0 ? Player.instance.StepLength > 0 ? 1 : 0 : 0);
                 return;
             }
             ICanUndo operation;

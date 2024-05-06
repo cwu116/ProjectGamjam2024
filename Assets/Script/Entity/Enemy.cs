@@ -47,12 +47,14 @@ public class Enemy : BaseEntity,IPointerClickHandler,IPointerEnterHandler,IPoint
                 break;
             case AttackType.Range:
                 target.GetHurt(Attack);
+                target.RefreshHpInUI();
                 break;
             case AttackType.NULL:
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
         anim.SetTrigger("Attack");
         await System.Threading.Tasks.Task.Delay(300);
         AudioManager.PlaySound(AudioPath.Pop);
