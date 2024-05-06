@@ -202,7 +202,6 @@ namespace Game.System
                     {
                         neighborIndices.Add(index);
                     }
-                    Debug.Log(index[0] + " " + index[1]);
                     int[][] newoffsets = (ny % 2 == 0) ? evenRowOffsets : oddRowOffsets;
                     // 递归或循环找到下一个相邻格子的索引
                     FindNeighborIndices(nx, ny, n - 1, newoffsets, neighborIndices);
@@ -478,6 +477,25 @@ namespace Game.System
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 计算两点是否是直线
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public bool isStraight(Vector2 origin, Vector2 target)
+        {
+            Vector2 direction = target - origin;
+            foreach (Vector2 dir in dirs)
+            {
+                if (CalculateVector2Angle(direction, dir) <= 3)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }
