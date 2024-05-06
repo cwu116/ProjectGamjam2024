@@ -30,7 +30,8 @@ namespace Game.System
         public void PlayerMoveTo(GameObject player, Vector2 path, bool isUndo = false)
         {
             if (GameBody.GetSystem<MapSystem>().CalculateDistance(player.GetComponent<Player>().CurHexCell.Pos,
-                path) > 1)
+                path) > 1 || GameBody.GetSystem<MapSystem>().CalculateDistance(player.GetComponent<Player>().CurHexCell.Pos,
+                path)==0)
             {
                 return;
             }
@@ -45,6 +46,7 @@ namespace Game.System
             HexCell newCell = GridManager.Instance.hexCells[(int) path.x, (int) path.y];
             player.GetComponent<Player>().LastHexCell.OccupyObject = null;
             player.GetComponent<Player>().CurHexCell = newCell;
+            player.GetComponent<Player>().CurHexCell.OccupyObject=player;
             if (newCell.Type == HexType.Transport)
             {
                 //TODO::通关事件
@@ -94,12 +96,14 @@ namespace Game.System
                 Debug.Log(cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer);
                 if (cellUnit.OccupyObject.GetComponent<BaseEntity>().bMisLead)
                 {
+                    enemy.GetComponent<Enemy>().isDisturbed = true;
                     Debug.LogError("I see you!");
                     ThrowTarget(enemy, cellUnit);
                     return;
                 }
                 else if (cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
                 {
+                    enemy.GetComponent<Enemy>().isDisturbed = true;
                     Debug.LogError("I see you!");
                     ThrowTarget(enemy, cellUnit);
                     return;
@@ -107,11 +111,18 @@ namespace Game.System
             }
 
             // û��⵽��һ��߳�޶������·��
-            Vector2 target = GameBody.GetSystem<MapSystem>().RandomPatrol(enemy.GetComponent<Enemy>().SpawnPoint,
-                enemy.GetComponent<Enemy>().CurHexCell.Pos);
-            ThrowTarget(enemy, GridManager.Instance.hexCells[(int) target.x, (int) target.y]);
-            
-           
+            Vector2 target = Vector2.zero;
+            HexCell cell = GridManager.Instance.hexCells[(int)target.x, (int)target.y];
+            int times = 0;
+            do
+            {
+                target = GameBody.GetSystem<MapSystem>().RandomPatrol(enemy.GetComponent<Enemy>().SpawnPoint,
+               enemy.GetComponent<Enemy>().CurHexCell.Pos);
+                times++;
+            }
+            while ((cell.Type == HexType.Thorns || cell.Type == HexType.Moon || cell.Type == HexType.Fire) && times<30);
+            enemy.GetComponent<Enemy>().isDisturbed = false;
+            ThrowTarget(enemy, GridManager.Instance.hexCells[(int)target.x, (int)target.y]);
         }
 
         private async void ThrowTarget(GameObject enemy, HexCell target)
@@ -123,9 +134,24 @@ namespace Game.System
             
             List<HexCell> WholePath = GameBody.GetSystem<MapSystem>()
                 .GetPath(enemy.GetComponent<Enemy>().CurHexCell.Pos, target.Pos);
-            HexCell lastCell = null;
             foreach (var cell in WholePath)
             {
+                if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer || cell.OccupyObject.GetComponent<BaseEntity>().bMisLead)) 
+                {
+                    if((GameBody.GetSystem<MapSystem>().CalculateDistance(enemy.GetComponent<Enemy>().CurHexCell.Pos, cell.Pos)) <= enemy.GetComponent<Enemy>().RangeRight)//在攻击范围内
+                    {
+                        //使用技能
+                        if (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
+                            enemy.GetComponent<Enemy>().UseSkill(cell.OccupyObject.GetComponent<BaseEntity>() as Player);
+                        else
+                            enemy.GetComponent<Enemy>().UseSkill(cell.OccupyObject.GetComponent<BaseEntity>());
+                    }
+                    break;
+                }
+                else if(cell.OccupyObject != null && cell.OccupyObject.GetComponent<BaseEntity>() is Enemy)
+                {
+                    continue;
+                }
                 enemy.GetComponent<Enemy>().anim.SetTrigger("Move");
                 await Task.Delay(300);
                 enemy.transform.DOMove(cell.transform.position, 0.5f);

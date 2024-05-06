@@ -49,7 +49,7 @@ public partial class BaseEntity : MonoBehaviour
             }
         }
 
-        EventSystem.Send<EntityHurtEvent>(new EntityHurtEvent() { enetity = this });
+        EventSystem.Send<EntityHurtEvent>(new EntityHurtEvent() { enetity = this });//玩家受伤动画
         if(this as Enemy)
         {
             this.GetComponent<Animator>().SetTrigger("Hit");
@@ -90,10 +90,21 @@ public partial class BaseEntity : MonoBehaviour
         }
     }
 
+    [ContextMenu("Die")]
     public virtual void Die()
     {
         isDead = true;
-        EventSystem.Send<EnemyDieEvent>(new EnemyDieEvent { enemy = this }); 
+        GetComponent<SpriteRenderer>().DOFade(0, 0.5f);
+
+        if (this is Enemy)
+        {
+            EventSystem.Send<EnemyDieEvent>(new EnemyDieEvent { enemy = this });
+        }
+        else if (this is Player)
+        {
+            EventSystem.Send<PlayerDieEvent>();
+        }
+       
     }
 
     public virtual void Hatred()

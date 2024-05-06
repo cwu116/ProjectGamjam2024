@@ -13,6 +13,8 @@ namespace Game.System
     {
         public void Use(Item_Data item_Data, GameObject EffectObject)//药水,生效对象
         {
+            if (Player.instance.MoveTimes <= 0)
+                return;
             EventSystem.Send<UsePotionEvent>(new UsePotionEvent() { potion = item_Data });
             StateSystem.Execution(item_Data.Type, EffectObject);
             Debug.Log("生效"+EffectObject.name+" "+item_Data.Name);

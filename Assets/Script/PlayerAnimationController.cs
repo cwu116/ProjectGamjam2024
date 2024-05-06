@@ -19,7 +19,7 @@ public class PlayerAnimationController : MonoBehaviour
     private void Hurt(EntityHurtEvent v)
     {
         if (v.enetity is Player)
-            anim.SetTrigger("Hurt");
+            anim.SetTrigger("Hit");
     }
 
     private void OnUsePotion(Item_Data potion)

@@ -29,6 +29,7 @@ public partial class BaseEntity : MonoBehaviour
 
     private string spawningPath; //生成地块属性
     public bool isDead;//是否死亡
+    public bool isDisturbed;//是否惊动
 
     protected void InitEntity()
     {

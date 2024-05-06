@@ -10,7 +10,7 @@ using Game.System;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Enemy : BaseEntity,IPointerClickHandler
+public class Enemy : BaseEntity,IPointerClickHandler,IPointerEnterHandler,IPointerExitHandler
 {
     public Animator anim;
     [SerializeField] private new string name;
@@ -41,6 +41,7 @@ public class Enemy : BaseEntity,IPointerClickHandler
                 target.GetHurt(Attack);
                 break;
             case AttackType.Range:
+                target.GetHurt(Attack);
                 break;
             case AttackType.NULL:
                 break;
@@ -53,11 +54,26 @@ public class Enemy : BaseEntity,IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (GameBody.GetModel<PlayerActionModel>().currentPotion != null)
+        if (GameBody.GetModel<PlayerActionModel>().CurrentPotion != null)
         {
-            Debug.Log("use");
-            GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().currentPotion, this.gameObject);
+            if (GameBody.GetSystem<MapSystem>().CalculateDistance(Player.instance.CurHexCell.Pos, this.CurHexCell.Pos) > Player.instance.RangeRight)
+                return;
+            GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().CurrentPotion, this.gameObject);
             return;
         }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+            Game.System.EventSystem.Send<ClearAttackBlockEvent>();
+            Game.System.EventSystem.Send<ClearWarningBlockEvent>();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (this.isDisturbed)
+            Game.System.EventSystem.Send<HighLightAttackBlockEvent>(new HighLightAttackBlockEvent { pos = CurHexCell.Pos, distance = this.RangeRight });
+        else
+            Game.System.EventSystem.Send<HighLightWarningBlockEvent>(new HighLightWarningBlockEvent { pos = CurHexCell.Pos, distance = this.WatchRange });
     }
 }

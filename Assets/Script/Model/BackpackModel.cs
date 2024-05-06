@@ -18,11 +18,20 @@ public class BackpackModel : BaseModel
         EventSystem.Register<CraftResultEvent>(v => { AddPotion(v.result); });
         EventSystem.Register<UsePotionEvent>(v => RemovePotion(v.potion));
         EventSystem.Register<AddItemEvent>(v => AddMaterial(v.item, v.count));
+        EventSystem.Register<UnlockRecipe>(v => UnlockRecipe(v.potion));
     }
 
     public List<Item_s> specialMaterials = new List<Item_s>();
     public List<Item_s> normalMaterials = new List<Item_s>();
     public List<Item_Data> potions = new List<Item_Data>();
+
+    public List<Item_Data> unlockRecipe = new List<Item_Data>();
+
+    public void UnlockRecipe(Item_Data potion)
+    {
+        if (!unlockRecipe.Contains(potion))
+            unlockRecipe.Add(potion);
+    }
 
     public void AddMaterial(Item_s item,int count=1)
     {

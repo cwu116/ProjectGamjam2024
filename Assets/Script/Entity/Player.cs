@@ -43,10 +43,10 @@ public class Player : BaseEntity,IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (GameBody.GetModel<PlayerActionModel>().currentPotion != null)
+        if (GameBody.GetModel<PlayerActionModel>().CurrentPotion != null)
         {
             Debug.Log("use");
-            GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().currentPotion, this.gameObject);
+            GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().CurrentPotion, this.gameObject);
             return;
         }
     }

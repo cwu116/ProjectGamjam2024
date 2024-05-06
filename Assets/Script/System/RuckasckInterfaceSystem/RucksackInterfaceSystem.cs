@@ -107,6 +107,7 @@ namespace Game.System
                     Item_s result_ = list[Random.Range(0, list.Count)];
                     var result = compoundModel.Item_Data.Find(v => v.id == result_.Id);
                     //EventSystem.Send(new CraftResultEvent() { result = result });
+                    materials.Clear();
                     return result;//没有特殊配方则随机返回一个药水
                 }
                 foreach (var i in compoundModel.Item_Data)//在拥有特殊材料的情况下将满足条件的直接返回
@@ -117,6 +118,7 @@ namespace Game.System
                         var result_ = new Item_s(i.id, i.Name, i.Description, 1);
                         var result = compoundModel.Item_Data.Find(v => v.id == result_.Id);
                         //EventSystem.Send(new CraftResultEvent() { result = result });
+                        materials.Clear();
                         return result;
                     }
 

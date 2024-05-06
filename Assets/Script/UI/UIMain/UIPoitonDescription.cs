@@ -17,12 +17,12 @@ public class UIPoitonDescription : MonoBehaviour
         image = transform.Find("Icon").GetComponent<Image>();
     }
 
-    public void Show(Item_Data potion)
+    public void Show(Item_Data potion,Sprite sprite)
     {
         gameObject.SetActive(true);
         potionName.text = potion.Name;
         potionDescription.text = potion.Description;
-        image.sprite = Resources.Load<Sprite>(UIImagePath.ImagePath + potion.id);
+        image.sprite = sprite;
     }
 
     public void Close()

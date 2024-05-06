@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Game.System
 {
     public partial class GameFlowSystem:BaseSystem
@@ -13,6 +15,12 @@ namespace Game.System
         private void RegisterEvents()
         {
             EventSystem.Register<SwitchMapEvent>(SwitchMap);
+            EventSystem.Register<PlayerDieEvent>(OnPlayerDie);
+        }
+
+        private void OnPlayerDie(PlayerDieEvent obj)
+        {
+            EventSystem.Send<GameOverEvent>();
         }
 
         private void SwitchMap(SwitchMapEvent obj)

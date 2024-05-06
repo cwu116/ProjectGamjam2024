@@ -51,6 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bisPlayer: 0
   isDead: 0
+  isDisturbed: 0
+  anim: {fileID: 0}
   name: "\u8FD1\u6218\u602A"
 --- !u!114 &-7609100685488679418
 MonoBehaviour:
@@ -149,7 +151,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.05282235, y: 0.13205552}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -160,7 +162,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.58, y: 1.08}
+  m_Size: {x: 6.8622127, y: 5.147304}
   m_EdgeRadius: 0
 --- !u!1 &4987951884893030980
 GameObject:

@@ -127,7 +127,10 @@ public class GridManager : MonoSingleton<GridManager>
                     enemy.CurrentHeightIndex = x;
                     enemy.CurrentWidthIndex = y;
                     enemy.SpawnPoint = enemy.CurHexCell.Pos;
-                    enemy.transform.position = cells[x, y].transform.position;
+                    if (enemy is Player)
+                        enemy.transform.position = cells[x, y].transform.position + Vector3.up * 3;
+                    else
+                        enemy.transform.position = cells[x, y].transform.position;
                     enemys.Add(enemy);
                     GameObject EnemyParent = GameObject.Find("Enemys");
                     enemy.transform.SetParent(EnemyParent.transform, false);

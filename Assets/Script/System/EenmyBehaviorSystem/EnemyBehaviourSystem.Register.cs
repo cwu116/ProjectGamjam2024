@@ -17,7 +17,7 @@ namespace Game.System
         private void OnEnemyDie(EnemyDieEvent obj)
         {
             enemies.Remove(obj.enemy as Enemy);
-            GameObject.Destroy(obj.enemy.gameObject);
+            GameObject.Destroy(obj.enemy.gameObject,0.5f);
         }
 
         int completeConter = 0;
