@@ -39,13 +39,21 @@ public partial class BaseEntity : MonoBehaviour
 
     public void GetHurt(int damage)
     {
-        int realDamage = damage - this.Defence;
-        if (realDamage > 0)
+        if (damage < 0)
         {
-            Hp.AddValue(-realDamage);
-            if (this.Hp <= 0)
+            Hp.AddValue(-damage);
+        }
+        else
+        {
+            int realDamage = damage - this.Defence;
+            if (realDamage > 0)
             {
-                Die();
+                Hp.AddValue(-realDamage);
+                Debug.LogError(Hp);
+                if (this.Hp <= 0)
+                {
+                    Die();
+                }
             }
         }
 
@@ -58,7 +66,6 @@ public partial class BaseEntity : MonoBehaviour
 
     public void RefreshHpInUI()
     {
-        Debug.Log("MaxHp: " + MaxHp + ",Hp: " + Hp);
         if (MaxHp < Hp)
         {
             if (MaxHp < 1)
@@ -84,10 +91,10 @@ public partial class BaseEntity : MonoBehaviour
                Heart HeartUI = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Heart"), hpBar.transform).GetComponent<Heart>();
                HeartUI.isPlayer = false;
                // HeartUI.GetComponent<RectTransform>().localScale = new Vector3(0.055f,0.055f,1);
-               HeartUI.gameObject.GetComponent<RectTransform>().rect.Set(2.3134f,2.3134f,2.3134f, 2.3134f);
-               HeartUI.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(2.3134f, 2.3134f);
+               HeartUI.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(10.3134f, 10.3134f);
             }
         }
+        Debug.Log("MaxHp: " + MaxHp + ",Hp: " + Hp);
     }
 
     [ContextMenu("Die")]
@@ -136,14 +143,22 @@ public partial class BaseEntity : MonoBehaviour
             HexCell target = null;
             foreach (var cell in CellUnits)
             {
-                if (Vector3.Cross(transform.forward, transform.position).y *
+                if (Vector3.Cross(transform.forward, cell.transform.position).y *
                     Vector3.Cross(transform.forward, entity.transform.position).y < 0)
                 {
                     target = cell;
                     break;
                 }
+                else if (Vector3.Dot(transform.forward, entity.transform.position) == 0)
+                {
+                    if ((entity.transform.position.y - cell.transform.position.y)*(entity.transform.position.y - transform.position.y) < 0)
+                    {
+                        target = cell;
+                        break;
+                    }
+                }
             }
-            entity.transform.DOMove(target.transform.position, 0.5f);
+            if (target is not null) entity.transform.DOMove(target.transform.position, 0.5f);
         }
     }
 

@@ -39,6 +39,7 @@ public class Enemy : BaseEntity,IPointerClickHandler,IPointerEnterHandler,IPoint
         {
             case AttackType.Sword:
                 target.GetHurt(Attack);
+                target.RefreshHpInUI();
                 break;
             case AttackType.Range:
                 target.GetHurt(Attack);

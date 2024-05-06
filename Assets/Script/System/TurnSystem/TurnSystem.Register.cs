@@ -33,6 +33,7 @@ namespace Game.System
         private void OnEnemyTurnBeginTrigger(EnemyTurnBeginTrigger obj)
         {
             _turnModel.CurrentTurn = TurnType.EnemyTurn;
+            Debug.LogError("Start");
             stateSystem.EnemyStatesStart();
             AfterEnemyTurnBeginEvent info = new AfterEnemyTurnBeginEvent() { /*???��????*/};
             EventSystem.Send(info);

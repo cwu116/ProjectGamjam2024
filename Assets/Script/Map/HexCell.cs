@@ -7,6 +7,18 @@ using UnityEngine;
 
 public class HexCell : MonoBehaviour
 {
+    private void Update()
+    {
+        if (OccupyObject != null && OccupyObject.gameObject.CompareTag("Player"))
+        {
+            transform.Find("hexBlock").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/µØ¿é-¾¯½ä·¶Î§");
+        }
+        else
+        {
+            transform.Find("hexBlock").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/µØ¿é");
+        }
+    }
+
     private int _widthIndex = 0;
     public int WidthIndex
     {

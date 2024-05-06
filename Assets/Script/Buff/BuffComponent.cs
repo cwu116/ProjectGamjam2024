@@ -68,11 +68,14 @@ namespace Buff
 
         public void StatesStart()
         {
-            for (int i = StateUnits.Count-1; i > 0; i--)
+            for (int i = 0; i < StateUnits.Count; i++)
             {
                 if (StateUnits[i].Info.isStartExec)
                 {
-                    if (StateUnits[i].Info.isAdditive)
+                    if (StateUnits[i].Info.isAdditive && new List<string>()
+                    {
+                        "Armor","Burning"
+                    }.Contains(StateUnits[i].Info.id))
                     {
                         for (int j = 0; j < StateUnits[i].Duration; j++)
                         {
@@ -98,10 +101,13 @@ namespace Buff
         {
             for (int i = 0; i < StateUnits.Count; i++)
             {
-                Debug.LogError(StateUnits.Count);
+                // Debug.LogError(StateUnits.Count);
                 if (!StateUnits[i].Info.isStartExec)
                 {
-                    if (StateUnits[i].Info.isAdditive)
+                    if (StateUnits[i].Info.isAdditive && new List<string>()
+                    {
+                        "Armor","Burning"
+                    }.Contains(StateUnits[i].Info.id))
                     {
                         for (int j = 0; j < StateUnits[i].Duration; j++)
                         {
