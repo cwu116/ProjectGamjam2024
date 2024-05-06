@@ -18,13 +18,14 @@ namespace Game.System
         List<HexCell> GetPath(Vector2 origin, Vector2 target);//获得完整寻路路径
 
         Vector2 GetNextPosWorld(Vector2 origin, Vector2 target); //获取当玩家进入警戒范围时，移动到的下一格目标世界位置
+        List<HexCell> StraightRunPath(Vector2 origin, Vector2 target); //获取直线冲刺的路径
     }
     public partial class MapSystem : BaseSystem,MapFunction
     {
         private int height;
         private int width;
 
-        // 定义六个方向的偏移量
+        // 定义偶数六方向偏移量
         private int[][] evenRowOffsets = new int[][]
         {
                 new int[] { 1, 0 },   
@@ -35,6 +36,7 @@ namespace Game.System
                 new int[] { 0, -1 }    
         };
 
+        //定义奇数六方向偏移量
         private int[][] oddRowOffsets = new int[][]
         {
                 new int[] { 1, 0 },   
@@ -147,13 +149,13 @@ namespace Game.System
         {
             int x = (int)position.x;
             int y = (int)position.y;
-            List<int[]> roundIndex = GetNeighborIndices(x, y, radius);
+            List<Vector2> roundIndex = GetNeighborIndices(x, y, radius);
             HexCell[,] hexCells = GridManager.Instance.hexCells;
             HexCell[] roundHexCells = new HexCell[roundIndex.Count];
             for(int i = 0; i < roundIndex.Count; i++)
             {
-                int a = roundIndex[i][0];
-                int b = roundIndex[i][1];
+                int a = (int)roundIndex[i][0];
+                int b = (int)roundIndex[i][1];
                 roundHexCells[i] = hexCells[a, b];
             }
             if(roundHexCells != null)
@@ -170,9 +172,9 @@ namespace Game.System
         /// <param name="y"></param>
         /// <param name="n"></param>
         /// <returns></returns>
-        private List<int[]> GetNeighborIndices(int x, int y, int n)
+        private List<Vector2> GetNeighborIndices(int x, int y, int n)
         {
-            List<int[]> neighborIndices = new List<int[]>();
+            List<Vector2> neighborIndices = new List<Vector2>();
 
             int[][] offsets = (y % 2 == 0) ? evenRowOffsets : oddRowOffsets;
 
@@ -182,7 +184,7 @@ namespace Game.System
             return neighborIndices;
         }
 
-        private void FindNeighborIndices(int x, int y, int n, int[][] offsets, List<int[]> neighborIndices)
+        private void FindNeighborIndices(int x, int y, int n, int[][] offsets, List<Vector2> neighborIndices)
         {
             if (n <= 0) return;
 
@@ -193,10 +195,13 @@ namespace Game.System
                 int ny = y + offsets[i][1];
 
                 // 检查相邻格子的索引是否在范围内
-                if (nx >= 0 && nx < height && ny >= 0 && ny < width && !ContainsIndex(neighborIndices, nx, ny))
+                if (nx >= 0 && nx < height && ny >= 0 && ny < width)
                 {
-                    int[] index = { nx, ny };
-                    neighborIndices.Add(index);
+                    Vector2 index = new Vector2(nx, ny);
+                    if (!neighborIndices.Contains(index))
+                    {
+                        neighborIndices.Add(index);
+                    }
                     int[][] newoffsets = (ny % 2 == 0) ? evenRowOffsets : oddRowOffsets;
                     // 递归或循环找到下一个相邻格子的索引
                     FindNeighborIndices(nx, ny, n - 1, newoffsets, neighborIndices);
@@ -227,16 +232,16 @@ namespace Game.System
         {
             int x = (int)originPosition.x;
             int y = (int)originPosition.y;
-            List<int[]> originLis = GetNeighborIndices(x, y, 1);
-            originLis.Add(new int[] { x, y });
-            List<int[]> nowLis = GetNeighborIndices((int)nowPosition.x, (int)nowPosition.y, 1);
+            List<Vector2> originLis = GetNeighborIndices(x, y, 1);
+            originLis.Add(new Vector2(x,y));
+            List<Vector2> nowLis = GetNeighborIndices((int)nowPosition.x, (int)nowPosition.y, 1);
             bool isNotFound = true;
             int num = 0;
             while (isNotFound)
             {
                 int n = UnityEngine.Random.Range(0, originLis.Count - 1);
-                int a = originLis[n][0];
-                int b = originLis[n][1];
+                int a = (int)originLis[n][0];
+                int b = (int)originLis[n][1];
                 for(int i = 0; i < nowLis.Count; i++)
                 {
                     if(nowLis[i][0] == a && nowLis[i][1] == b)
@@ -472,6 +477,25 @@ namespace Game.System
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 计算两点是否是直线
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public bool isStraight(Vector2 origin, Vector2 target)
+        {
+            Vector2 direction = target - origin;
+            foreach (Vector2 dir in dirs)
+            {
+                if (CalculateVector2Angle(direction, dir) <= 3)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }

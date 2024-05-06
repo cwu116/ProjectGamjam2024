@@ -144,8 +144,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u8089\u4F53\u6539\u9020"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 23d4b94cba5470b4d897682a6def3d62, type: 2}
-  m_sharedMaterial: {fileID: 4358776782601439229, guid: 23d4b94cba5470b4d897682a6def3d62, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: aa076deb8b97c1f48a6a839e438e7fed, type: 2}
+  m_sharedMaterial: {fileID: 6293010340167007553, guid: aa076deb8b97c1f48a6a839e438e7fed, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

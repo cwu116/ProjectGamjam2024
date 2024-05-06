@@ -25,7 +25,7 @@ namespace Game.System
             EventSystem.Register<OnMouseRightClick>(Undo);
             EventSystem.Register<UndoEvent>(v => { _playerActionModel.AddOperation(v.undoOperation); });
             EventSystem.Register<OnPotionClick>(v => { _playerActionModel.CurrentPotion = v.potion; Cursor.instance.Show(); });
-            EventSystem.Register<UsePotionEvent>(v => {_playerActionModel.CurrentPotion = null; GameBody.GetSystem<MapSystem>().ClearHighlightCells(); GameBody.GetSystem<MapSystem>().HighLightCells(Player.instance.MoveTimes-1 > 0 ? 1 : 0); }); 
+            EventSystem.Register<UsePotionEvent>(v => {_playerActionModel.CurrentPotion = null; GameBody.GetSystem<MapSystem>().ClearHighlightCells(); GameBody.GetSystem<MapSystem>().HighLightCells(Player.instance.MoveTimes - 1 > 0 ? Player.instance.StepLength > 0 ? 1 : 0 : 0); }); 
         }
 
         private void Undo(OnMouseRightClick obj)
