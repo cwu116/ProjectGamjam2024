@@ -8,14 +8,16 @@ using UnityEngine;
 using Game;
 using Game.System;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class Enemy : BaseEntity
+public class Enemy : BaseEntity,IPointerClickHandler
 {
-
+    public Animator anim;
     [SerializeField] private new string name;
     private void Awake()
     {
         buff = GetComponent<BuffComponent>();
+        anim = GetComponent<Animator>();
         IsPlayer = false;
     }
 
@@ -44,10 +46,12 @@ public class Enemy : BaseEntity
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
-        }   
+        }
+        anim.SetTrigger("Attack");
     }
 
-    private void OnMouseDown()
+
+    public void OnPointerClick(PointerEventData eventData)
     {
         if (GameBody.GetModel<PlayerActionModel>().currentPotion != null)
         {
@@ -56,5 +60,4 @@ public class Enemy : BaseEntity
             return;
         }
     }
-
 }

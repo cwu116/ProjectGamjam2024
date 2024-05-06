@@ -25,24 +25,25 @@ namespace Game.System
             Debug.Log($"地图加载完毕:{@event.Level}");
         }
 
-        Dictionary<HexCell, Sprite> tempSprites = new Dictionary<HexCell, Sprite>();
+        //Dictionary<HexCell, Sprite> tempSprites = new Dictionary<HexCell, Sprite>();
+        List<HexCell> tempCells = new List<HexCell>();
         private void HighLightCells(int distance=1)
         {
-            tempSprites.Clear();
+            tempCells.Clear();
             HexCell[] cells = GetRoundHexCell(Player.instance.CurHexCell.Pos, distance);
             foreach (var cell in cells)
             {
-                tempSprites[cell] = cell.GetComponentInChildren<SpriteRenderer>().sprite;
-                cell.GetComponentInChildren<SpriteRenderer>().sprite = Resources.Load<Sprite>(UIImagePath.ImagePath + "地块-选中");
+                tempCells.Add(cell);
+                cell.transform.Find("highLightBlock").gameObject.SetActive(true);
                 cell.IsHightlight = true;
             }
         }
 
         private void ClearHighlightCells()
         {
-           foreach(var element in tempSprites)
+           foreach(var cell in tempCells)
             {
-                element.Key.GetComponentInChildren<SpriteRenderer>().sprite = element.Value;
+                cell.transform.Find("highLightBlock").gameObject.SetActive(false);
             }
         }
     }
