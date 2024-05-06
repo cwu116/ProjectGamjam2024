@@ -95,13 +95,13 @@ namespace Game.System
                 {
                     continue;
                 }
-                if (cellUnit.OccupyObject.GetComponent<BaseEntity>().bMisLead)
+                if (cellUnit.OccupyObject.GetComponent<BaseEntity>().bMisLead && !cellUnit.OccupyObject.GetComponent<BaseEntity>().bInvisible)
                 {
                     Debug.LogError("I see you!");
                     ThrowTarget(enemy, cellUnit);
                     return;
                 }
-                else if (cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
+                else if (cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer && !cellUnit.OccupyObject.GetComponent<BaseEntity>().bInvisible)
                 {
                     Debug.LogError("I see you!");
                     ThrowTarget(enemy, cellUnit);

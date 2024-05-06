@@ -82,6 +82,7 @@ namespace Buff
         public bool Decrement()
         {
             DelayTime--;
+            StateSystem.Execution(DelayBuff, Target);
             return DelayTime <= 0;
         }
 
