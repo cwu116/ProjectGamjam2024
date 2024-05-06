@@ -51,8 +51,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bisPlayer: 0
   isDead: 0
+  isDisturbed: 0
   anim: {fileID: 0}
-  name: "\u8FDC\u7A0B\u602A"
+  enemyName: 
+  dropedItemId: 
+  dropedItemName: 
 --- !u!114 &-7609100685488679418
 MonoBehaviour:
   m_ObjectHideFlags: 0

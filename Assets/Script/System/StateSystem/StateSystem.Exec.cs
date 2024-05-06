@@ -48,7 +48,7 @@ namespace Game.System
                 {
                     List<string> args = new List<string>(_raw.Split(new char[] {'+'}));
                     BuffComponent temp = target.GetComponent<BuffComponent>();
-                    temp.ValueUnits[Enum.Parse<ValueKey>(args[0].Remove(0))].AddValue(ParseParam(args[1], temp));
+                    temp.ValueUnits[Enum.Parse<ValueKey>(args[0].Replace("$",""))].AddValue(ParseParam(args[1], temp));
                     target.GetComponent<BaseEntity>().RefreshHpInUI();
                 }
                 else
@@ -58,8 +58,12 @@ namespace Game.System
                     // args[0]    :     命令名
                     // args[1]    :     参数数组
                     List<string> Params = new List<string>(args[1].Split(new char[] {','}));
-                    BaseEntity entity = target.GetComponent<BaseEntity>();
-                    BuffComponent temp = entity.BuffComp;
+                    BuffComponent temp = null;
+                    if (target.TryGetComponent(out BaseEntity entity))
+                    {
+                        entity = target.GetComponent<BaseEntity>();
+                        temp = entity.BuffComp;
+                    }
                     switch (Enum.Parse<BuffType>(args[0]))
                     {
                         case BuffType.ChangeValue:
@@ -130,19 +134,35 @@ namespace Game.System
                                 List<string> xy_str =
                                     new List<string>(Params[2].Replace("[", "").Replace("]", "").Split(new[] {','}));
                                 Vector2 xy = new Vector2(int.Parse(xy_str[0]), int.Parse(xy_str[1]));
-                                GameObject.Instantiate(
-                                    ResourcesManager.LoadPrefab(Path,
-                                        Params[1] + ".prefab"),
-                                    GridManager.Instance.hexCells[(int) xy.x, (int) xy.y].transform.position,
-                                    Quaternion.identity);
+                                if (bool.Parse(Params[0]))
+                                {
+                                    GridManager.Instance.ChangeHexCell(GridManager.Instance.hexCells[(int) xy.x, (int) xy.y], Enum.Parse<HexType>(Params[1]));
+                                }
+                                else
+                                {
+                                    BaseEntity.SpawnEntity(ResourcesManager.LoadPrefab(Path, Params[1] + ".prefab"), GridManager.Instance.hexCells[(int) xy.x, (int) xy.y]);
+                                }
                             }
                             else if (Params[2].Contains("this"))
                             {
-                                GameObject.Instantiate(
-                                    ResourcesManager.LoadPrefab(Path,
-                                        Params[1] + ".prefab"),
-                                    target.transform.position,
-                                    Quaternion.identity);
+                                int[] pos = new int[]{};
+                                if (target.TryGetComponent(out HexCell cell))
+                                {
+                                    pos = new[] {(int)cell.Pos.x, (int)cell.Pos.y };
+                                }
+                                else
+                                {
+                                    pos = new[] {(int)target.GetComponent<BaseEntity>().CurHexCell.Pos.x, (int)target.GetComponent<BaseEntity>().CurHexCell.Pos.y };
+                                }
+                                
+                                if (bool.Parse(Params[0]))
+                                {
+                                    GridManager.Instance.ChangeHexCell(GridManager.Instance.hexCells[pos[0], pos[1]], Enum.Parse<HexType>(Params[1]));
+                                }
+                                else
+                                {
+                                    BaseEntity.SpawnEntity(ResourcesManager.LoadPrefab(Path, Params[1] + ".prefab"), GridManager.Instance.hexCells[pos[0],pos[1]]);
+                                }
                             }
                             else
                             {
@@ -151,11 +171,14 @@ namespace Game.System
                                     .GetRoundHexCell(targetCell.Pos, int.Parse(Params[2])));
                                 foreach (var cell in cellList)
                                 {
-                                    GameObject.Instantiate(
-                                        ResourcesManager.LoadPrefab(Path,
-                                            Params[1] + ".prefab"),
-                                        cell.transform.position,
-                                        Quaternion.identity);
+                                    if (bool.Parse(Params[0]))
+                                    {
+                                        GridManager.Instance.ChangeHexCell(cell, Enum.Parse<HexType>(Params[1]));
+                                    }
+                                    else
+                                    {
+                                        BaseEntity.SpawnEntity(ResourcesManager.LoadPrefab(Path, Params[1] + ".prefab"), cell);
+                                    }
                                 }
                             }
 

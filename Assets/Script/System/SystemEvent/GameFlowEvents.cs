@@ -13,4 +13,10 @@ namespace Game.System
     struct GameStartTrigger:IEvent
     { }
 
+    struct GameOverEvent:IEvent
+    { }
+
+    struct GameSuccessEvent:IEvent
+    { }
+
 }

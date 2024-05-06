@@ -9,6 +9,7 @@ using DG.Tweening;
 using Game.System;
 using UnityEngine;
 using UnityEngine.UI;
+using Managers;
 
 public partial class BaseEntity : MonoBehaviour
 {
@@ -40,7 +41,7 @@ public partial class BaseEntity : MonoBehaviour
         MoveTimes.AddValue(-1);
     }
 
-    public void GetHurt(int damage)
+    public async void GetHurt(int damage)
     {
         if (damage < 0)
         {
@@ -52,7 +53,6 @@ public partial class BaseEntity : MonoBehaviour
             if (realDamage > 0)
             {
                 Hp.AddValue(-realDamage);
-                Debug.LogError(Hp);
                 if (this.Hp <= 0)
                 {
                     Die();
@@ -60,10 +60,12 @@ public partial class BaseEntity : MonoBehaviour
             }
         }
 
-        EventSystem.Send<EntityHurtEvent>(new EntityHurtEvent() { enetity = this });
+        EventSystem.Send<EntityHurtEvent>(new EntityHurtEvent() { enetity = this });//玩家受伤动画
         if(this as Enemy)
         {
             this.GetComponent<Animator>().SetTrigger("Hit");
+            await System.Threading.Tasks.Task.Delay(300);
+            AudioManager.PlaySound(AudioPath.Hit);
         }
     }
 
@@ -94,16 +96,31 @@ public partial class BaseEntity : MonoBehaviour
                Heart HeartUI = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Heart"), hpBar.transform).GetComponent<Heart>();
                HeartUI.isPlayer = false;
                // HeartUI.GetComponent<RectTransform>().localScale = new Vector3(0.055f,0.055f,1);
-               HeartUI.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(10.3134f, 10.3134f);
+               HeartUI.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(2.3134f, 2.3134f);
             }
         }
-        Debug.Log("MaxHp: " + MaxHp + ",Hp: " + Hp);
+        // Debug.Log("MaxHp: " + MaxHp + ",Hp: " + Hp);
     }
 
+    [ContextMenu("Die")]
     public virtual void Die()
     {
         isDead = true;
-        EventSystem.Send<EnemyDieEvent>(new EnemyDieEvent { enemy = this }); 
+        GetComponent<SpriteRenderer>().DOFade(0, 0.5f);
+
+        if (this is Enemy)
+        {
+            EventSystem.Send<EnemyDieEvent>(new EnemyDieEvent { enemy = this });
+            GameObject dropPrefab = Resources.Load<GameObject>("Prefabs/DropItems/DropItem");
+            GameObject go = GameObject.Instantiate(dropPrefab);
+            go.transform.position = this.transform.position;
+            go.GetComponent<DropItem>().Init((this as Enemy).dropedItemId, (this as Enemy).dropedItemName);
+        }
+        else if (this is Player)
+        {
+            EventSystem.Send<PlayerDieEvent>();
+        }
+       
     }
 
     public virtual void Hatred()
@@ -158,7 +175,7 @@ public partial class BaseEntity : MonoBehaviour
     {
         // paramList[0] : 类型
         // paramList[1] : 持续回合
-        spawningPath = string.Format("{0}*{1}", paramList[0].ToInt(), paramList[1].ToInt());
+        spawningPath = string.Format("{0}*{1}", paramList[0].ToString(), paramList[1].ToInt());
     }
 
     public void Sleep(params Param[] paramList)

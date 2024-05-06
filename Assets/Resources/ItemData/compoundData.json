@@ -123,7 +123,7 @@
         "Material_2": "blue",
         "MaterialSpecial": "B",
         "Description": "使目标获得燃烧1，其移动经过的路径会在下个回合生成火焰环境，持续3个回合",
-        "Type": [ "State:Molotov_cocktail,3,true"  ]
+        "Type": [ "State:MolotovCocktail,3,true"  ]
     },
     {
         "id": "Suffocate",
@@ -150,7 +150,7 @@
         "Material_2": "blue",
         "MaterialSpecial": "A",
         "Description": "使目标下本场战斗血量上限增加1。每回合恢复1点血量，但技能范围减1，持续2个回合",
-        "Type": [ "State:Expansion,2,true" ]
+        "Type": [ "State:Expansion,1,true" ]
     },
     {
         "id": "Flame_purification",

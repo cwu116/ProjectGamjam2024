@@ -57,6 +57,10 @@ namespace Buff
         public bool Decrement()
         {
             Duration--;
+            if (Duration < 0)
+            {
+                StateSystem.Execution(info.death, Target);
+            }
             return Duration < 0;
         } 
     }

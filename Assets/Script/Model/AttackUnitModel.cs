@@ -28,7 +28,7 @@ namespace Game.Model
     {
         Sword,
         Range,
-        NULL,
+        None,
     }
 }
 

@@ -12,11 +12,12 @@ public class UIMain : BasePanel
     Button btnCraft;
     UIPotion[] potions;
     GameObject potionPrefab;
+    Transform gameSuccessPanel;
+    Transform gameOverPanel;
 
     private HorizontalLayoutGroup hpBar;
 
     public UIPoitonDescription descriptionUI;
-    public Item_Data currentPotion;
 
     // Single Instance Mode Construstion
     public static UIMain Instance;
@@ -43,12 +44,15 @@ public class UIMain : BasePanel
         btnCraft = transform.Find("BtnCraft").GetComponent<Button>();
         potions = transform.Find("Potions").GetComponentsInChildren<UIPotion>();
         descriptionUI = transform.Find("PotionDescription").GetComponent<UIPoitonDescription>();
-        //btnCraft.onClick.AddListener(() => EventSystem.Send<OpenCraftUITrigger>());//在CraftSystem添加Undo
+        gameSuccessPanel = transform.Find("Success");
+        gameOverPanel = transform.Find("Over");
         btnCraft.onClick.AddListener(() => UIManager.Show<UICraft>());
 
         hpBar = transform.Find("HpBar").GetComponent<HorizontalLayoutGroup>();
         
         EventSystem.Register<RefreshBackpackUIEvent>(v => OnRefreshBackpackUI(v));
+        EventSystem.Register<GameSuccessEvent>(v => gameSuccessPanel.gameObject.SetActive(true));
+        EventSystem.Register<GameOverEvent>(v => gameOverPanel.gameObject.SetActive(true));
     }
 
     private void OnRefreshBackpackUI(RefreshBackpackUIEvent v)

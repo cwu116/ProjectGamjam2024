@@ -17,7 +17,7 @@ namespace Game.System
         private void OnEnemyDie(EnemyDieEvent obj)
         {
             enemies.Remove(obj.enemy as Enemy);
-            GameObject.Destroy(obj.enemy.gameObject);
+            GameObject.Destroy(obj.enemy.gameObject,0.5f);
         }
 
         int completeConter = 0;
@@ -53,7 +53,10 @@ namespace Game.System
             {
                 Enemy enemy = enemies[i];
                 enemy.GetComponent<Enemy>().MoveTimes = new Buff.Tool.ValueInt(enemy.GetComponent<Enemy>().MaxMoveTimes);
-                GameBody.GetSystem<MoveSystem>().EnemyMoveTo(enemy.gameObject);
+                for (int j = 0; j < enemy.GetComponent<Enemy>().StepLength; j++)
+                {
+                    GameBody.GetSystem<MoveSystem>().EnemyMoveTo(enemy.gameObject);
+                }
             }
         }
     }

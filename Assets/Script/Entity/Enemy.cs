@@ -9,11 +9,15 @@ using Game;
 using Game.System;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Managers;
 
-public class Enemy : BaseEntity,IPointerClickHandler
+public class Enemy : BaseEntity,IPointerClickHandler,IPointerEnterHandler,IPointerExitHandler
 {
     public Animator anim;
-    [SerializeField] private new string name;
+    [SerializeField] protected string enemyName;
+
+    public string dropedItemId;
+    public string dropedItemName;
     private void Awake()
     {
         buff = GetComponent<BuffComponent>();
@@ -23,7 +27,7 @@ public class Enemy : BaseEntity,IPointerClickHandler
 
     private void Start()
     {
-        if (SetModel(name))
+        if (SetModel(enemyName))
         {
             InitEntity();
         }
@@ -32,7 +36,7 @@ public class Enemy : BaseEntity,IPointerClickHandler
         RefreshHpInUI();
     }
 
-    public override void UseSkill(BaseEntity target)
+    public async override void UseSkill(BaseEntity target)
     {
         base.UseSkill(target);
         switch (MyAttackType)
@@ -42,23 +46,43 @@ public class Enemy : BaseEntity,IPointerClickHandler
                 target.RefreshHpInUI();
                 break;
             case AttackType.Range:
+                target.GetHurt(Attack);
                 break;
-            case AttackType.NULL:
+            case AttackType.None:
                 break;
-            default:
-                throw new ArgumentOutOfRangeException();
         }
         anim.SetTrigger("Attack");
+        await System.Threading.Tasks.Task.Delay(300);
+        AudioManager.PlaySound(AudioPath.Pop);
     }
 
 
-    public void OnPointerClick(PointerEventData eventData)
+    public async void OnPointerClick(PointerEventData eventData)
     {
-        if (GameBody.GetModel<PlayerActionModel>().currentPotion != null)
+        if (GameBody.GetModel<PlayerActionModel>().CurrentPotion != null)
         {
-            Debug.Log("use");
-            GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().currentPotion, this.gameObject);
+            if (GameBody.GetSystem<MapSystem>().CalculateDistance(Player.instance.CurHexCell.Pos, this.CurHexCell.Pos) > Player.instance.RangeRight)
+                return;
+            if (Player.instance.MoveTimes <= 0)
+                return;
+            GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().CurrentPotion, this.gameObject);
+            await System.Threading.Tasks.Task.Delay(1200);
+            AudioManager.PlaySound(AudioPath.Attack);
             return;
         }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+            Game.System.EventSystem.Send<ClearAttackBlockEvent>();
+            Game.System.EventSystem.Send<ClearWarningBlockEvent>();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (this.isDisturbed)
+            Game.System.EventSystem.Send<HighLightAttackBlockEvent>(new HighLightAttackBlockEvent { pos = CurHexCell.Pos, distance = this.RangeRight });
+        else
+            Game.System.EventSystem.Send<HighLightWarningBlockEvent>(new HighLightWarningBlockEvent { pos = CurHexCell.Pos, distance = this.WatchRange });
     }
 }

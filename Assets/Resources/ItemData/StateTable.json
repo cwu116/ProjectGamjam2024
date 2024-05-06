@@ -24,11 +24,11 @@
     "buffCMD" : [ "$Hp + $Hp" ],
     "isAdditive" : false,
     "isStartExec" : true,
-    "death" : ["Action:Death"]
+    "death" : ["Action:Die"]
   },
   {
     "buffName" : "燃烧瓶",
-    "id" : "Molotov_cocktail",
+    "id" : "MolotovCocktail",
     "description" : "使目标获得燃烧1，其移动经过的路径会在下个回合生成火焰环境，持续3个回合",
     "buffCMD" : [ "State:Burning,1,true", "Action:SpawnPath,[Fire,3]" ],
     "isAdditive" : false,
@@ -115,15 +115,6 @@
     "isAdditive" : true,
     "isStartExec" : false,
     "death" : ["ChangeValue:bInvisible,0,false"]
-  },
-  {
-    "buffName" : "仇恨",
-    "id" : "Hatred",
-    "description" : "该状态只会存在于敌方单位，若其有仇恨则会将玩家、或拥有误导的单位作为行动目标。",
-    "buffCMD" : ["Action:Hatred"],
-    "isAdditive" : true,
-    "isStartExec" : false,
-    "death" : []
   },
   {
     "buffName" : "误导",

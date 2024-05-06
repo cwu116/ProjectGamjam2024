@@ -2,7 +2,7 @@
   "height":5,
   "width":5,
   "cells":[0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0],
-  "enemyNames":["short","Player"],
-  "enemyposx":[0,3],
-  "enemyposy":[3,1]
+  "enemyNames":["short","Player","TrumpetFrog"],
+  "enemyposx":[0,3,0],
+  "enemyposy":[3,1,0]
 }

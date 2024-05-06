@@ -81,7 +81,7 @@ public class GridManager : MonoSingleton<GridManager>
         }
     }
 
-    void CreateOneCell(int x, int y, int i, HexType type)
+    HexCell CreateOneCell(int x, int y, int i, HexType type)
     {
         Vector3 position;
         position.y = (x + y * 0.5f - y / 2) * (Hex.innerRadius * 2f);
@@ -107,6 +107,7 @@ public class GridManager : MonoSingleton<GridManager>
         cell.transform.SetParent(gridmanager.transform, false);
         cell.transform.localPosition = position;
         cell.transform.rotation = Quaternion.Euler(0, 0, 120);
+        return cell;
     }
 
     void CreateEnmey()
@@ -126,8 +127,11 @@ public class GridManager : MonoSingleton<GridManager>
                     cells[x, y].OccupyObject = enemy.gameObject;
                     enemy.CurrentHeightIndex = x;
                     enemy.CurrentWidthIndex = y;
-                    enemy.SpawnPoint = cells[x, y].Pos;
-                    enemy.transform.position = cells[x, y].transform.position;
+                    enemy.SpawnPoint = enemy.CurHexCell.Pos;
+                    if (enemy is Player)
+                        enemy.transform.position = cells[x, y].transform.position + Vector3.up * 3;
+                    else
+                        enemy.transform.position = cells[x, y].transform.position;
                     enemys.Add(enemy);
                     GameObject EnemyParent = GameObject.Find("Enemys");
                     enemy.transform.SetParent(EnemyParent.transform, false);
@@ -135,6 +139,15 @@ public class GridManager : MonoSingleton<GridManager>
                 }
             }
         }
+    }
+
+    public void ChangeHexCell(HexCell deleteCell, HexType type)
+    {
+        int heightIndex = deleteCell.HeightIndex;
+        int widthIndex = deleteCell.WidthIndex;
+        Destroy(cells[deleteCell.HeightIndex, deleteCell.WidthIndex].gameObject);
+        cells[heightIndex, widthIndex] = null;
+        cells[heightIndex, widthIndex] = CreateOneCell(heightIndex, widthIndex, 0, type);
     }
 }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Game.System;
 using JetBrains.Annotations;
 using RedBjorn.Utils;
@@ -30,7 +30,9 @@ namespace Game.System
         public void PlayerMoveTo(GameObject player, Vector2 path, bool isUndo = false)
         {
             if (GameBody.GetSystem<MapSystem>().CalculateDistance(player.GetComponent<Player>().CurHexCell.Pos,
-                path) > 1)
+                path) > 1 || GameBody.GetSystem<MapSystem>().CalculateDistance(
+                player.GetComponent<Player>().CurHexCell.Pos,
+                path) == 0)
             {
                 return;
             }
@@ -45,10 +47,12 @@ namespace Game.System
             {
                 return;
             }
+
             if (newCell == player.GetComponent<Player>().CurHexCell)
             {
                 return;
             }
+
             player.GetComponent<Player>().LastHexCell = player.GetComponent<Player>().CurHexCell;
             player.GetComponent<Player>().LastHexCell.OccupyObject = null;
             player.GetComponent<Player>().CurHexCell = newCell;
@@ -63,8 +67,8 @@ namespace Game.System
                 string[] spawnInfo = player.GetComponent<Player>().SpawningPath.Split(new[] {'*'});
                 StateSystem.Execution(new List<string>()
                 {
-                    string.Format("Delay:[Create:{0},this],1", spawnInfo[0]),
-                    string.Format("Delay:[Create:{0},this],{1}", newCell.Type.ToString(), 1 + spawnInfo[1])
+                    string.Format("Delay:[Create:true,{0},this],1", spawnInfo[0]),
+                    string.Format("Delay:[Create:true,{0},this],{1}", newCell.Type.ToString(), 1 + spawnInfo[1])
                 }, newCell.gameObject);
                 player.GetComponent<Player>().SpawningPath = null;
             }
@@ -86,56 +90,84 @@ namespace Game.System
         {
             List<HexCell> hexcells = new List<HexCell>(GameBody.GetSystem<MapSystem>()
                 .GetRoundHexCell(enemy.GetComponent<Enemy>().CurHexCell.Pos, enemy.GetComponent<Enemy>().WatchRange));
-            List<HexCell> AllCell = new List<HexCell>(GameBody.GetSystem<MapSystem>()
-                .GetRoundHexCell(enemy.GetComponent<Enemy>().CurHexCell.Pos,
-                    enemy.GetComponent<Enemy>().MoveTimes * enemy.GetComponent<Enemy>().StepLength));
             foreach (var cellUnit in hexcells)
             {
                 if (cellUnit.OccupyObject is null || cellUnit.OccupyObject == enemy)
                 {
                     continue;
                 }
-                if (cellUnit.OccupyObject.GetComponent<BaseEntity>().bMisLead && !cellUnit.OccupyObject.GetComponent<BaseEntity>().bInvisible)
+
+                if (cellUnit.OccupyObject.GetComponent<BaseEntity>().bMisLead ||
+                    cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer &&
+                    !cellUnit.OccupyObject.GetComponent<BaseEntity>().bInvisible)
                 {
-                    Debug.LogError("I see you!");
-                    ThrowTarget(enemy, cellUnit);
-                    return;
-                }
-                else if (cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer && !cellUnit.OccupyObject.GetComponent<BaseEntity>().bInvisible)
-                {
+                    if (enemy.GetComponent<Enemy>().RangeRight < 1)
+                    {
+                        break;
+                    }
+
+                    enemy.GetComponent<Enemy>().isDisturbed = true;
                     Debug.LogError("I see you!");
                     ThrowTarget(enemy, cellUnit);
                     return;
                 }
             }
 
-            Vector2 target = GameBody.GetSystem<MapSystem>().RandomPatrol(enemy.GetComponent<Enemy>().SpawnPoint,
-                enemy.GetComponent<Enemy>().CurHexCell.Pos);
+            Vector2 target = Vector2.zero;
+            HexCell cell = GridManager.Instance.hexCells[(int) target.x, (int) target.y];
+            int times = 0;
+            do
+            {
+                target = GameBody.GetSystem<MapSystem>().RandomPatrol(enemy.GetComponent<Enemy>().SpawnPoint,
+                    enemy.GetComponent<Enemy>().CurHexCell.Pos);
+                times++;
+            } while ((cell.Type == HexType.Thorns || cell.Type == HexType.Moon || cell.Type == HexType.Fire) &&
+                     times < 30);
+
+            enemy.GetComponent<Enemy>().isDisturbed = false;
             ThrowTarget(enemy, GridManager.Instance.hexCells[(int) target.x, (int) target.y]);
-            
-           
         }
 
         private async void ThrowTarget(GameObject enemy, HexCell target)
         {
             if (enemy.GetComponent<Enemy>().MoveTimes <= 0 || enemy.GetComponent<Enemy>().StepLength <= 0)
             {
+                Debug.LogError("Last:" + enemy.GetComponent<Enemy>().MoveTimes);
                 return;
             }
-            
+
             List<HexCell> WholePath = GameBody.GetSystem<MapSystem>()
                 .GetPath(enemy.GetComponent<Enemy>().CurHexCell.Pos, target.Pos);
-            HexCell lastCell = null;
             foreach (var cell in WholePath)
             {
+                if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer ||
+                                                  cell.OccupyObject.GetComponent<BaseEntity>().bMisLead))
+                {
+                    if ((GameBody.GetSystem<MapSystem>()
+                            .CalculateDistance(enemy.GetComponent<Enemy>().CurHexCell.Pos, cell.Pos)) <=
+                        enemy.GetComponent<Enemy>().RangeRight) //在攻击范围内
+                    {
+                        //使用技能
+                        if (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
+                            enemy.GetComponent<Enemy>()
+                                .UseSkill(cell.OccupyObject.GetComponent<BaseEntity>() as Player);
+                        else
+                            enemy.GetComponent<Enemy>().UseSkill(cell.OccupyObject.GetComponent<BaseEntity>());
+                    }
+
+                    break;
+                }
+                else if (cell.OccupyObject != null && cell.OccupyObject.GetComponent<BaseEntity>() is Enemy)
+                {
+                    continue;
+                }
+
                 enemy.GetComponent<Enemy>().anim.SetTrigger("Move");
                 await Task.Delay(300);
-                // if (target.OccupyObject is not null && cell.OccupyObject == target.OccupyObject)
-                // {
-                //     enemy.GetComponent<Enemy>().UseSkill(target.OccupyObject.GetComponent<BaseEntity>());
-                //     enemy.GetComponent<Enemy>().anim.SetTrigger("Attack");
-                //     return;
-                // }
+                enemy.GetComponent<Enemy>().LastHexCell = enemy.GetComponent<Enemy>().CurHexCell;
+                enemy.GetComponent<Enemy>().LastHexCell.OccupyObject = null;
+                enemy.GetComponent<Enemy>().CurHexCell = cell;
+                enemy.GetComponent<Enemy>().CurHexCell.OccupyObject = enemy;
                 enemy.transform.DOMove(cell.transform.position, 0.5f);
                 enemy.GetComponent<Enemy>().CurHexCell = cell;
                 if (cell.Type == HexType.Thorns || cell.Type == HexType.Moon || cell.Type == HexType.Fire)
@@ -161,7 +193,8 @@ namespace Game.System
                     break;
                 }
             }
-            EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });
+
+            EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() {enemy = enemy.GetComponent<Enemy>()});
         }
 
         public override void InitSystem()

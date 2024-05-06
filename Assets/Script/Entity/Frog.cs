@@ -21,16 +21,16 @@ public class Frog : Enemy
     {
         buff = GetComponent<BuffComponent>();
         IsPlayer = false;
-        
-        buff.RegisterFunc(ActionKey.Die, Die);
-        buff.RegisterFunc(TActionKey.Away, Away);
-        buff.RegisterFunc(TActionKey.SpawnPath, SpawnPath);
-        buff.RegisterFunc(TActionKey.Sleep, Sleep);
     }
 
     void Start()
     {
-        SetModel(name);
+        if (SetModel(enemyName))
+        {
+            InitEntity();
+        }
+        base.Start();
+        RefreshHpInUI();
     }
 
     void Update()
@@ -51,8 +51,15 @@ public class Frog : Enemy
     {
         switch (frogType)
         {
-            case FrogType.TrumpetFrog: 
-                // 惊动
+            case FrogType.TrumpetFrog:
+                HexCell[] around = GameBody.GetSystem<MapSystem>().GetRoundHexCell(_curHexCell.Pos, 2);
+                foreach (var cell in around)
+                {
+                    if (cell.OccupyObject is not null)
+                    {
+                        cell.OccupyObject.GetComponent<BaseEntity>().isDisturbed = true;
+                    }
+                }
                 HateValue += 15;
                 break;
             case FrogType.BlackMistFrog:

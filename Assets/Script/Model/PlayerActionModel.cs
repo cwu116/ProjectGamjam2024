@@ -7,7 +7,7 @@ namespace Game.Model
     class PlayerActionModel : BaseModel
     {
         Stack<ICanUndo> _undoStack = new();
-        public Item_Data currentPotion;
+        public Item_Data CurrentPotion;
         public override void InitModel()
         {
             EventSystem.Register<AfterPlayerTurnEndEvent>(ClearOperations);
@@ -20,9 +20,11 @@ namespace Game.Model
 
         public void UndoOperation()
         {
-            if (currentPotion != null)
+            if (CurrentPotion != null)
             {
-                currentPotion = null;
+                CurrentPotion = null;
+                GameBody.GetSystem<MapSystem>().ClearHighlightCells();
+                GameBody.GetSystem<MapSystem>().HighLightCells(Player.instance.MoveTimes-1 > 0 ? 1 : 0);
                 return;
             }
             ICanUndo operation;

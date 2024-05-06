@@ -32,6 +32,11 @@ namespace Buff.Tool
             return param.ToString();
         }
 
+        public override string ToString()
+        {
+            return Convert.ToString(_value);
+        }
+
         public int ToInt()
         {
             return int.Parse(_value.ToString());

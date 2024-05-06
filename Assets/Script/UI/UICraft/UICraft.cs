@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using Game.System;
 using TMPro;
+using Game.Model;
 using System;
 
 namespace Game.UI
@@ -114,6 +115,7 @@ namespace Game.UI
             EventSystem.Register<UICraftMaterialClickEvent>(v => OnUICraftMaterialClicked(v.item));
             EventSystem.Register<RefreshBackpackUIEvent>(v => OnRefreshBackpackUI(v));
             EventSystem.Register<CraftResultEvent>(v => OnCraftResult(v));
+            EventSystem.Register<UIRecipeElementClickEvent>(v => OnRecipeClick(v.element));
         }
 
         private void OnUICraftIconClicked(UICraftIcon c)
@@ -135,6 +137,8 @@ namespace Game.UI
         
         private void OnUICraftMaterialClicked(Item_s item)
         {
+            if (item == null)
+                return;
             if (currentCraftIcon != null)
             {
                 if (currentCraftIcon.item != null)
@@ -166,6 +170,8 @@ namespace Game.UI
             currentCraftIcon = null;
             RefreshCraftIconState();
             RefreshCraftIcon();
+            RefreshRecipe();
+            CloseDescription();
             Dictionary<UICraftIcon, GameObject> UICraftElements = new Dictionary<UICraftIcon, GameObject>();
             EventSystem.Send<RefreshBackpackUIRequest>();
         }
@@ -211,20 +217,62 @@ namespace Game.UI
                 {
                     i.item = null;
                 }
+                specialIcon.item = null;
+                foreach (var element in UICraftElements)
+                {
+                    Destroy(element.Value);
+                }
+                UICraftElements.Clear();
+                EventSystem.Send<UnlockRecipe>(new UnlockRecipe() { potion = v.result });
             }
             RefreshCraftIcon();
-            foreach (var element in UICraftElements)
-            {
-                Destroy(element.Value);
-            }
-            UICraftElements.Clear();
+            RefreshRecipe();
             RefreshCraftIconState();
-
-
             //�ϳ�ҩˮ����
             EventSystem.Send<RefreshBackpackUIRequest>();
         }
 
+        void RefreshRecipe()
+        {
+            BackpackModel backpackModel = GameBody.GetModel<BackpackModel>();
+            CompoundModel compoundModel = GameBody.GetModel<CompoundModel>();
+            Image[] childs= recipeListContent.GetComponentsInChildren<Image>();
+            foreach(var child in childs)
+            {
+                Destroy(child.gameObject);
+            }
+
+            foreach (var recipe in backpackModel.unlockRecipe)
+            {
+                GameObject go= GameObject.Instantiate(Resources.Load("Prefabs/UI/UIRecipeElement"), this.recipeListContent) as GameObject;
+                go.GetComponent<UIRecipeElement>().Init(recipe);
+            }
+
+            foreach (var recipe in compoundModel.Item_Data)
+            {
+                if (!backpackModel.unlockRecipe.Contains(recipe))
+                {
+                    GameObject.Instantiate(Resources.Load("Prefabs/UI/UIUnlockRecipeElement"), this.recipeListContent);
+                    continue;
+                }
+            }
+        }
+
+        void OnRecipeClick(UIRecipeElement element)
+        {
+            List<UIRecipeElement> elements = new List<UIRecipeElement>();
+            elements.AddRange( recipeListContent.GetComponentsInChildren<UIRecipeElement>());
+            foreach(var e in elements)
+            {
+                if (e == element)
+                {
+                    e.Select();
+                    ShowDescription(e);
+                }
+                else
+                    e.UnSelect();
+            }
+        }
 
         void RefreshCraftIconState()
         {
@@ -242,17 +290,9 @@ namespace Game.UI
 
         void ShowDescription(UIRecipeElement element)
         {
-            foreach(var e in recipeList)
-            {
-                if(e==element)
-                {
-                    e.GetComponent<Image>().sprite = recipeActive;
-                }
-                else
-                    e.GetComponent<Image>().sprite = rcipeNormal;
-            }
+            potionNameText.text = element.potion.Name;
+            mainEffectText.text = element.potion.Description;
             description.gameObject.SetActive(true);
-            //ˢ��Description
         }
 
         void CloseDescription()

@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Game.System;
+using System.Collections.Generic;
+using Game.Model;
 
 namespace Game.UI
 {
@@ -17,23 +19,33 @@ namespace Game.UI
 
         public void Init(Item_Data potion,UIMain owner)
         {
-            icon.sprite = Resources.Load<Sprite>(UIImagePath.ImagePath + potion.id);
+            
+            List<Sprite> sprites = new List<Sprite>();
+            //sprites.Add(Resources.Load<Sprite>(UIImagePath.ImagePath + "ºì"));
+            sprites.Add(Resources.Load<Sprite>(UIImagePath.ImagePath + "ÂÌ"));
+            //sprites.Add(Resources.Load<Sprite>(UIImagePath.ImagePath + "À¶"));
+            //sprites.Add(Resources.Load<Sprite>(UIImagePath.ImagePath + "·Û"));
+            //sprites.Add(Resources.Load<Sprite>(UIImagePath.ImagePath + "×Ï"));
+            icon.sprite = sprites[Random.Range(0, sprites.Count)];
+
             this.potion = potion;
             this.owner = owner;
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if(owner.currentPotion!=this.potion)
+            if (GameBody.GetModel<PlayerActionModel>().CurrentPotion != this.potion)
             {
-                owner.currentPotion = this.potion;
                 Game.System.EventSystem.Send<OnPotionClick>(new OnPotionClick() { potion = potion });
             }
+            if (Player.instance.MoveTimes <= 0)
+                return;
+            GameBody.GetSystem<MapSystem>().HighLightCells(Player.instance.RangeRight);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            owner.descriptionUI.Show(this.potion);
+            owner.descriptionUI.Show(this.potion,this.icon.sprite);
         }
 
         public void OnPointerExit(PointerEventData eventData)

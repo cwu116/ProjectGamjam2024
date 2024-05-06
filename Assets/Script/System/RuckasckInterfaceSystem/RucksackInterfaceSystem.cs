@@ -53,7 +53,9 @@ namespace Game.System
         {
             if (materials != null || materials.Count >= 0)//移除材料
             {
-                materials.Remove(item_s);
+                var target = materials.Find(v => v.Id == item_s.Id);
+                if(target!=null)
+                    materials.Remove(target);
                 return;
             }
             Debug.LogWarning("已经没有物品了");
@@ -89,7 +91,7 @@ namespace Game.System
                 }
                 if (sum == 2)
                 {
-                    item_SModel_2 = i;
+                    item_SModel_3 = i;
                     sum++;
                     continue;
                 }
@@ -107,6 +109,7 @@ namespace Game.System
                     Item_s result_ = list[Random.Range(0, list.Count)];
                     var result = compoundModel.Item_Data.Find(v => v.id == result_.Id);
                     //EventSystem.Send(new CraftResultEvent() { result = result });
+                    materials.Clear();
                     return result;//没有特殊配方则随机返回一个药水
                 }
                 foreach (var i in compoundModel.Item_Data)//在拥有特殊材料的情况下将满足条件的直接返回
@@ -117,6 +120,7 @@ namespace Game.System
                         var result_ = new Item_s(i.id, i.Name, i.Description, 1);
                         var result = compoundModel.Item_Data.Find(v => v.id == result_.Id);
                         //EventSystem.Send(new CraftResultEvent() { result = result });
+                        materials.Clear();
                         return result;
                     }
 
