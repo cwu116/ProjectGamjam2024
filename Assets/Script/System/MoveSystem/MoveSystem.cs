@@ -43,8 +43,13 @@ namespace Game.System
             player.GetComponent<Player>().LastHexCell = player.GetComponent<Player>().CurHexCell;
 
             HexCell newCell = GridManager.Instance.hexCells[(int) path.x, (int) path.y];
+            if (newCell == player.GetComponent<Player>().CurHexCell)
+            {
+                return;
+            }
             player.GetComponent<Player>().LastHexCell.OccupyObject = null;
             player.GetComponent<Player>().CurHexCell = newCell;
+            player.GetComponent<Player>().CurHexCell.OccupyObject = player;
             if (newCell.Type == HexType.Transport)
             {
                 //TODO::通关事件
@@ -76,10 +81,8 @@ namespace Game.System
         /// <param name="enemy">����</param>
         public void EnemyMoveTo(GameObject enemy)
         {
-            // Ѱ�Ҿ��䷶Χ��Ŀ��
             List<HexCell> hexcells = new List<HexCell>(GameBody.GetSystem<MapSystem>()
                 .GetRoundHexCell(enemy.GetComponent<Enemy>().CurHexCell.Pos, enemy.GetComponent<Enemy>().WatchRange));
-            // Ѱ�ҿ��ƶ����ΧĿ��
             List<HexCell> AllCell = new List<HexCell>(GameBody.GetSystem<MapSystem>()
                 .GetRoundHexCell(enemy.GetComponent<Enemy>().CurHexCell.Pos,
                     enemy.GetComponent<Enemy>().MoveTimes * enemy.GetComponent<Enemy>().StepLength));
@@ -103,7 +106,6 @@ namespace Game.System
                 }
             }
 
-            // û��⵽��һ��߳�޶������·��
             Vector2 target = GameBody.GetSystem<MapSystem>().RandomPatrol(enemy.GetComponent<Enemy>().SpawnPoint,
                 enemy.GetComponent<Enemy>().CurHexCell.Pos);
             ThrowTarget(enemy, GridManager.Instance.hexCells[(int) target.x, (int) target.y]);
@@ -125,6 +127,12 @@ namespace Game.System
             {
                 enemy.GetComponent<Enemy>().anim.SetTrigger("Move");
                 await Task.Delay(300);
+                if (target.OccupyObject is not null && cell.OccupyObject == target.OccupyObject)
+                {
+                    enemy.GetComponent<Enemy>().UseSkill(target.OccupyObject.GetComponent<BaseEntity>());
+                    enemy.GetComponent<Enemy>().anim.SetTrigger("Attack");
+                    return;
+                }
                 enemy.transform.DOMove(cell.transform.position, 0.5f);
                 enemy.GetComponent<Enemy>().CurHexCell = cell;
                 if (cell.Type == HexType.Thorns || cell.Type == HexType.Moon || cell.Type == HexType.Fire)

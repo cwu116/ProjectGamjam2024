@@ -72,7 +72,10 @@ namespace Buff
             {
                 if (StateUnits[i].Info.isStartExec)
                 {
-                    if (StateUnits[i].Info.isAdditive)
+                    if (StateUnits[i].Info.isAdditive && new List<string>()
+                    {
+                        "Armor","Burning"
+                    }.Contains(StateUnits[i].Info.id))
                     {
                         for (int j = 0; j < StateUnits[i].Duration; j++)
                         {
@@ -101,7 +104,10 @@ namespace Buff
                 // Debug.LogError(StateUnits.Count);
                 if (!StateUnits[i].Info.isStartExec)
                 {
-                    if (StateUnits[i].Info.isAdditive)
+                    if (StateUnits[i].Info.isAdditive && new List<string>()
+                    {
+                        "Armor","Burning"
+                    }.Contains(StateUnits[i].Info.id))
                     {
                         for (int j = 0; j < StateUnits[i].Duration; j++)
                         {

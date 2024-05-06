@@ -32,8 +32,6 @@ public partial class BaseEntity : MonoBehaviour
 
     protected void InitEntity()
     {
-        _spawnPoint = new Vector2(){};
-            
         _myType = _model.entityType;
         _attackType = _model.attackType;
         _dropMaterial = _model.dropMaterial;
@@ -157,7 +155,10 @@ public partial class BaseEntity : MonoBehaviour
     public Vector2 SpawnPoint
     {
         get => _spawnPoint;
-        set => _spawnPoint = value;
+        set
+        {
+            _spawnPoint = value;
+        }
     }
 
 }
