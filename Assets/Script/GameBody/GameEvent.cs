@@ -12,7 +12,6 @@ namespace Assets.Script.GameBody
 
     }
 
-
     public struct GameStartEvent : IEvent
     {
 
@@ -20,6 +19,11 @@ namespace Assets.Script.GameBody
     public struct GamePassEvent : IEvent
     {
 
+    }
+
+    public struct HpUIEvent : IEvent
+    {
+        public float CurrentHp;
     }
 
 }
