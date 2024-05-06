@@ -22,11 +22,11 @@ namespace Game.System
         // 延时检查装置 ：加在回合初
         public void CheckForDelay()
         {
-            foreach (var stuff in delayStuff)
+            for (int i = 0; i < delayStuff.Count; i++)
             {
-                if (stuff.Decrement())
+                if (delayStuff[i].Decrement())
                 {
-                    delayStuff.Remove(stuff);
+                    delayStuff.Remove(delayStuff[i]);
                 }
             }
         }

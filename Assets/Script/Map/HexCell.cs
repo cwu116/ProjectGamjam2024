@@ -9,7 +9,7 @@ public class HexCell : MonoBehaviour
 {
     private void Update()
     {
-        if (OccupyObject != null && OccupyObject.gameObject.CompareTag("Player"))
+        if (OccupyObject != null)
         {
             transform.Find("hexBlock").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/µØ¿é-¾¯½ä·¶Î§");
         }

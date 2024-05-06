@@ -12,6 +12,17 @@ using UnityEngine.UI;
 
 public partial class BaseEntity : MonoBehaviour
 {
+    // 生成实体
+    public static GameObject SpawnEntity(GameObject classObj, HexCell Pos)
+    {
+        Enemy entity = Instantiate(classObj, Pos.Pos, Quaternion.identity).GetComponent<Enemy>();
+        entity.CurHexCell = Pos;
+        entity.SpawnPoint = Pos.Pos;
+        Pos.OccupyObject = entity.gameObject;
+        GameObject EnemyParent = GameObject.Find("Enemys");
+        entity.transform.SetParent(EnemyParent.transform, false);
+        return entity.gameObject;
+    }
     public bool SetModel(string name)
     {
         AttackUnit_Data ad = GameBody.GetModel<AttackUnitModel>().GetDataByName(name);
@@ -22,14 +33,6 @@ public partial class BaseEntity : MonoBehaviour
         }
 
         return false;
-    }
-
-    public bool CanMove()
-    {
-        if (this.MoveTimes <= 0)
-            return false;
-
-        return true;
     }
 
     public virtual void UseSkill(BaseEntity target)

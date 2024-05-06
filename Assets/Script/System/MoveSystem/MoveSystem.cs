@@ -39,14 +39,17 @@ namespace Game.System
             {
                 return;
             }
-            
-            player.GetComponent<Player>().LastHexCell = player.GetComponent<Player>().CurHexCell;
 
             HexCell newCell = GridManager.Instance.hexCells[(int) path.x, (int) path.y];
+            if (newCell.OccupyObject is not null)
+            {
+                return;
+            }
             if (newCell == player.GetComponent<Player>().CurHexCell)
             {
                 return;
             }
+            player.GetComponent<Player>().LastHexCell = player.GetComponent<Player>().CurHexCell;
             player.GetComponent<Player>().LastHexCell.OccupyObject = null;
             player.GetComponent<Player>().CurHexCell = newCell;
             player.GetComponent<Player>().CurHexCell.OccupyObject = player;
@@ -127,12 +130,12 @@ namespace Game.System
             {
                 enemy.GetComponent<Enemy>().anim.SetTrigger("Move");
                 await Task.Delay(300);
-                if (target.OccupyObject is not null && cell.OccupyObject == target.OccupyObject)
-                {
-                    enemy.GetComponent<Enemy>().UseSkill(target.OccupyObject.GetComponent<BaseEntity>());
-                    enemy.GetComponent<Enemy>().anim.SetTrigger("Attack");
-                    return;
-                }
+                // if (target.OccupyObject is not null && cell.OccupyObject == target.OccupyObject)
+                // {
+                //     enemy.GetComponent<Enemy>().UseSkill(target.OccupyObject.GetComponent<BaseEntity>());
+                //     enemy.GetComponent<Enemy>().anim.SetTrigger("Attack");
+                //     return;
+                // }
                 enemy.transform.DOMove(cell.transform.position, 0.5f);
                 enemy.GetComponent<Enemy>().CurHexCell = cell;
                 if (cell.Type == HexType.Thorns || cell.Type == HexType.Moon || cell.Type == HexType.Fire)

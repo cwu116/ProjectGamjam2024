@@ -40,7 +40,10 @@ public class Frog : Enemy
 
     private void OnDestroy()
     {
-        Instantiate(spawnEnemy, transform.position, Quaternion.identity);
+        if (spawnEnemy is not null)
+        {
+            SpawnEntity(spawnEnemy.gameObject, CurHexCell);
+        }
     }
 
     // 受到攻击时
@@ -50,6 +53,7 @@ public class Frog : Enemy
         {
             case FrogType.TrumpetFrog: 
                 // 惊动
+                HateValue += 15;
                 break;
             case FrogType.BlackMistFrog:
                 StateSystem.Execution(new List<string>(){"Create:true,BlackMist,1"}, gameObject);
