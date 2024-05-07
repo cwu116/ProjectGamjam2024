@@ -24,7 +24,7 @@
         "WatchRange": "3",
         "AttackType": "Range",
         "RangeLeft": "1",
-        "RangeRight": "3",
+        "RangeRight": "2",
         "SkillDescription": "远程攻击，对直线3格范围内的玩家造成1点伤害。",
         "UseSkill": "1",
         "DropMaterial": "B"
@@ -77,7 +77,7 @@
     {
         "Name": "玩家",
         "EntityType": "Player",
-        "Hp": "3",
+        "Hp": "4",
         "Attack": "1",
         "MoveTimes": "2",
         "StepLength": "1",

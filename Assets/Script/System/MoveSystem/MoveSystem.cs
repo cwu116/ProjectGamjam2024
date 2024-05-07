@@ -184,7 +184,7 @@ namespace Game.System
 
                     break;
                 }
-                else if (cell.OccupyObject != null && cell.OccupyObject.GetComponent<BaseEntity>() is Enemy)
+                else if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>() is Enemy || cell.OccupyObject.GetComponent<BaseEntity>() is Rock))
                 {
                     continue;
                 }
