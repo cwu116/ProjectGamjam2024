@@ -65,6 +65,8 @@ public partial class BaseEntity : MonoBehaviour
         if (this as Enemy)
         {
             await System.Threading.Tasks.Task.Delay(1000);
+            if (this == null)
+                return;
             if (this.GetComponent<Animator>())
                 this.GetComponent<Animator>().SetTrigger("Hit");
             await System.Threading.Tasks.Task.Delay(300);
@@ -119,6 +121,9 @@ public partial class BaseEntity : MonoBehaviour
             GameObject go = GameObject.Instantiate(dropPrefab);
             go.transform.position = this.transform.position;
             go.GetComponent<DropItem>().Init((this as Enemy).dropedItemId, (this as Enemy).dropedItemName);
+            Game.System.EventSystem.Send<ClearAttackBlockEvent>();
+            Game.System.EventSystem.Send<ClearWarningBlockEvent>();
+            CurHexCell.OccupyObject = null;
         }
         else if (this is Player)
         {
