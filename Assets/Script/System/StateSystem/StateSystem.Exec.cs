@@ -122,11 +122,11 @@ namespace Game.System
                             string Path = "";
                             if (bool.Parse(Params[0]))
                             {
-                                Path = "Assets/Resources/Prefabs/MapHexCell/";
+                                Path = "Prefabs/MapHexCell/";
                             }
                             else
                             {
-                                Path = "Assets/Resources/Prefabs/Enemy/";
+                                Path = "Prefabs/Enemy/";
                             }
                             if (Params[2].Contains("["))
                             {
@@ -139,7 +139,7 @@ namespace Game.System
                                 }
                                 else
                                 {
-                                    BaseEntity.SpawnEntity(ResourcesManager.LoadPrefab(Path, Params[1] + ".prefab"), GridManager.Instance.hexCells[(int) xy.x, (int) xy.y]);
+                                    BaseEntity.SpawnEntity(ResourcesManager.LoadPrefab(Path, Params[1]), GridManager.Instance.hexCells[(int) xy.x, (int) xy.y]);
                                 }
                             }
                             else if (Params[2].Contains("this"))
@@ -160,7 +160,7 @@ namespace Game.System
                                 }
                                 else
                                 {
-                                    BaseEntity.SpawnEntity(ResourcesManager.LoadPrefab(Path, Params[1] + ".prefab"), GridManager.Instance.hexCells[pos[0],pos[1]]);
+                                    BaseEntity.SpawnEntity(ResourcesManager.LoadPrefab(Path, Params[1]), GridManager.Instance.hexCells[pos[0],pos[1]]);
                                 }
                             }
                             else
@@ -176,7 +176,7 @@ namespace Game.System
                                     }
                                     else
                                     {
-                                        BaseEntity.SpawnEntity(ResourcesManager.LoadPrefab(Path, Params[1] + ".prefab"), cell);
+                                        BaseEntity.SpawnEntity(ResourcesManager.LoadPrefab(Path, Params[1]), cell);
                                     }
                                 }
                             }
