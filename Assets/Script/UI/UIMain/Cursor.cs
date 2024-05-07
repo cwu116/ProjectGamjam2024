@@ -17,7 +17,10 @@ public class Cursor : MonoBehaviour
     private void Update()
     {
         transform.position = Input.mousePosition;
-        Debug.Log(model.CurrentPotion);
+        if (model.CurrentPotion != null)
+        {
+            Debug.Log(model.CurrentPotion.Name);
+        }
         gameObject.SetActive(model.CurrentPotion != null);
         if (model.CurrentPotion != null)
             this.GetComponent<Image>().sprite = Resources.Load<Sprite>(UIImagePath.ImagePath +"绿");

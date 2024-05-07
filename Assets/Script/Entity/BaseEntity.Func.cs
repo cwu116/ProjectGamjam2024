@@ -43,17 +43,21 @@ public partial class BaseEntity : MonoBehaviour
 
     public virtual async void GetHurt(int damage)
     {
+        if (this is Player)
+        {
+            Debug.Log("damage: " + damage);
+        }
         if (damage < 0)
         {
             Hp.AddValue(-damage);
         }
         else
         {
-            int realDamage = damage - this.Defence;
+            int realDamage = damage - Defence;
             if (realDamage > 0)
             {
                 Hp.AddValue(-realDamage);
-                if (this.Hp <= 0)
+                if (Hp <= 0)
                 {
                     Die();
                     return;
