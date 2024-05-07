@@ -50,4 +50,9 @@ namespace Game.System
         public Item_Data potion;
     }
 
+    struct TurnCountEvent:IEvent
+    {
+        public int count;
+    }
+
 }

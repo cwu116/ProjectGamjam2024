@@ -4,6 +4,7 @@ using Game.Model;
 using Game.System;
 using UnityEngine;
 using UnityEngine.Rendering.VirtualTexturing;
+using Managers;
 
 namespace Game
 {
@@ -20,6 +21,7 @@ namespace Game
 
             InitModels();
             InitSystems();
+            UIManager.Show<UIMain>();
         }
 
         private void RegisterSystems()

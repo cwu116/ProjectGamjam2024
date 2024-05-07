@@ -46,6 +46,10 @@ namespace Game.System
             Debug.Log("enemy turnend");
             EventSystem.Send(info);
             EventSystem.Send<PlayerTurnBeginTrigger>();
+            _turnModel.turnCount++;
+            EventSystem.Send<TurnCountEvent>(new TurnCountEvent() { count = _turnModel.turnCount });
+            if (_turnModel.turnCount > 40)
+                EventSystem.Send<GameOverEvent>();
         }
     }
 }

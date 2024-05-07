@@ -21,6 +21,8 @@ namespace Managers
         {
             UIResources[typeof(DemoUI)] = new UIElement { ResourcePath = UIPath + "DemoUI" };
             UIResources[typeof(UICraft)] = new UIElement { ResourcePath = UIPath + "UICraft" };
+            UIResources[typeof(UIExplain)] = new UIElement { ResourcePath = UIPath + "UIExplain" };
+            UIResources[typeof(UIMain)] = new UIElement { ResourcePath = UIPath + "UIMain" };
         }
 
         public static T Show<T>() where T : BasePanel
