@@ -16,6 +16,12 @@ public class Enemy : BaseEntity,IPointerClickHandler,IPointerEnterHandler,IPoint
     public Animator anim;
     [SerializeField] protected string enemyName;
 
+    public string Name
+    {
+        get => enemyName;
+        set => enemyName = value;
+    }
+
     public string dropedItemId;
     public string dropedItemName;
 

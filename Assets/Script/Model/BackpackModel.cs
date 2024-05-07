@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game.Model;
 using Game.System;
+using Game;
 
 public class BackpackModel : BaseModel
 {
     public override void InitModel()
     {
         Register();
+       for(int i=0;i<3;i++)
+        {
+            int index = Random.Range(0, GameBody.GetModel<CompoundModel>().Item_Data.Count);
+            AddPotion(GameBody.GetModel<CompoundModel>().Item_Data[index]);
+        }
     }
 
     void Register()

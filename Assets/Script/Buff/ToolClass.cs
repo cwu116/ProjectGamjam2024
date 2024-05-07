@@ -97,6 +97,11 @@ namespace Buff.Tool
         {
             get => baseValue;
         }
+
+        public int Change
+        {
+            get => changeValue;
+        }
         public ValueInt(int baseValue)
         {
             this.baseValue = baseValue;

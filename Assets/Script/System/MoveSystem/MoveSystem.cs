@@ -78,6 +78,13 @@ namespace Game.System
             // Debug.LogWarning("Buff:" + string.Join(' ', newCell.Instructions));
             StateSystem.Execution(new List<string>(newCell.Instructions), player);
             player.GetComponent<Player>().MoveTimes += -1;
+            if (player.GetComponent<Player>().MoveTimes.Change % 2 == 0)
+            {
+                foreach (var enemy in GameObject.FindObjectsOfType<Enemy>())
+                {
+                    enemy.WatchRange.AddValue(1);
+                }
+            }
             EventSystem.Send(new PlayerMoveEvent()
                 {currentCell = newCell, moveTimes = player.GetComponent<Player>().MoveTimes});
             //if(!isUndo)
@@ -109,6 +116,10 @@ namespace Game.System
                     }
 
                     enemy.GetComponent<Enemy>().isDisturbed = true;
+                    if (enemy.GetComponent<Enemy>().Name == "Rush")
+                    {
+                        StateSystem.Execution(new List<string>(){"Delay:[ChangeValue:MoveTimes,1,true],1"}, enemy);
+                    }
                     Debug.LogError("I see you!");
                     ThrowTarget(enemy, cellUnit);
                     return;
@@ -184,7 +195,7 @@ namespace Game.System
 
                     break;
                 }
-                else if (cell.OccupyObject != null && cell.OccupyObject.GetComponent<BaseEntity>() is Enemy)
+                else if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>() is Enemy || cell.OccupyObject.GetComponent<BaseEntity>() is Rock))
                 {
                     continue;
                 }

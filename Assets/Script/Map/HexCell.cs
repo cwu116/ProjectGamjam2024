@@ -3,8 +3,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using Game;
+using Game.Model;
+using Game.System;
 
-public class HexCell : MonoBehaviour
+public class HexCell : MonoBehaviour,IPointerClickHandler
 {
 
     private int _widthIndex = 0;
@@ -102,6 +106,12 @@ public class HexCell : MonoBehaviour
     public HexCell()
     {
         _type = HexType.Empty;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if(GameBody.GetModel<PlayerActionModel>().CurrentPotion.id.Equals("Subject_1"))
+            GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().CurrentPotion, this.gameObject);
     }
 }
 
