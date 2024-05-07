@@ -16,7 +16,7 @@ public partial class BaseEntity : MonoBehaviour
     // 生成实体
     public static GameObject SpawnEntity(GameObject classObj, HexCell Pos)
     {
-        Enemy entity = Instantiate(classObj, Pos.Pos, Quaternion.identity).GetComponent<Enemy>();
+        Enemy entity = Instantiate(classObj, Pos.transform.position, Quaternion.identity).GetComponent<Enemy>();
         entity.CurHexCell = Pos;
         entity.SpawnPoint = Pos.Pos;
         Pos.OccupyObject = entity.gameObject;
@@ -56,6 +56,7 @@ public partial class BaseEntity : MonoBehaviour
                 if (this.Hp <= 0)
                 {
                     Die();
+                    return;
                 }
             }
         }
@@ -112,6 +113,7 @@ public partial class BaseEntity : MonoBehaviour
 
         if (this is Enemy)
         {
+            _curHexCell.OccupyObject = null;
             EventSystem.Send<EnemyDieEvent>(new EnemyDieEvent { enemy = this });
             GameObject dropPrefab = Resources.Load<GameObject>("Prefabs/DropItems/DropItem");
             GameObject go = GameObject.Instantiate(dropPrefab);
@@ -124,10 +126,7 @@ public partial class BaseEntity : MonoBehaviour
         }
        
     }
-
-    public virtual void Hatred()
-    {
-    }
+    
 
     public void Away(params Param[] paramList)
     {

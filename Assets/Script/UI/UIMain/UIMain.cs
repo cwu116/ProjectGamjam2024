@@ -83,7 +83,7 @@ public class UIMain : BasePanel
 
     public override void Refresh()
     {
-        RefreshPlayerHp();
+        // RefreshPlayerHp();
     }
 
     public void RefreshPlayerHp()

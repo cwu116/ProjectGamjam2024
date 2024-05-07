@@ -70,7 +70,7 @@ namespace Game.System
                 StateSystem.Execution(new List<string>()
                 {
                     string.Format("Delay:[Create:true,{0},this],1", spawnInfo[0]),
-                    string.Format("Delay:[Create:true,{0},this],{1}", newCell.Type.ToString(), 1 + spawnInfo[1])
+                    string.Format("Delay:[Create:true,{0},this],{1}", newCell.Type.ToString(), 1 + int.Parse(spawnInfo[1]))
                 }, newCell.gameObject);
                 player.GetComponent<Player>().SpawningPath = null;
             }
@@ -97,15 +97,51 @@ namespace Game.System
         /// <param name="enemy">����</param>
         public void EnemyMoveTo(GameObject enemy)
         {
+            if (enemy is null)
+            {
+                return;
+            }
             List<HexCell> hexcells = new List<HexCell>(GameBody.GetSystem<MapSystem>()
                 .GetRoundHexCell(enemy.GetComponent<Enemy>().CurHexCell.Pos, enemy.GetComponent<Enemy>().WatchRange));
+            // 仇恨值优先级
+            BaseEntity maxHate = null;
+            foreach (var cellunit in hexcells)
+            {
+                if (cellunit.OccupyObject is null || cellunit.OccupyObject == enemy)
+                {
+                    continue;
+                }
+                BaseEntity unit = cellunit.OccupyObject.GetComponent<BaseEntity>();
+                if (unit.HateValue == 0)
+                {
+                    continue;
+                }
+                if (maxHate is null || unit.HateValue >= maxHate.HateValue)
+                {
+                    maxHate = unit;
+                }
+            }
+            if (maxHate is not null)
+            {
+                if (enemy.GetComponent<Enemy>().RangeRight < 1)
+                {
+                    return;
+                }
+                enemy.GetComponent<Enemy>().isDisturbed = true;
+                if (enemy.GetComponent<Enemy>().Name == "Rush")
+                {
+                    StateSystem.Execution(new List<string>(){"Delay:[ChangeValue:MoveTimes,1,true],1"}, enemy);
+                }
+                Debug.LogError("I hate you!");
+                ThrowTarget(enemy, maxHate.CurHexCell);
+                return;
+            }
             foreach (var cellUnit in hexcells)
             {
                 if (cellUnit.OccupyObject is null || cellUnit.OccupyObject == enemy)
                 {
                     continue;
                 }
-
                 if (cellUnit.OccupyObject.GetComponent<BaseEntity>().bMisLead ||
                     cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer &&
                     !cellUnit.OccupyObject.GetComponent<BaseEntity>().bInvisible)
@@ -223,8 +259,8 @@ namespace Game.System
                     string[] spawnInfo = enemy.GetComponent<Enemy>().SpawningPath.Split(new[] { '*' });
                     StateSystem.Execution(new List<string>()
                     {
-                        string.Format("Delay:[Create:{0},this],1", spawnInfo[0]),
-                        string.Format("Delay:[Create:{0},this],{1}", cell.Type.ToString(), 1 + spawnInfo[1])
+                        string.Format("Delay:[Create:true,{0},this],1", spawnInfo[0]),
+                        string.Format("Delay:[Create:true,{0},this],{1}", cell.Type.ToString(), 1 + int.Parse(spawnInfo[1]))
                     }, cell.gameObject);
 
                     enemy.GetComponent<Enemy>().SpawningPath = null;
