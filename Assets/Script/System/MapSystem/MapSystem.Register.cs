@@ -14,9 +14,9 @@ namespace Game.System
         private void RegisterEvent()
         {
             EventSystem.Register<MapInitFinishEvent>(OnMapInitFinish);
-            EventSystem.Register<AfterPlayerTurnBeginEvent>(v => HighLightCells(Player.instance.MoveTimes>0?Player.instance.StepLength>0?1:0:0));
-            EventSystem.Register<PlayerMoveEvent>(v => { ClearHighlightCells(); HighLightCells(Player.instance.MoveTimes > 0 ? Player.instance.StepLength > 0 ? 1 : 0 : 0); });
-            EventSystem.Register<UsePotionEvent>(v=> { ClearHighlightCells(); HighLightCells(Player.instance.MoveTimes > 0 ? Player.instance.StepLength > 0 ? 1 : 0 : 0); });
+            EventSystem.Register<AfterPlayerTurnBeginEvent>(v => HighLightCells(Player.instance.MoveTimes>0?Player.instance.moveStep>0?1:0:0));
+            EventSystem.Register<PlayerMoveEvent>(v => { ClearHighlightCells(); HighLightCells(Player.instance.MoveTimes > 0 ? Player.instance.moveStep > 0 ? 1 : 0 : 0); });
+            EventSystem.Register<UsePotionEvent>(v=> { ClearHighlightCells(); HighLightCells(Player.instance.MoveTimes > 0 ? Player.instance.moveStep > 0 ? 1 : 0 : 0); });
             EventSystem.Register<AfterPlayerTurnEndEvent>(v => ClearHighlightCells());
 
             EventSystem.Register<HighLightAttackBlockEvent>(v => { ClearEnemyAttackCells(); HighlightEnemyAttackCells(v.pos, v.distance); });

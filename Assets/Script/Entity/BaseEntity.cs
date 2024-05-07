@@ -43,6 +43,7 @@ public partial class BaseEntity : MonoBehaviour
         buff.RegisterFunc(TActionKey.Away, Away);
         buff.RegisterFunc(TActionKey.SpawnPath, SpawnPath);
         buff.RegisterFunc(TActionKey.Sleep, Sleep);
+        buff.RegisterFunc(TActionKey.SetVisibility, SetVisibility);
         
         buff.RegisterParam(ValueKey.Hp, new ValueInt(_model.hp));
         buff.RegisterParam(ValueKey.MaxHp, new ValueInt(_model.hp));

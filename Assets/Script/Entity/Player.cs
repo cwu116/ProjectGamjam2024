@@ -15,6 +15,8 @@ public class Player : BaseEntity,IPointerClickHandler
 {
     public static Player instance;
 
+    public int moveStep;
+
     private void Awake()
     {
         instance = this;

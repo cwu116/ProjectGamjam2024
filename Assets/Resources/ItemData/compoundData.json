@@ -78,7 +78,7 @@
         "Material_2": "yellow",
         "MaterialSpecial": "A",
         "Description": "使目标仇恨值增加5，每回合结束时恢复2点血，持续2回合",
-        "Type": [ "ChangeValue:HateValue,5,true", "State:LiveTarget,2,false" ]
+        "Type": [ "ChangeValue:HateValue,15,true", "State:LiveTarget,2,false" ]
     },
     {
         "id": "Hibernation",
@@ -88,15 +88,6 @@
         "MaterialSpecial": "B",
         "Description": "使目标下2次移动时的移动力减1，但血量立即恢复至上限",
         "Type": [ "Delay:[ChangeValue:StepLenghth,-1,true],1", "ChangeValue:StepLenghth,-1,true", "$Hp = $MaxHp" ]
-    },
-    {
-        "id": "Hidden_in_the_dust",
-        "Name": "隐入尘烟",
-        "Material_1": "yellow",
-        "Material_2": "yellow",
-        "MaterialSpecial": "C",
-        "Description": "令目标周围2格范围内的所有敌方或玩家单位远离目标1格，随后这些单位获得隐形1",
-        "Type": [ "Action:Away,[2,1,this]","State:Invisible,1,true" ]
     },
     {
         "id": "Chrysalis",
@@ -177,7 +168,7 @@
         "Material_2": "blue",
         "MaterialSpecial": "D",
         "Description": "使目标技能范围增加1，但血量上限减1，持续至本场战斗结束",
-        "Type": [ "State:LongArmMonkey,-1,true" ]
+        "Type": [ "State:LongArmMonkey,-1,false" ]
     },
     {
         "id": "Subject_1",
@@ -187,32 +178,5 @@
         "MaterialSpecial": "A",
         "Description": "在1格空的地块上创造1只喇叭蛙，该喇叭蛙死亡时会在当前地块诞生一只冲锋怪",
         "Type": [ "Create:false,TrumpetFrog,this" ]
-    },
-    {
-        "id": "Subject_2",
-        "Name": "实验体2号",
-        "Material_1": "yellow",
-        "Material_2": "blue",
-        "MaterialSpecial": "B",
-        "Description": "在1格空的地块上创造1只黑雾蛙，2回合后该黑雾蛙会变成远程怪",
-        "Type": [ "Create:false,BlackMistFrog,this" ]
-    },
-    {
-        "id": "Subject_3",
-        "Name": "实验体3号",
-        "Material_1": "yellow",
-        "Material_2": "blue",
-        "MaterialSpecial": "C",
-        "Description": "在1格空的地块上创造1只爆炸蛙，该爆炸蛙死亡时会在当前地块诞生一只炮塔怪",
-        "Type": [ "Create:false,BombFrog,this" ]
-    },
-    {
-        "id": "Green_herbs",
-        "Name": "青草药剂",
-        "Material_1": "yellow",
-        "Material_2": "blue",
-        "MaterialSpecial": "D",
-        "Description": "使1格地块变成草地环境，持续2回合，2回合后该地块变为火焰环境",
-        "Type": [ "Create:true,Grass,this", "Delay:[Create:true,Fire,this],2" ]
     }
 ]

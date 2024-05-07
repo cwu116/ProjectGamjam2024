@@ -38,7 +38,7 @@
   {
     "buffName" : "膨胀",
     "id" : "Expansion",
-    "description" : "使目标下本场战斗血量上限增加1。每回合恢复1点血量，但技能范围减1，持续2个回合",//目标下本场？
+    "description" : "使目标下本场战斗血量上限增加1。每回合恢复1点血量，但技能范围减1，持续2个回合",
     "buffCMD" : ["ChangeValue:MaxHp,1,true","ChangeValue:Damage,-1","ChangeValue:SkillRange,-1,true"],
     "isAdditive" : false,
     "isStartExec" : true,

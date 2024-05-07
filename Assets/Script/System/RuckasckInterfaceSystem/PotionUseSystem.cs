@@ -17,6 +17,13 @@ namespace Game.System
             if (Player.instance.MoveTimes <= 0)
                 return;
             EventSystem.Send<UsePotionEvent>(new UsePotionEvent() { potion = item_Data });
+            if (Player.instance.Attack > 1)
+            {
+                if (EffectObject.TryGetComponent(out BaseEntity entity))
+                {
+                    entity.GetHurt(Player.instance.Attack - 1);    
+                }
+            }
             StateSystem.Execution(item_Data.Type, EffectObject);
             Debug.Log("生效"+EffectObject.name+" "+item_Data.Name);
         }

@@ -68,6 +68,7 @@ namespace Buff.Config
         Away,                   // 目标远离
         SpawnPath,              // 以路径生成地块
         Sleep,                  // 启动/暂停睡眠状态
+        SetVisibility,          // 设置可视性
     }
 }
 

@@ -43,24 +43,27 @@ public partial class BaseEntity : MonoBehaviour
 
     public virtual async void GetHurt(int damage)
     {
-        if (this is Player)
-        {
-            Debug.Log("damage: " + damage);
-        }
         if (damage < 0)
         {
             Hp.AddValue(-damage);
         }
         else
         {
-            int realDamage = damage - Defence;
-            if (realDamage > 0)
+            if (bFlamePure)
             {
-                Hp.AddValue(-realDamage);
-                if (Hp <= 0)
+                Hp.AddValue(-damage);
+            }
+            else
+            {
+                int realDamage = damage - Defence;
+                if (realDamage > 0)
                 {
-                    Die();
-                    return;
+                    Hp.AddValue(-realDamage);
+                    if (Hp <= 0)
+                    {
+                        Die();
+                        return;
+                    }
                 }
             }
         }
@@ -142,7 +145,6 @@ public partial class BaseEntity : MonoBehaviour
         // paramList[0] : 范围
         // paramList[1] : 移动距离
         // paramList[2] : 对象
-        Debug.Log("Away");
         List<HexCell> AllCell = new List<HexCell>(GameBody.GetSystem<MapSystem>()
             .GetRoundHexCell(_curHexCell.Pos, paramList[0].ToInt()));
         List<GameObject> entities = new List<GameObject>();
@@ -178,6 +180,21 @@ public partial class BaseEntity : MonoBehaviour
                 }
             }
             if (target is not null) entity.transform.DOMove(target.transform.position, 0.5f);
+        }
+    }
+
+    public void SetVisibility(params Param[] paramList)
+    {
+        // paramList[0] : 开启(1)关闭(0)
+        if (paramList[0])
+        {
+            StateSystem.Execution(new List<string>() {"State:Invisible,1,true"}, gameObject);
+            GetComponent<SpriteRenderer>().DOFade(0.3f, 0.3f);
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().DOFade(1f, 0.3f);
+            bInvisible.RemoveChange();
         }
     }
 
