@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Game.System;
 using System;
+using Managers;
 
 namespace Game.Model
 {
@@ -22,6 +23,7 @@ namespace Game.Model
         {
             if (CurrentPotion != null)
             {
+                AudioManager.PlaySound(AudioPath.UnClick);
                 CurrentPotion = null;
                 GameBody.GetSystem<MapSystem>().ClearHighlightCells();
                 GameBody.GetSystem<MapSystem>().HighLightCells(Player.instance.MoveTimes > 0 ? Player.instance.StepLength > 0 ? 1 : 0 : 0);

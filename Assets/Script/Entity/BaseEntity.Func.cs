@@ -67,7 +67,7 @@ public partial class BaseEntity : MonoBehaviour
             if (this.GetComponent<Animator>())
                 this.GetComponent<Animator>().SetTrigger("Hit");
             await System.Threading.Tasks.Task.Delay(300);
-            AudioManager.PlaySound(AudioPath.Hit);
+            AudioManager.PlaySound(AudioPath.Effect);
         }
     }
 
