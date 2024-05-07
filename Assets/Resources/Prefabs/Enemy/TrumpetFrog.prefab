@@ -113,7 +113,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.18480325, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -124,7 +124,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.58, y: 1.08}
+  m_Size: {x: 4.331517, y: 4.118989}
   m_EdgeRadius: 0
 --- !u!114 &865334879647452451
 MonoBehaviour:
@@ -145,6 +145,7 @@ MonoBehaviour:
   enemyName: "\u5587\u53ED\u86D9"
   dropedItemId: 
   dropedItemName: 
+  isBoss: 0
   spawnEnemy: {fileID: 0}
   frogType: 0
 --- !u!1 &2493647658316482346
