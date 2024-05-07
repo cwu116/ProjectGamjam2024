@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game;
 using DG.Tweening;
+using Managers;
 
 public class DropItem : MonoBehaviour
 {
@@ -13,7 +14,9 @@ public class DropItem : MonoBehaviour
         item = new Item_s(id, name, "", 1);
 
         this.transform.DOMove(Player.instance.transform.position, 1.5f).SetEase(Ease.InQuart);
-        await System.Threading.Tasks.Task.Delay(1500);
+        await System.Threading.Tasks.Task.Delay(500);
+        AudioManager.PlaySound(AudioPath.Collect);
+        await System.Threading.Tasks.Task.Delay(1000);
         GameBody.GetModel<BackpackModel>().AddMaterial(item);
         Destroy(this.gameObject);
     }

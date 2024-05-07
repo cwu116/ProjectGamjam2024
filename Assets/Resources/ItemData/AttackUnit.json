@@ -67,7 +67,7 @@
         "MoveTimes": "2",
         "StepLength": "1",
         "WatchRange": "3",
-        "AttackType": "Range",
+        "AttackType": "Sword",
         "RangeLeft": "1",
         "RangeRight": "1",
         "SkillDescription": "近战攻击，对自身1格范围内的玩家单位造成1点伤害，使用技能后自身增加1点血量。",

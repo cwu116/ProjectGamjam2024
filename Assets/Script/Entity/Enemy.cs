@@ -18,6 +18,8 @@ public class Enemy : BaseEntity,IPointerClickHandler,IPointerEnterHandler,IPoint
 
     public string dropedItemId;
     public string dropedItemName;
+
+    public bool isBoss;
     private void Awake()
     {
         buff = GetComponent<BuffComponent>();
@@ -36,26 +38,37 @@ public class Enemy : BaseEntity,IPointerClickHandler,IPointerEnterHandler,IPoint
         RefreshHpInUI();
     }
 
+    bool cd=true;
+
     public async override void UseSkill(BaseEntity target)
     {
         base.UseSkill(target);
         switch (MyAttackType)
         {
             case AttackType.Sword:
+                anim.SetTrigger("Attack");
+                await System.Threading.Tasks.Task.Delay(300);
+                if (isBoss)
+                    AudioManager.PlaySound(AudioPath.BossAttack);
+                else
+                    AudioManager.PlaySound(AudioPath.ShortAttack);
                 target.GetHurt(Attack);
                 target.RefreshHpInUI();
                 break;
             case AttackType.Range:
-                target.GetHurt(Attack);
-                target.RefreshHpInUI();
+                cd = !cd;
+                if(!cd)
+                {
+                    anim.SetTrigger("Attack");
+                    await System.Threading.Tasks.Task.Delay(300);
+                    AudioManager.PlaySound(AudioPath.RangeAttack);
+                    target.GetHurt(Attack);
+                    target.RefreshHpInUI();
+                }
                 break;
             case AttackType.None:
                 break;
         }
-
-        anim.SetTrigger("Attack");
-        await System.Threading.Tasks.Task.Delay(300);
-        AudioManager.PlaySound(AudioPath.Pop);
     }
 
 
@@ -69,7 +82,7 @@ public class Enemy : BaseEntity,IPointerClickHandler,IPointerEnterHandler,IPoint
                 return;
             GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().CurrentPotion, this.gameObject);
             await System.Threading.Tasks.Task.Delay(1200);
-            AudioManager.PlaySound(AudioPath.Attack);
+            AudioManager.PlaySound(AudioPath.EnemyEffect);
             return;
         }
     }

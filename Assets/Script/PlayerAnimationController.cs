@@ -4,6 +4,7 @@ using UnityEngine;
 using Game.System;
 using System;
 using DG.Tweening;
+using Managers;
 
 public class PlayerAnimationController : MonoBehaviour
 {
@@ -19,11 +20,15 @@ public class PlayerAnimationController : MonoBehaviour
     private void Hurt(EntityHurtEvent v)
     {
         if (v.enetity is Player)
+        {
             anim.SetTrigger("Hit");
+            AudioManager.PlaySound(AudioPath.PlayerHurt);
+        }
     }
 
     private void OnUsePotion(Item_Data potion)
     {
+        AudioManager.PlaySound(AudioPath.PlayerAttack);
         anim.SetTrigger("Attack");
     }
 
@@ -31,6 +36,7 @@ public class PlayerAnimationController : MonoBehaviour
     {
         anim.SetTrigger("Move");
         await System.Threading.Tasks.Task.Delay(500);
+        AudioManager.PlaySound(AudioPath.PlayerMove);
         transform.DOMove(v.currentCell.transform.position+Vector3.up*3, 0.5f).SetEase(Ease.Linear);
     }
 }

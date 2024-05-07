@@ -9,6 +9,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using DG.Tweening;
 using System.Threading.Tasks;
+using Managers;
 
 namespace Game.System
 {
@@ -131,92 +132,97 @@ namespace Game.System
 
         private async void ThrowTarget(GameObject enemy, HexCell target)
         {
-                if (enemy.GetComponent<Enemy>().MoveTimes <= 0 || enemy.GetComponent<Enemy>().StepLength <= 0)
+            if (enemy.GetComponent<Enemy>().MoveTimes <= 0 || enemy.GetComponent<Enemy>().StepLength <= 0)
+            {
+                Debug.LogError("Last:" + enemy.GetComponent<Enemy>().MoveTimes);
+                EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });
+                return;
+            }
+
+            List<HexCell> WholePath = GameBody.GetSystem<MapSystem>()
+                .GetPath(enemy.GetComponent<Enemy>().CurHexCell.Pos, target.Pos);
+
+            foreach (var cell in WholePath)//先判断攻击
+            {
+                if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer ||
+                                                  cell.OccupyObject.GetComponent<BaseEntity>().bMisLead))
                 {
-                    Debug.LogError("Last:" + enemy.GetComponent<Enemy>().MoveTimes);
+                    if ((GameBody.GetSystem<MapSystem>()
+                            .CalculateDistance(enemy.GetComponent<Enemy>().CurHexCell.Pos, cell.Pos)) <=
+                        enemy.GetComponent<Enemy>().RangeRight && enemy.GetComponent<Enemy>().MoveTimes > 0) //在攻击范围内
+                    {
+                        //使用技能
+                        if (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
+                            enemy.GetComponent<Enemy>()
+                                .UseSkill(cell.OccupyObject.GetComponent<BaseEntity>() as Player);
+                        else
+                            enemy.GetComponent<Enemy>().UseSkill(cell.OccupyObject.GetComponent<BaseEntity>());
+                    }
+
+                    break;
+                }
+            }
+
+            foreach (var cell in WholePath)//再执行移动或攻击
+            {
+                if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer ||
+                                                  cell.OccupyObject.GetComponent<BaseEntity>().bMisLead))
+                {
+                    if ((GameBody.GetSystem<MapSystem>()
+                            .CalculateDistance(enemy.GetComponent<Enemy>().CurHexCell.Pos, cell.Pos)) <=
+                        enemy.GetComponent<Enemy>().RangeRight && enemy.GetComponent<Enemy>().MoveTimes > 0) //在攻击范围内并且有行动力
+                    {
+                        //使用技能
+                        if (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
+                            enemy.GetComponent<Enemy>()
+                                .UseSkill(cell.OccupyObject.GetComponent<BaseEntity>() as Player);
+                        else
+                            enemy.GetComponent<Enemy>().UseSkill(cell.OccupyObject.GetComponent<BaseEntity>());
+                    }
+
+                    break;
+                }
+                else if (cell.OccupyObject != null && cell.OccupyObject.GetComponent<BaseEntity>() is Enemy)
+                {
+                    continue;
+                }
+
+                if (enemy.GetComponent<Enemy>().MoveTimes <= 0)
+                {
+                    EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });
                     return;
                 }
-
-                List<HexCell> WholePath = GameBody.GetSystem<MapSystem>()
-                    .GetPath(enemy.GetComponent<Enemy>().CurHexCell.Pos, target.Pos);
-
-                foreach (var cell in WholePath)//先判断攻击
+                enemy.GetComponent<Enemy>().anim.SetTrigger("Move");
+                await Task.Delay(300);
+                enemy.GetComponent<Enemy>().LastHexCell = enemy.GetComponent<Enemy>().CurHexCell;
+                enemy.GetComponent<Enemy>().LastHexCell.OccupyObject = null;
+                enemy.GetComponent<Enemy>().CurHexCell = cell;
+                enemy.GetComponent<Enemy>().CurHexCell.OccupyObject = enemy;
+                enemy.transform.DOMove(cell.transform.position, 0.5f);
+                enemy.GetComponent<Enemy>().CurHexCell = cell;
+                if (cell.Type == HexType.Thorns || cell.Type == HexType.Moon || cell.Type == HexType.Fire)
                 {
-                    if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer ||
-                                                      cell.OccupyObject.GetComponent<BaseEntity>().bMisLead))
-                    {
-                        if ((GameBody.GetSystem<MapSystem>()
-                                .CalculateDistance(enemy.GetComponent<Enemy>().CurHexCell.Pos, cell.Pos)) <=
-                            enemy.GetComponent<Enemy>().RangeRight && enemy.GetComponent<Enemy>().MoveTimes > 0) //在攻击范围内
-                        {
-                            //使用技能
-                            if (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
-                                enemy.GetComponent<Enemy>()
-                                    .UseSkill(cell.OccupyObject.GetComponent<BaseEntity>() as Player);
-                            else
-                                enemy.GetComponent<Enemy>().UseSkill(cell.OccupyObject.GetComponent<BaseEntity>());
-                        }
-
-                        break;
-                    }
+                    StateSystem.Execution(new List<string>(cell.Instructions), enemy);
                 }
 
-                foreach (var cell in WholePath)//再执行移动或攻击
+                if (!string.IsNullOrEmpty(enemy.GetComponent<Enemy>().SpawningPath))
                 {
-                    if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer ||
-                                                      cell.OccupyObject.GetComponent<BaseEntity>().bMisLead))
-                    {
-                        if ((GameBody.GetSystem<MapSystem>()
-                                .CalculateDistance(enemy.GetComponent<Enemy>().CurHexCell.Pos, cell.Pos)) <=
-                            enemy.GetComponent<Enemy>().RangeRight && enemy.GetComponent<Enemy>().MoveTimes > 0) //在攻击范围内并且有行动力
-                        {
-                            //使用技能
-                            if (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
-                                enemy.GetComponent<Enemy>()
-                                    .UseSkill(cell.OccupyObject.GetComponent<BaseEntity>() as Player);
-                            else
-                                enemy.GetComponent<Enemy>().UseSkill(cell.OccupyObject.GetComponent<BaseEntity>());
-                        }
-
-                        break;
-                    }
-                    else if (cell.OccupyObject != null && cell.OccupyObject.GetComponent<BaseEntity>() is Enemy)
-                    {
-                        continue;
-                    }
-
-                    if (enemy.GetComponent<Enemy>().MoveTimes <= 0)
-                        return;
-                    enemy.GetComponent<Enemy>().anim.SetTrigger("Move");
-                    await Task.Delay(300);
-                    enemy.GetComponent<Enemy>().LastHexCell = enemy.GetComponent<Enemy>().CurHexCell;
-                    enemy.GetComponent<Enemy>().LastHexCell.OccupyObject = null;
-                    enemy.GetComponent<Enemy>().CurHexCell = cell;
-                    enemy.GetComponent<Enemy>().CurHexCell.OccupyObject = enemy;
-                    enemy.transform.DOMove(cell.transform.position, 0.5f);
-                    enemy.GetComponent<Enemy>().CurHexCell = cell;
-                    if (cell.Type == HexType.Thorns || cell.Type == HexType.Moon || cell.Type == HexType.Fire)
-                    {
-                        StateSystem.Execution(new List<string>(cell.Instructions), enemy);
-                    }
-
-                    if (!string.IsNullOrEmpty(enemy.GetComponent<Enemy>().SpawningPath))
-                    {
-                        string[] spawnInfo = enemy.GetComponent<Enemy>().SpawningPath.Split(new[] { '*' });
-                        StateSystem.Execution(new List<string>()
+                    string[] spawnInfo = enemy.GetComponent<Enemy>().SpawningPath.Split(new[] { '*' });
+                    StateSystem.Execution(new List<string>()
                     {
                         string.Format("Delay:[Create:{0},this],1", spawnInfo[0]),
                         string.Format("Delay:[Create:{0},this],{1}", cell.Type.ToString(), 1 + spawnInfo[1])
                     }, cell.gameObject);
 
-                        enemy.GetComponent<Enemy>().SpawningPath = null;
-                    }
+                    enemy.GetComponent<Enemy>().SpawningPath = null;
+                }
 
-                    enemy.GetComponent<Enemy>().MoveTimes.AddValue(-1);
-                    if (enemy.GetComponent<Enemy>().MoveTimes <= 0)
-                    {
-                        break;
-                    }
+                enemy.GetComponent<Enemy>().MoveTimes.AddValue(-1);
+                AudioManager.PlaySound(AudioPath.EnemyMove);
+                if (enemy.GetComponent<Enemy>().MoveTimes <= 0)
+                {
+                    break;
+                }
             }
 
             EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });

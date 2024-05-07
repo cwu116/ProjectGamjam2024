@@ -9,6 +9,7 @@ using UnityEngine;
 using Game.System;
 using UnityEngine.EventSystems;
 using EventSystem = Game.System.EventSystem;
+using Managers;
 
 public class Player : BaseEntity,IPointerClickHandler
 {
@@ -43,10 +44,11 @@ public class Player : BaseEntity,IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (GameBody.GetModel<PlayerActionModel>().CurrentPotion != null)
+        if (GameBody.GetModel<PlayerActionModel>().CurrentPotion != null && Player.instance.MoveTimes>0)
         {
             Debug.Log("use");
             GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().CurrentPotion, this.gameObject);
+            AudioManager.PlaySound(AudioPath.Effect);
             return;
         }
     }
