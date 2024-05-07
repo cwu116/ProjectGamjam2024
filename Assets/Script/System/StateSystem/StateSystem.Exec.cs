@@ -69,7 +69,6 @@ namespace Game.System
                         case BuffType.ChangeValue:
                             if (Params[0] == "Damage")
                             {
-                                Debug.Log("damage");
                                 entity.GetHurt(int.Parse(Params[1]));
                                 target.GetComponent<BaseEntity>().RefreshHpInUI();
                             }

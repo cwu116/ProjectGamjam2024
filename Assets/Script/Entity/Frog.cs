@@ -40,9 +40,24 @@ public class Frog : Enemy
 
     private void OnDestroy()
     {
-        if (spawnEnemy is not null)
+        switch (frogType)
         {
-            SpawnEntity(spawnEnemy.gameObject, CurHexCell);
+            case FrogType.TrumpetFrog:
+                break;
+            case FrogType.BlackMistFrog:
+                StateSystem.Execution(new List<string>(){"Create:true,BlackMist,1"}, gameObject);
+                break;
+            case FrogType.BombFrog: 
+                List<HexCell> cellList = new List<HexCell>(GameBody.GetSystem<MapSystem>()
+                    .GetRoundHexCell(_curHexCell.Pos, 1));
+                foreach (var cell in cellList)
+                {
+                    if (cell.OccupyObject is not null)
+                    {
+                        StateSystem.Execution(new List<string>(){"ChangeValue:Damage,1"}, cell.OccupyObject);
+                    }
+                }
+                break;
         }
     }
 
@@ -62,20 +77,6 @@ public class Frog : Enemy
                     }
                 }
                 HateValue += 15;
-                break;
-            case FrogType.BlackMistFrog:
-                StateSystem.Execution(new List<string>(){"Create:true,BlackMist,1"}, gameObject);
-                break;
-            case FrogType.BombFrog: 
-                List<HexCell> cellList = new List<HexCell>(GameBody.GetSystem<MapSystem>()
-                    .GetRoundHexCell(_curHexCell.Pos, 1));
-                foreach (var cell in cellList)
-                {
-                    if (cell.OccupyObject is not null)
-                    {
-                        StateSystem.Execution(new List<string>(){"ChangeValue:Damage,1"}, cell.OccupyObject);
-                    }
-                }
                 break;
         }
     }

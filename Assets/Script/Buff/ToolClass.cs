@@ -93,14 +93,30 @@ namespace Buff.Tool
         private int changeValue;
         
 
+        public int Base
+        {
+            get => baseValue;
+        }
         public ValueInt(int baseValue)
         {
             this.baseValue = baseValue;
         }
         
+        public ValueInt(int baseValue, int outValue)
+        {
+            this.baseValue = baseValue;
+            changeValue = outValue - this.baseValue;
+        }
+        
         public static ValueInt operator +(ValueInt left, int newValue)
         {
             left.AddValue(newValue);
+            return left;
+        }
+        
+        public static ValueInt operator &(ValueInt left, int right)
+        {
+            left = new ValueInt(left.baseValue, right);
             return left;
         }
 

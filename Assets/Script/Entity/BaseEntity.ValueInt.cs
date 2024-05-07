@@ -5,6 +5,7 @@ using Game.Model;
 using System.Collections;
 using System.Collections.Generic;
 using Buff.Config;
+using DG.Tweening;
 using UnityEngine;
 
 public partial class BaseEntity : MonoBehaviour
@@ -20,14 +21,6 @@ public partial class BaseEntity : MonoBehaviour
             }
             return comp.ValueUnits[ValueKey.Hp];
         }
-        set
-        {
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.Hp))
-            {
-                comp.ValueUnits[ValueKey.Hp] = value;
-            }
-        }
     }
 
     public ValueInt MaxHp // 生命值上限
@@ -40,14 +33,6 @@ public partial class BaseEntity : MonoBehaviour
                 comp.ValueUnits.Add(ValueKey.MaxHp, new ValueInt(_model.hp));
             }
             return comp.ValueUnits[ValueKey.MaxHp];
-        }
-        set
-        {
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.MaxHp))
-            {
-                comp.ValueUnits[ValueKey.MaxHp] = value;
-            }
         }
     }
 
@@ -77,20 +62,7 @@ public partial class BaseEntity : MonoBehaviour
         get
         {
             BuffComponent comp = GetComponent<BuffComponent>();
-            return comp.ValueUnits[ValueKey.MaxMoveTimes]; 
-            if (!comp.ValueUnits.ContainsKey(ValueKey.MaxMoveTimes))
-            {
-                comp.ValueUnits.Add(ValueKey.MaxMoveTimes, new ValueInt(_model.moveTimes));
-            }
             return comp.ValueUnits[ValueKey.MaxMoveTimes];
-        }
-        set
-        {
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.MaxMoveTimes))
-            {
-                comp.ValueUnits[ValueKey.MaxMoveTimes] = value;
-            }
         }
     }
 
@@ -105,14 +77,6 @@ public partial class BaseEntity : MonoBehaviour
             }
             return comp.ValueUnits[ValueKey.Attack];
         }
-        set
-        {
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.Attack))
-            {
-                comp.ValueUnits[ValueKey.Attack] = value;
-            }
-        }
     }
 
     public ValueInt Defence // 防御力
@@ -125,14 +89,6 @@ public partial class BaseEntity : MonoBehaviour
                 comp.ValueUnits.Add(ValueKey.Defence, new ValueInt(0));
             }
             return comp.ValueUnits[ValueKey.Defence];
-        }
-        set
-        {
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.Defence))
-            {
-                comp.ValueUnits[ValueKey.Defence] = value;
-            }
         }
     }
 
@@ -147,14 +103,7 @@ public partial class BaseEntity : MonoBehaviour
             }
             return comp.ValueUnits[ValueKey.StepLenghth];
         }
-        set
-        {
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.StepLenghth))
-            {
-                comp.ValueUnits[ValueKey.StepLenghth] = value;
-            }
-        }
+
     }
 
     public ValueInt WatchRange // 警戒圈
@@ -167,14 +116,6 @@ public partial class BaseEntity : MonoBehaviour
                 comp.ValueUnits.Add(ValueKey.WatchRange, new ValueInt(_model.watchRange));
             }
             return comp.ValueUnits[ValueKey.WatchRange];
-        }
-        set
-        {
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.WatchRange))
-            {
-                comp.ValueUnits[ValueKey.WatchRange] = value;
-            }
         }
     }
     public ValueInt RangeLeft // 最小技能范围
@@ -208,14 +149,6 @@ public partial class BaseEntity : MonoBehaviour
                 comp.ValueUnits.Add(ValueKey.SkillRange, new ValueInt(_model.RangeRight));
             }
             return comp.ValueUnits[ValueKey.SkillRange];
-        }
-        set
-        {
-            BuffComponent comp = GetComponent<BuffComponent>();
-            if (comp.ValueUnits.ContainsKey(ValueKey.SkillRange))
-            {
-                comp.ValueUnits[ValueKey.SkillRange] = value;
-            }
         }
     }
     public ValueInt HateValue // 仇恨值
