@@ -13,6 +13,6 @@ class AudioPath
     public const string Hit = audioPath + "ui_level_hit";
     public const string Pop = audioPath + "ui_level_pop";
 
-    public const string FightMusic = audioPath + "战斗BGM";
+    public const string FightMusic = audioPath + "Bgm";
 }
 
