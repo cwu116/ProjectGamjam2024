@@ -25,8 +25,8 @@ public class HexCellGrass : HexCell
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (inEntity != null)
-            inEntity.GetComponent<SpriteRenderer>().DOFade(1f, 0.2f);
+        
+            collision.GetComponent<SpriteRenderer>().DOFade(1f, 0.2f);
     }
 }
 

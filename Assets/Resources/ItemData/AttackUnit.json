@@ -54,7 +54,7 @@
         "WatchRange": "4",
         "AttackType": "Range",
         "RangeLeft": "2",
-        "RangeRight": "4",
+        "RangeRight": "2",
         "SkillDescription": "远程攻击，瞄准2～4格范围内的玩家所在地块，下回合开始对该地块上的单位施加中毒2。",
         "UseSkill": "1",
         "DropMaterial": "D"

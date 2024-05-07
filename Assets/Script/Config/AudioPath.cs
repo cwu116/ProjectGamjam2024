@@ -16,7 +16,7 @@ class AudioPath
     public const string EnemyMove = audioPath + "怪移动";
     public const string PlayerMove = audioPath + "主角移动";
     public const string Effect = audioPath + "受到药剂作用";
-    public const string EnemyEffect = audioPath + "怪收到药剂作用";
+    public const string EnemyEffect = audioPath + "怪受到药剂作用";
     public const string PlayerHurt = audioPath + "受到怪物攻击受伤";
     public const string Collect = audioPath + "ui_level_collect";
 

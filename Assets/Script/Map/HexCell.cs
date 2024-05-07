@@ -110,6 +110,8 @@ public class HexCell : MonoBehaviour,IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (GameBody.GetModel<PlayerActionModel>().CurrentPotion == null)
+            return;
         if(GameBody.GetModel<PlayerActionModel>().CurrentPotion.id.Equals("Subject_1"))
             GameBody.GetSystem<PotionUseSystem>().Use(GameBody.GetModel<PlayerActionModel>().CurrentPotion, this.gameObject);
     }
