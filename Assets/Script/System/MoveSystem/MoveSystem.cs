@@ -145,7 +145,8 @@ namespace Game.System
             foreach (var cell in WholePath)//先判断攻击
             {
                 if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer ||
-                                                  cell.OccupyObject.GetComponent<BaseEntity>().bMisLead))
+                                                  cell.OccupyObject.GetComponent<BaseEntity>().bMisLead) &&
+                                                  cell.Type!=HexType.Grass)
                 {
                     if ((GameBody.GetSystem<MapSystem>()
                             .CalculateDistance(enemy.GetComponent<Enemy>().CurHexCell.Pos, cell.Pos)) <=
@@ -166,7 +167,8 @@ namespace Game.System
             foreach (var cell in WholePath)//再执行移动或攻击
             {
                 if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer ||
-                                                  cell.OccupyObject.GetComponent<BaseEntity>().bMisLead))
+                                                  cell.OccupyObject.GetComponent<BaseEntity>().bMisLead) &&
+                                                  cell.Type != HexType.Grass)
                 {
                     if ((GameBody.GetSystem<MapSystem>()
                             .CalculateDistance(enemy.GetComponent<Enemy>().CurHexCell.Pos, cell.Pos)) <=
