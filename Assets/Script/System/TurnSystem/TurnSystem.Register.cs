@@ -17,9 +17,9 @@ namespace Game.System
         {
             _turnModel.CurrentTurn = TurnType.PlayerTurn;
             stateSystem.PlayerStatesStart();
-            stateSystem.CheckForDelay();
             Player.instance.MoveTimes = new Buff.Tool.ValueInt( Player.instance.MaxMoveTimes);
             Player.instance.moveStep = Player.instance.MoveTimes * Player.instance.StepLength;
+            stateSystem.CheckForDelay();
             AfterPlayerTurnBeginEvent info = new AfterPlayerTurnBeginEvent() { moveTimes=Player.instance.MoveTimes};
             EventSystem.Send(info);
         }

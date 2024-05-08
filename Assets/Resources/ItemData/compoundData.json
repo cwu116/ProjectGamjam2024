@@ -23,7 +23,7 @@
         "Material_1": "red",
         "Material_2": "red",
         "MaterialSpecial": "C",
-        "Description": "对目标造成2点伤害，该单位下1次造成的所有伤害加1，且技能范围增加1",
+        "Description": "对目标造成2点伤害，该单位下回合造成的所有伤害加1，且技能范围增加1",
         "Type": [ "ChangeValue:Damage,2", "Delay:[ChangeValue:Attack,1,true*ChangeValue:SkillRange,1,true],1", "Delay:[ChangeValue:Attack,-1,true*ChangeValue:SkillRange,-1,true],1" ]
     },
     {
@@ -96,7 +96,7 @@
         "Material_2": "yellow",
         "MaterialSpecial": "D",
         "Description": "使目标下回合行动点减1，在回合结束时恢复2点血量",
-        "Type": [ "Delay:[ChangeValue:StepLenghth,-1,false],1", "State:Chrysalis,1,false" ]
+        "Type": [ "Delay:[ChangeValue:StepLenghth,-1,true],1", "State:Chrysalis,1,false" ]
     },
     {
         "id": "Flesh_and_blood_blessings",

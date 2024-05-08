@@ -2707,7 +2707,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u9650\u5236:40"
+  m_text: "\u9650\u5236:20"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 08347b5f9d8c75d43ad5789afab7fea4, type: 2}
   m_sharedMaterial: {fileID: 6293010340167007553, guid: 08347b5f9d8c75d43ad5789afab7fea4, type: 2}
