@@ -39,7 +39,15 @@ namespace Buff.Tool
 
         public int ToInt()
         {
-            return int.Parse(_value.ToString());
+            try
+            {
+                return int.Parse(_value.ToString());
+            }
+            catch
+            {
+
+            }
+            return 0;
         }
 
         // 转类布尔
