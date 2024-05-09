@@ -9,6 +9,11 @@ namespace Game.System
     {
         public static EventSystem Instance;
 
+        ~EventSystem()
+        {
+            _registeredEvents.Clear();
+        }
+
         public interface IRegisterActions
         {
         }
@@ -54,6 +59,11 @@ namespace Game.System
             var type = typeof(T);
             if (!_registeredEvents.TryGetValue(type, out var registrations)) return;
             if (registrations is Registrations<T> { OnEvent: { } } e) e.OnEvent -= onEvent;
+        }
+
+        public static void ClearAllRegister()
+        {
+            _registeredEvents.Clear();
         }
     }
 }

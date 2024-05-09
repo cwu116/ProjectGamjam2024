@@ -12,9 +12,16 @@ public class PlayerAnimationController : MonoBehaviour
     private void Start()
     {
         anim = GetComponent<Animator>();
-        EventSystem.Register<PlayerMoveEvent>(v => OnMove(v));
-        EventSystem.Register<UsePotionEvent>(v => OnUsePotion(v.potion));
-        EventSystem.Register<EntityHurtEvent>(v => Hurt(v));
+        EventSystem.Register<PlayerMoveEvent>(OnMove);
+        EventSystem.Register<UsePotionEvent>(OnUsePotion);
+        EventSystem.Register<EntityHurtEvent>(Hurt);
+    }
+
+    private void OnDestroy()
+    {
+        EventSystem.UnRegister<PlayerMoveEvent>(OnMove);
+        EventSystem.UnRegister<UsePotionEvent>(OnUsePotion);
+        EventSystem.UnRegister<EntityHurtEvent>(Hurt);
     }
 
     private void Hurt(EntityHurtEvent v)
@@ -26,7 +33,7 @@ public class PlayerAnimationController : MonoBehaviour
         }
     }
 
-    private void OnUsePotion(Item_Data potion)
+    private void OnUsePotion(UsePotionEvent potion)
     {
         AudioManager.PlaySound(AudioPath.PlayerAttack);
         anim.SetTrigger("Attack");

@@ -8,7 +8,7 @@ using MainLogic.Manager;
 using Managers;
 using TMPro;
 
-public class UIMain : BasePanel
+public class UIMain : MonoSingleton<UIMain>,IPanel
 {
     Button btnCraft;
     UIPotion[] potions;
@@ -31,9 +31,6 @@ public class UIMain : BasePanel
         Instance = this;
     }
 
-    public override void Close()
-    {
-    }
 
 
     private void Start()
@@ -43,7 +40,7 @@ public class UIMain : BasePanel
         EventSystem.Send<RefreshBackpackUIRequest>();
     }
 
-    public override void InitPanel()
+    public void InitPanel()
     {
         btnCraft = transform.Find("BtnCraft").GetComponent<Button>();
         btnExplain = transform.Find("BtnExplain").GetComponent<Button>();
@@ -58,14 +55,31 @@ public class UIMain : BasePanel
         hpBar = transform.Find("HpBar").GetComponent<HorizontalLayoutGroup>();
         
         EventSystem.Register<RefreshBackpackUIEvent>(OnRefreshBackpackUI);
-        EventSystem.Register<GameSuccessEvent>(v => gameSuccessPanel.gameObject.SetActive(true));
-        EventSystem.Register<GameOverEvent>(v => gameOverPanel.gameObject.SetActive(true));
-        EventSystem.Register<TurnCountEvent>(v => turnCount.text = v.count.ToString());
+        EventSystem.Register<GameSuccessEvent>(OnGameSuccess);
+        EventSystem.Register<GameOverEvent>(OnGameOver);
+        EventSystem.Register<TurnCountEvent>(OnTurnSwitch);
     }
-
     private void OnDestroy()
     {
         EventSystem.UnRegister<RefreshBackpackUIEvent>(OnRefreshBackpackUI);
+        EventSystem.UnRegister<GameSuccessEvent>(OnGameSuccess);
+        EventSystem.UnRegister<GameOverEvent>(OnGameOver);
+        EventSystem.UnRegister<TurnCountEvent>(OnTurnSwitch);
+    }
+
+    private void OnTurnSwitch(TurnCountEvent obj)
+    {
+        turnCount.text = obj.count.ToString();
+    }
+
+    private void OnGameOver(GameOverEvent obj)
+    {
+        gameOverPanel.gameObject.SetActive(true);
+    }
+
+    private void OnGameSuccess(GameSuccessEvent obj)
+    {
+        gameSuccessPanel.gameObject.SetActive(true);
     }
 
     private void OnRefreshBackpackUI(RefreshBackpackUIEvent v)
@@ -81,7 +95,7 @@ public class UIMain : BasePanel
         }
     }
 
-    public override void Refresh()
+    public void Refresh()
     {
         // RefreshPlayerHp();
     }
@@ -97,6 +111,10 @@ public class UIMain : BasePanel
             Instantiate(Resources.Load<GameObject>("Prefabs/UI/Heart"), hpBar.transform).GetComponent<Heart>()
                 .isPlayer = true;
         }
+    }
+
+    public void Close()
+    {
     }
 
 

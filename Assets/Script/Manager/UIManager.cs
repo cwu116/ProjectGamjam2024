@@ -23,9 +23,18 @@ namespace Managers
             UIResources[typeof(UICraft)] = new UIElement { ResourcePath = UIPath + "UICraft" };
             UIResources[typeof(UIExplain)] = new UIElement { ResourcePath = UIPath + "UIExplain" };
             UIResources[typeof(UIMain)] = new UIElement { ResourcePath = UIPath + "UIMain" };
+            EventSystem.Register<GameReStartTrigger>(OnStart);
         }
 
-        public static T Show<T>() where T : BasePanel
+        private static void OnStart(GameReStartTrigger obj)
+        {
+            foreach(var ui in UIResources)
+            {
+                ui.Value.instance = null;
+            }
+        }
+
+        public static T Show<T>() where T : IPanel
         {
             Type type = typeof(T);
             if (!UIResources.ContainsKey(type))
@@ -45,19 +54,19 @@ namespace Managers
                 }
                 element.instance = GameObject.Instantiate(prefab);
                 element.instance.SetActive(true);
-                (element.instance.GetComponent<T>() as BasePanel).InitPanel();
-                (element.instance.GetComponent<T>() as BasePanel).Refresh();
+                //(element.instance.GetComponent<T>() as BasePanel).InitPanel();
+                (element.instance.GetComponent<T>() as IPanel).Refresh();
                 return element.instance.GetComponent<T>();
             }
             else //OnEnable
             {
                 element.instance.SetActive(true);
-                (element.instance.GetComponent<T>() as BasePanel).Refresh();
+                (element.instance.GetComponent<T>() as IPanel).Refresh();
                 return element.instance.GetComponent<T>();
             }
         }
 
-        public static void Close<T>() where T : BasePanel
+        public static void Close<T>() where T : IPanel
         {
             if (!UIResources.ContainsKey(typeof(T)))
             {
@@ -67,7 +76,7 @@ namespace Managers
             UIResources[typeof(T)].instance.SetActive(false);
         }
 
-        public static T Get<T>() where T:BasePanel
+        public static T Get<T>() where T: IPanel
         {
             if (!UIResources.ContainsKey(typeof(T)))
             {

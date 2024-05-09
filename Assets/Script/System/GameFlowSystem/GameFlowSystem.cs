@@ -1,6 +1,8 @@
 ﻿
 using System;
 using Managers;
+using Game;
+using UnityEngine;
 
 namespace Game.System
 {
@@ -10,6 +12,8 @@ namespace Game.System
         {
             RegisterEvents();
             EventSystem.Send<ShowUIStartPanelTriggerEvent>();
+            GameBody.GetSystem<AudioSystem>().soundSource = Camera.main.transform.Find("SoundSource").GetComponent<AudioSource>();
+            GameBody.GetSystem<AudioSystem>().musicSource = Camera.main.transform.Find("MusicSource").GetComponent<AudioSource>();
             AudioManager.PlayMusic(AudioPath.FightMusic);
         }
 

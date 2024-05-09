@@ -52,6 +52,11 @@ namespace Game.UI
             UIManager.Close<UICraft>();
         }
 
+        private void Awake()
+        {
+            InitPanel();
+        }
+
         public override void InitPanel()
         {
             btnBack = transform.Find("BtnBack").GetComponent<Button>();

@@ -14,6 +14,13 @@ namespace Game.System
             EventSystem.Register<EnemyDieEvent>(OnEnemyDie);
         }
 
+        ~EnemyBehaviourSystem()
+        {
+            EventSystem.UnRegister<AfterEnemyTurnBeginEvent>(TriggerEnemiesAction);
+            EventSystem.UnRegister<EnemyActionComplete>(OnEnemyAcionComplete);
+            EventSystem.UnRegister<EnemyDieEvent>(OnEnemyDie);
+        }
+
         private void OnEnemyDie(EnemyDieEvent obj)
         {
             enemies.Remove(obj.enemy as Enemy);

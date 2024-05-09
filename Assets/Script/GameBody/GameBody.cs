@@ -23,6 +23,12 @@ namespace Game
             InitSystems();
             UIManager.Show<UIMain>();
         }
+        private void OnDestroy()
+        {
+            EventSystem.ClearAllRegister();
+            _systems.Clear();
+            _models.Clear();
+        }
 
         private void RegisterSystems()
         {

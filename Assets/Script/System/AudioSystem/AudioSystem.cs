@@ -7,13 +7,11 @@ namespace Game.System
 {
     public class AudioSystem : BaseSystem
     {
-        AudioSource soundSource;
-        AudioSource musicSource;
+        public AudioSource soundSource;
+        public AudioSource musicSource;
 
         public override void InitSystem()
         {
-            soundSource = Camera.main.transform.Find("SoundSource").GetComponent<AudioSource>();
-            musicSource = Camera.main.transform.Find("MusicSource").GetComponent<AudioSource>();
             RegisterEvents();
         }
 
@@ -22,6 +20,13 @@ namespace Game.System
             EventSystem.Register<PlaySoundEvent>(PlaySound);
             EventSystem.Register<PlayMusicEvent>(PlayMusic);
             EventSystem.Register<PauseMusciTriggerEvent>(PauseMusic);
+        }
+
+        ~AudioSystem()
+        {
+            EventSystem.UnRegister<PlaySoundEvent>(PlaySound);
+            EventSystem.UnRegister<PlayMusicEvent>(PlayMusic);
+            EventSystem.UnRegister<PauseMusciTriggerEvent>(PauseMusic);
         }
 
         private void PlaySound(PlaySoundEvent obj)

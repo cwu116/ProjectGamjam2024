@@ -10,7 +10,7 @@ namespace Game.System
         public int nextMap;
     }
 
-    struct GameStartTrigger:IEvent
+    struct GameReStartTrigger:IEvent
     { }
 
     struct GameOverEvent:IEvent

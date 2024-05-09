@@ -23,8 +23,15 @@ namespace Game.System
             EventSystem.Register<ClearAttackBlockEvent>(v => ClearEnemyAttackCells());
             EventSystem.Register<HighLightWarningBlockEvent>(v => { ClearEnemyWarningCells(); HighlightEnemyWarningCells(v.pos, v.distance); });
             EventSystem.Register<ClearWarningBlockEvent>(v => ClearEnemyWarningCells());
+            EventSystem.Register<GameReStartTrigger>(OnStart);
         }
 
+        private void OnStart(GameReStartTrigger obj)
+        {
+            tempCells.Clear();
+            enemyWarningtempCells.Clear();
+            enemyAttacktempCells.Clear();
+        }
 
         private void OnMapInitFinish(MapInitFinishEvent @event)
         {

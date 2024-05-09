@@ -13,6 +13,14 @@ namespace Game.System
             EventSystem.Register<EnemyTurnBeginTrigger>(OnEnemyTurnBeginTrigger);
             EventSystem.Register<EnemyTurnEndTrigger>(OnEnemyTurnEndTrigger);
         }
+
+        ~TurnSystem()
+        {
+            EventSystem.UnRegister<PlayerTurnBeginTrigger>(OnPlayerTurnBeginTrigger);
+            EventSystem.UnRegister<PlayerTurnEndTrigger>(OnPlayerTurnEndTrigger);
+            EventSystem.UnRegister<EnemyTurnBeginTrigger>(OnEnemyTurnBeginTrigger);
+            EventSystem.UnRegister<EnemyTurnEndTrigger>(OnEnemyTurnEndTrigger);
+        }
         private void OnPlayerTurnBeginTrigger(PlayerTurnBeginTrigger obj)
         {
             _turnModel.CurrentTurn = TurnType.PlayerTurn;
