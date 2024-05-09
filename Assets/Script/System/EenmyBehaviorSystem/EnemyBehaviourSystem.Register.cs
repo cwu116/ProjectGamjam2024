@@ -64,6 +64,7 @@ namespace Game.System
                 {
                     GameBody.GetSystem<MoveSystem>().EnemyMoveTo(enemy.gameObject);
                 }
+                EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });
             }
         }
     }

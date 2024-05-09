@@ -61,7 +61,7 @@ namespace Game.System
             EventSystem.Send<PlayerTurnBeginTrigger>();
             _turnModel.turnCount++;
             EventSystem.Send<TurnCountEvent>(new TurnCountEvent() { count = _turnModel.turnCount });
-            if (_turnModel.turnCount > 40)
+            if (_turnModel.turnCount > 20)
                 EventSystem.Send<GameOverEvent>();
         }
     }

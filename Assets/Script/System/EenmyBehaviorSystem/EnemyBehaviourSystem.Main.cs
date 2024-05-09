@@ -41,7 +41,7 @@ namespace Game.System
             {
                 //发送死亡事件或者buff系统本身处理(敌人数量需要--)
             }
-            EventSystem.Send<EnemyActionComplete>();//该单位回合结束事件
+            //EventSystem.Send<EnemyActionComplete>();//该单位回合结束事件
         }
 
         private void ChekoutEnoughEnergy(Enemy enemy, Vector2 playerPos)//检测有没有行动点

@@ -182,7 +182,7 @@ namespace Game.System
             if (enemy.GetComponent<Enemy>().MoveTimes <= 0 || enemy.GetComponent<Enemy>().StepLength <= 0)
             {
                 Debug.LogError("Last:" + enemy.GetComponent<Enemy>().MoveTimes);
-                EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });
+                //EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });
                 return;
             }
 
@@ -238,7 +238,7 @@ namespace Game.System
 
                 if (enemy.GetComponent<Enemy>().MoveTimes <= 0)
                 {
-                    EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });
+                    //EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });
                     return;
                 }
                 enemy.GetComponent<Enemy>().anim.SetTrigger("Move");
@@ -274,7 +274,7 @@ namespace Game.System
                 }
             }
 
-            EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });
+            //EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });
         }
 
         public override void InitSystem()
