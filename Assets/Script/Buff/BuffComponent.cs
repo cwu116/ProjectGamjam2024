@@ -93,6 +93,7 @@ namespace Buff
                     }
                 }
             }
+            StateSystem.Execution(new List<string>(gameObject.GetComponent<BaseEntity>().CurHexCell.Instructions), gameObject);
         }
             
             

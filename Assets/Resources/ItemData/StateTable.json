@@ -111,10 +111,10 @@
     "buffName" : "隐形",
     "id" : "Invisible",
     "description" : "立刻使单位变的不可见且不可被指定，移动时不会触发惊动。若该状态有N层，除非提前使用技能，否则在N回合结束时消失。",
-    "buffCMD" : ["Action:SetVisibility,1"],
+    "buffCMD" : ["Action:SetVisibility,[1]"],
     "isAdditive" : true,
     "isStartExec" : false,
-    "death" : ["Action:SetVisibility,0"]
+    "death" : ["Action:SetVisibility,[0]"]
   },
   {
     "buffName" : "误导",

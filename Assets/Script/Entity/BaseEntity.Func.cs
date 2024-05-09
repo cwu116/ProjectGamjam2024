@@ -186,9 +186,9 @@ public partial class BaseEntity : MonoBehaviour
     public void SetVisibility(params Param[] paramList)
     {
         // paramList[0] : 开启(1)关闭(0)
-        if (paramList[0])
+        if (paramList[0].ToInt() != 0)
         {
-            StateSystem.Execution(new List<string>() {"State:Invisible,1,true"}, gameObject);
+            StateSystem.Execution(new List<string>() {"ChangeValue:bInvisible,1,false"}, gameObject);
             GetComponent<SpriteRenderer>().DOFade(0.3f, 0.3f);
         }
         else

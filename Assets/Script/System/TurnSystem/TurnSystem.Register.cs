@@ -50,6 +50,10 @@ namespace Game.System
 
         private void OnEnemyTurnEndTrigger(EnemyTurnEndTrigger obj)
         {
+            foreach (var enemy in GameObject.FindObjectsOfType<Enemy>())
+            {
+                enemy.WatchRange.RemoveChange();
+            }
             stateSystem.EnemyStatesEnd();
             AfterEnemyTurnEndEvent info = new AfterEnemyTurnEndEvent() { /*??????*/};
             Debug.Log("enemy turnend");
