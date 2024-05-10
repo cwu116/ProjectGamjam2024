@@ -27,9 +27,10 @@ namespace Buff
         }
     }
 
+    [Serializable]
     public class StateUnit
     {
-        private State info;
+        [SerializeField] private State info;
         public int Duration;
         public GameObject Target;
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Buff.Tool;
 using UnityEngine;
 using DG.Tweening;
 
@@ -25,8 +26,8 @@ public class HexCellGrass : HexCell
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        
-            collision.GetComponent<SpriteRenderer>().DOFade(1f, 0.2f);
+        collision.GetComponent<SpriteRenderer>().DOFade(1f, 0.2f);
+        collision.GetComponent<BaseEntity>().SetVisibility(new Param[]{new Param(0)});
     }
 }
 

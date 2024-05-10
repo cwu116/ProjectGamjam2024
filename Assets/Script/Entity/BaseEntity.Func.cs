@@ -195,6 +195,7 @@ public partial class BaseEntity : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().DOFade(1f, 0.3f);
             bInvisible.RemoveChange();
+            buff.RemoveState("Invisible");
         }
     }
 

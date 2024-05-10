@@ -12,8 +12,8 @@ namespace Buff
         public delegate void Custom();
         public delegate void TCustom(params Param[] param);
 
-        public Dictionary<ValueKey, ValueInt> ValueUnits;       // 玩家数值类
-        public List<StateUnit> StateUnits;                      // 玩家状态类
+        [SerializeField] public Dictionary<ValueKey, ValueInt> ValueUnits;       // 玩家数值类
+        [SerializeField] public List<StateUnit> StateUnits;     // 玩家状态类
         public Dictionary<ActionKey, Custom> FuncUnits;         // 玩家方法类
         public Dictionary<TActionKey, TCustom> TFuncUnits;      // 有参玩家方法类
 
@@ -49,6 +49,13 @@ namespace Buff
         
         public void AddState(State state, int flow, GameObject target)
         {
+            foreach (var unit in StateUnits)
+            {
+                if (unit.Info.id == state.id)
+                {
+                    return;
+                }
+            }
             StateUnits.Add(new StateUnit(state, flow, target));
         }
 
@@ -57,6 +64,17 @@ namespace Buff
             StateUnits.Remove(state);
         }
 
+        public void RemoveState(string id)
+        {
+            for (int i = 0; i < StateUnits.Count; i++)
+            {
+                if (StateUnits[i].Info.id == id)
+                {
+                    StateUnits.Remove(StateUnits[i]);
+                }
+            }
+        }
+        
         public void ClearState()
         {
             StateUnits.Clear();

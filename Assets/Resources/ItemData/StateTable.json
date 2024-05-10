@@ -114,7 +114,7 @@
     "buffCMD" : ["Action:SetVisibility,[1]"],
     "isAdditive" : true,
     "isStartExec" : false,
-    "death" : ["Action:SetVisibility,[0]"]
+    "death" : []
   },
   {
     "buffName" : "误导",

@@ -38,6 +38,7 @@ namespace Buff.Config
         Delay                   // 延迟
     }
 
+    [Serializable]
     public enum ValueKey
     {
         Hp,                     // 生命
