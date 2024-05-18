@@ -44,7 +44,7 @@ namespace Game.System
             }
 
             HexCell newCell = GridManager.Instance.hexCells[(int) path.x, (int) path.y];
-            if (newCell.OccupyObject is not null && !newCell.OccupyObject.GetComponent<Herb>() )
+            if (newCell.OccupyObject is not null && !newCell.OccupyObject.GetComponent<Herb>())
             {
                 return;
             }
@@ -70,7 +70,8 @@ namespace Game.System
                 StateSystem.Execution(new List<string>()
                 {
                     string.Format("Delay:[Create:true,{0},this],1", spawnInfo[0]),
-                    string.Format("Delay:[Create:true,{0},this],{1}", newCell.Type.ToString(), 1 + int.Parse(spawnInfo[1]))
+                    string.Format("Delay:[Create:true,{0},this],{1}", newCell.Type.ToString(),
+                        1 + int.Parse(spawnInfo[1]))
                 }, newCell.gameObject);
                 player.GetComponent<Player>().SpawningPath = null;
             }
@@ -85,6 +86,7 @@ namespace Game.System
                     enemy.WatchRange.AddValue(1);
                 }
             }
+
             EventSystem.Send(new PlayerMoveEvent()
                 {currentCell = newCell, moveTimes = player.GetComponent<Player>().MoveTimes});
             //if(!isUndo)
@@ -101,6 +103,7 @@ namespace Game.System
             {
                 return;
             }
+
             List<HexCell> hexcells = new List<HexCell>(GameBody.GetSystem<MapSystem>()
                 .GetRoundHexCell(enemy.GetComponent<Enemy>().CurHexCell.Pos, enemy.GetComponent<Enemy>().WatchRange));
             // 仇恨值优先级
@@ -111,37 +114,44 @@ namespace Game.System
                 {
                     continue;
                 }
+
                 BaseEntity unit = cellunit.OccupyObject.GetComponent<BaseEntity>();
                 if (unit.HateValue == 0)
                 {
                     continue;
                 }
+
                 if (maxHate is null || unit.HateValue >= maxHate.HateValue)
                 {
                     maxHate = unit;
                 }
             }
+
             if (maxHate is not null)
             {
                 if (enemy.GetComponent<Enemy>().RangeRight < 1)
                 {
                     return;
                 }
+
                 enemy.GetComponent<Enemy>().isDisturbed = true;
                 if (enemy.GetComponent<Enemy>().Name == "Rush")
                 {
-                    StateSystem.Execution(new List<string>(){"Delay:[ChangeValue:MoveTimes,1,true],1"}, enemy);
+                    StateSystem.Execution(new List<string>() {"Delay:[ChangeValue:MoveTimes,1,true],1"}, enemy);
                 }
+
                 Debug.LogError("I hate you!");
                 ThrowTarget(enemy, maxHate.CurHexCell);
                 return;
             }
+
             foreach (var cellUnit in hexcells)
             {
                 if (cellUnit.OccupyObject is null || cellUnit.OccupyObject == enemy)
                 {
                     continue;
                 }
+
                 if (cellUnit.OccupyObject.GetComponent<BaseEntity>().bMisLead ||
                     cellUnit.OccupyObject.GetComponent<BaseEntity>().IsPlayer &&
                     !cellUnit.OccupyObject.GetComponent<BaseEntity>().bInvisible)
@@ -154,8 +164,9 @@ namespace Game.System
                     enemy.GetComponent<Enemy>().isDisturbed = true;
                     if (enemy.GetComponent<Enemy>().Name == "Rush")
                     {
-                        StateSystem.Execution(new List<string>(){"Delay:[ChangeValue:MoveTimes,1,true],1"}, enemy);
+                        StateSystem.Execution(new List<string>() {"Delay:[ChangeValue:MoveTimes,1,true],1"}, enemy);
                     }
+
                     Debug.LogError("I see you!");
                     ThrowTarget(enemy, cellUnit);
                     return;
@@ -188,38 +199,40 @@ namespace Game.System
 
             List<HexCell> WholePath = GameBody.GetSystem<MapSystem>()
                 .GetPath(enemy.GetComponent<Enemy>().CurHexCell.Pos, target.Pos);
-
-            foreach (var cell in WholePath)//先判断攻击
+            
+            foreach (var cell in WholePath) //先判断攻击
             {
-                if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer ||
-                                                  cell.OccupyObject.GetComponent<BaseEntity>().bMisLead) &&
-                                                  cell.Type!=HexType.Grass)
+                if (cell.OccupyObject != null && cell.Type != HexType.Grass)
                 {
                     if ((GameBody.GetSystem<MapSystem>()
                             .CalculateDistance(enemy.GetComponent<Enemy>().CurHexCell.Pos, cell.Pos)) <=
                         enemy.GetComponent<Enemy>().RangeRight && enemy.GetComponent<Enemy>().MoveTimes > 0) //在攻击范围内
                     {
+                        enemy.GetComponent<Enemy>().UseSkill(cell.OccupyObject.GetComponent<BaseEntity>());
                         //使用技能
+                        /*
                         if (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
                             enemy.GetComponent<Enemy>()
                                 .UseSkill(cell.OccupyObject.GetComponent<BaseEntity>() as Player);
                         else
                             enemy.GetComponent<Enemy>().UseSkill(cell.OccupyObject.GetComponent<BaseEntity>());
+                        */
                     }
 
                     break;
                 }
             }
 
-            foreach (var cell in WholePath)//再执行移动或攻击
+            foreach (var cell in WholePath) //再执行移动或攻击
             {
                 if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer ||
                                                   cell.OccupyObject.GetComponent<BaseEntity>().bMisLead) &&
-                                                  cell.Type != HexType.Grass)
+                    cell.Type != HexType.Grass)
                 {
                     if ((GameBody.GetSystem<MapSystem>()
                             .CalculateDistance(enemy.GetComponent<Enemy>().CurHexCell.Pos, cell.Pos)) <=
-                        enemy.GetComponent<Enemy>().RangeRight && enemy.GetComponent<Enemy>().MoveTimes > 0) //在攻击范围内并且有行动力
+                        enemy.GetComponent<Enemy>().RangeRight &&
+                        enemy.GetComponent<Enemy>().MoveTimes > 0) //在攻击范围内并且有行动力
                     {
                         //使用技能
                         if (cell.OccupyObject.GetComponent<BaseEntity>().IsPlayer)
@@ -231,7 +244,8 @@ namespace Game.System
 
                     break;
                 }
-                else if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>() is Enemy || cell.OccupyObject.GetComponent<BaseEntity>() is Rock))
+                else if (cell.OccupyObject != null && (cell.OccupyObject.GetComponent<BaseEntity>() is Enemy ||
+                                                       cell.OccupyObject.GetComponent<BaseEntity>() is Rock))
                 {
                     continue;
                 }
@@ -241,6 +255,7 @@ namespace Game.System
                     //EventSystem.Send<EnemyActionComplete>(new EnemyActionComplete() { enemy = enemy.GetComponent<Enemy>() });
                     return;
                 }
+
                 enemy.GetComponent<Enemy>().anim.SetTrigger("Move");
                 await Task.Delay(300);
                 enemy.GetComponent<Enemy>().LastHexCell = enemy.GetComponent<Enemy>().CurHexCell;
@@ -256,11 +271,12 @@ namespace Game.System
 
                 if (!string.IsNullOrEmpty(enemy.GetComponent<Enemy>().SpawningPath))
                 {
-                    string[] spawnInfo = enemy.GetComponent<Enemy>().SpawningPath.Split(new[] { '*' });
+                    string[] spawnInfo = enemy.GetComponent<Enemy>().SpawningPath.Split(new[] {'*'});
                     StateSystem.Execution(new List<string>()
                     {
                         string.Format("Delay:[Create:true,{0},this],1", spawnInfo[0]),
-                        string.Format("Delay:[Create:true,{0},this],{1}", cell.Type.ToString(), 1 + int.Parse(spawnInfo[1]))
+                        string.Format("Delay:[Create:true,{0},this],{1}", cell.Type.ToString(),
+                            1 + int.Parse(spawnInfo[1]))
                     }, cell.gameObject);
 
                     enemy.GetComponent<Enemy>().SpawningPath = null;

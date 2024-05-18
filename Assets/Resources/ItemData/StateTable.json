@@ -15,7 +15,7 @@
     "buffCMD" : ["ChangeValue:Damage,-2"],
     "isAdditive" : false,
     "isStartExec" : false,
-    "death" : ["State:HateValue,-5,true"]
+    "death" : ["ChangeValue:HateValue,-5,true"]
   },
   {
     "buffName" : "血肉祝福",

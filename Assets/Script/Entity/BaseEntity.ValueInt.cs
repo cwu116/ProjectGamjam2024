@@ -151,6 +151,8 @@ public partial class BaseEntity : MonoBehaviour
             return comp.ValueUnits[ValueKey.SkillRange];
         }
     }
+    
+    [SerializeField]
     public ValueInt HateValue // 仇恨值
     {
         get

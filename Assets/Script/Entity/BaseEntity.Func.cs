@@ -138,7 +138,7 @@ public partial class BaseEntity : MonoBehaviour
         }
        
     }
-    
+
 
     public void Away(params Param[] paramList)
     {

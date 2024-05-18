@@ -42,6 +42,8 @@ public class Enemy : BaseEntity,IPointerClickHandler,IPointerEnterHandler,IPoint
         
         base.Start();
         RefreshHpInUI();
+
+        //HateValue.AddValue(10);
     }
 
     bool cd=true;
